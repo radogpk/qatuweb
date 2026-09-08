@@ -13,7 +13,7 @@ export function ProcessTimeline() {
       number: "02",
       icon: UploadCloud,
       title: "Nos envías tus materiales por WhatsApp",
-      desc: "Solo necesitas enviarnos lo que ya tienes: fotos de tu local o productos tomadas con tu celular, tu logotipo si lo tienes, lista de precios o carta, y tus números de contacto.",
+      desc: "Solo necesitas enviarnos lo que ya tienes: fotos de tu local o productos tomadas con tu celular, tu logotipo si lo tienes, lista de precios o carta, y tus números de cobro.",
       time: "Día 1 - 2",
     },
     {
@@ -26,15 +26,15 @@ export function ProcessTimeline() {
     {
       number: "04",
       icon: Rocket,
-      title: "Revisión final y publicación oficial",
+      title: "Revisión final y lanzamiento oficial",
       desc: "Te mostramos la web antes de salir al aire. Si necesitas afinar algún detalle lo corregimos y la publicamos oficialmente en tu subdominio tunegocio.qatu.pe.",
       time: "Lanzamiento",
     },
     {
       number: "05",
       icon: RefreshCw,
-      title: "Acompañamiento y mantenimiento mensual",
-      desc: "Tu web queda vigilada 24/7. Cada mes puedes solicitarnos actualización de precios o productos nuevos con solo mandarnos un mensaje.",
+      title: "Acompañamiento y soporte mensual",
+      desc: "Tu web queda vigilada 24/7 con SSL y hosting cloud. Cada mes puedes solicitarnos actualización de precios o productos con solo mandarnos un mensaje.",
       time: "Continuo",
     },
   ];
@@ -47,28 +47,28 @@ export function ProcessTimeline() {
           return (
             <div
               key={idx}
-              className="bg-white rounded-xl p-5 sm:p-6 border border-[#EAE6DF] shadow-subtle hover:shadow-card transition-all flex flex-col justify-between space-y-4 relative"
+              className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between space-y-4 relative group"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-[#FDF2F0] text-[#B23A2E] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center group-hover:scale-105 transition-transform">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-[#F4F1EA] text-[#C59218]">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
                     {step.time}
                   </span>
                 </div>
 
-                <h3 className="font-serif font-bold text-sm sm:text-base text-[#1E2838]">
+                <h3 className="font-heading font-bold text-sm sm:text-base text-slate-900">
                   {step.title}
                 </h3>
 
-                <p className="text-xs text-[#4B586E] leading-relaxed">
+                <p className="text-xs text-slate-600 leading-relaxed">
                   {step.desc}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-[#EAE6DF] text-[11px] font-mono text-[#4B586E]">
+              <div className="pt-2 border-t border-slate-100 text-xs font-mono font-bold text-brand-600">
                 Paso {step.number}
               </div>
             </div>

@@ -1,21 +1,22 @@
 import Link from "next/link";
 import { initialPricingPlans } from "@/lib/seed/initialBusinesses";
 import { getWhatsAppUrl } from "@/lib/config/site";
-import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { Check, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
 
 export function PricingPreview() {
   return (
-    <section className="py-20 bg-[#FDFBF7] border-b border-[#EAE6DF]">
+    <section className="py-20 bg-slate-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-2.5">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#B23A2E]">
-            Precios Claros y Transparentes
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Precios Claros y Transparentes</span>
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1E2838]">
-            Un plan a la medida de tu rubro
+          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight">
+            Planes diseñados para comercios peruanos
           </h2>
-          <p className="text-sm sm:text-base text-[#4B586E]">
-            Sin costos ocultos: un pago único de diseño y configuración (setup) + una cuota mensual económica para hosting, subdominio y mantenimiento continuo.
+          <p className="text-base text-slate-600">
+            Sin comisiones por venta: un pago único de diseño y configuración inicial + una cuota mensual económica para soporte, hosting y subdominio.
           </p>
         </div>
 
@@ -23,60 +24,60 @@ export function PricingPreview() {
           {initialPricingPlans.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 relative ${
+              className={`rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 relative bg-white ${
                 plan.popular
-                  ? "bg-white border-2 border-[#B23A2E] shadow-card scale-100 lg:-translate-y-1.5"
-                  : "bg-white border border-[#EAE6DF] shadow-subtle hover:shadow-card"
+                  ? "border-2 border-brand-600 shadow-card-hover lg:-translate-y-2 ring-4 ring-brand-500/10"
+                  : "border border-slate-200 shadow-card hover:shadow-card-hover"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="px-3.5 py-1 rounded-md bg-[#B23A2E] text-white text-[11px] font-semibold tracking-wide uppercase shadow-xs flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#C59218]" />
-                    {plan.badge}
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="px-4 py-1 rounded-full bg-brand-600 text-white text-xs font-bold tracking-wide uppercase shadow-md flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    {plan.badge || "Más Popular"}
                   </span>
                 </div>
               )}
 
               <div>
                 {!plan.popular && plan.badge && (
-                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#F4F1EA] text-[#C59218] text-xs font-semibold mb-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold mb-4">
                     {plan.badge}
                   </span>
                 )}
 
-                <h3 className="text-2xl font-serif font-bold text-[#1E2838] mb-2">
+                <h3 className="text-2xl font-heading font-extrabold text-slate-900 mb-1">
                   {plan.name}
                 </h3>
-                <p className="text-xs text-[#4B586E] min-h-[36px] mb-6">
+                <p className="text-xs sm:text-sm text-slate-500 min-h-[40px] mb-6">
                   {plan.tagline}
                 </p>
 
                 {/* Precios: Setup y Mensualidad */}
-                <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#EAE6DF] mb-6 space-y-3">
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 mb-6 space-y-3">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-[#4B586E] font-medium">Setup inicial (único):</span>
-                    <span className="text-xl font-serif font-bold text-[#1E2838]">
+                    <span className="text-xs text-slate-500 font-medium">Setup inicial (único):</span>
+                    <span className="text-lg font-heading font-extrabold text-slate-900">
                       S/ {plan.setupPrice}
                     </span>
                   </div>
-                  <div className="flex items-baseline justify-between border-t border-[#EAE6DF] pt-2">
-                    <span className="text-xs text-[#4B586E] font-medium">Mantenimiento mensual:</span>
-                    <span className="text-2xl font-serif font-bold text-[#B23A2E]">
+                  <div className="flex items-baseline justify-between border-t border-slate-200 pt-2.5">
+                    <span className="text-xs text-slate-500 font-medium">Mantenimiento:</span>
+                    <span className="text-2xl font-heading font-black text-brand-600">
                       S/ {plan.monthlyPrice}
-                      <span className="text-xs font-sans text-[#4B586E] font-normal"> / mes</span>
+                      <span className="text-xs font-normal text-slate-500 font-sans"> / mes</span>
                     </span>
                   </div>
                 </div>
 
-                {/* Características destacadas */}
-                <div className="space-y-2.5 mb-8">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#1E2838]/70 block mb-2">
-                    Incluye:
+                {/* Lista de características */}
+                <div className="space-y-3 mb-8">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                    ¿Qué incluye?
                   </span>
                   {plan.features.slice(0, 5).map((feature, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs text-[#4B586E]">
-                      <div className="w-4 h-4 rounded-full bg-[#FCF8EC] text-[#C59218] flex items-center justify-center shrink-0 mt-0.5">
+                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
+                      <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-3 h-3 stroke-[3]" />
                       </div>
                       <span>{feature}</span>
@@ -86,15 +87,15 @@ export function PricingPreview() {
               </div>
 
               {/* Botón de acción */}
-              <div className="pt-4 border-t border-[#EAE6DF]">
+              <div className="pt-4 border-t border-slate-100">
                 <a
-                  href={getWhatsAppUrl(`Hola Qatu, me interesa contratar el plan ${plan.name} para mi negocio.`)}
+                  href={getWhatsAppUrl(`¡Hola Qatu! Quiero contratar el plan ${plan.name} para mi negocio.`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-full py-3 px-4 rounded-xl text-center font-semibold text-xs sm:text-sm transition-all block ${
+                  className={`w-full py-3.5 px-4 rounded-xl text-center font-semibold text-sm transition-all block active:scale-95 ${
                     plan.popular
-                      ? "bg-[#B23A2E] hover:bg-[#962E24] text-white shadow-xs"
-                      : "bg-[#1E2838] hover:bg-[#121A24] text-white"
+                      ? "bg-brand-600 hover:bg-brand-700 text-white shadow-card hover:shadow-card-hover"
+                      : "bg-slate-900 hover:bg-slate-800 text-white"
                   }`}
                 >
                   {plan.ctaText}
@@ -108,7 +109,7 @@ export function PricingPreview() {
         <div className="mt-12 text-center">
           <Link
             href="/planes"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#B23A2E] hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline"
           >
             <span>Ver tabla comparativa detallada de todos los planes</span>
             <ArrowRight className="w-4 h-4" />

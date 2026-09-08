@@ -3,45 +3,43 @@
 @tailwind utilities;
 
 :root {
-  --bg-editorial: #FAF9F6;
-  --bg-editorial-subtle: #F4F1EA;
-  --bg-white: #FFFFFF;
-  --color-rojo: #B23A2E;
-  --color-rojo-hover: #962E24;
-  --color-qori: #C59218;
-  --color-indigo: #1E2838;
-  --color-indigo-muted: #4B586E;
-  --color-border: #EAE6DF;
+  --bg-main: #FFFFFF;
+  --bg-surface: #F8FAFC;
+  --border-color: #E2E8F0;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --color-primary: #E11D48;
+  --color-primary-hover: #BE123C;
 }
 
 body {
-  background-color: var(--bg-editorial);
-  color: var(--color-indigo);
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, .font-display {
-  font-family: var(--font-fraunces), Georgia, serif;
-  letter-spacing: -0.02em;
+h1, h2, h3, h4, .font-heading {
+  font-family: var(--font-heading), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.025em;
 }
 
-/* Enlaces y botones con transiciones suaves */
+/* Transiciones suaves para botones y enlaces */
 a, button {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Custom scrollbar sobria */
+/* Scrollbar moderno */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF9F6;
+  background: #F8FAFC;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8D2C6;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B23A2E;
+  background: #94A3B8;
 }

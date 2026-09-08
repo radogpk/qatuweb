@@ -5,30 +5,30 @@ export function DirectWhatsAppCard() {
   return (
     <div className="space-y-6">
       {/* WhatsApp Business Card */}
-      <div className="bg-[#1E2838] text-white rounded-2xl p-8 border border-[#121A24] shadow-card space-y-6">
+      <div className="bg-slate-900 text-white rounded-2xl p-8 border border-slate-800 shadow-card space-y-6">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-[#25D366] text-white flex items-center justify-center shadow-xs">
-            <MessageCircle className="w-5 h-5 fill-white" />
+          <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md">
+            <MessageCircle className="w-6 h-6 fill-white" />
           </div>
           <div>
-            <span className="text-xs font-semibold text-[#C59218] uppercase tracking-wider block">
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">
               Canal Prioritario
             </span>
-            <h3 className="text-xl font-serif font-bold text-white">
+            <h3 className="text-xl font-heading font-extrabold text-white">
               WhatsApp Business
             </h3>
           </div>
         </div>
 
-        <p className="text-xs sm:text-sm text-[#FAF9F6]/80 leading-relaxed">
-          ¿Prefieres una respuesta inmediata? Escríbenos directamente y te atenderá un miembro de nuestro equipo sin intermediarios.
+        <p className="text-sm text-slate-300 leading-relaxed">
+          ¿Prefieres una respuesta inmediata? Escríbenos directamente y te atenderá un miembro de nuestro equipo sin esperas.
         </p>
 
         <a
           href={getWhatsAppUrl("Hola Qatu, deseo consultar sobre una página web para mi negocio.")}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-center font-semibold text-xs sm:text-sm shadow-xs flex items-center justify-center gap-2 transition-all active:scale-98"
+          className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-center font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-95"
         >
           <span>Escribir al WhatsApp (+51 966 123 456)</span>
           <ArrowUpRight className="w-4 h-4" />
@@ -36,27 +36,27 @@ export function DirectWhatsAppCard() {
       </div>
 
       {/* Office & Direct info */}
-      <div className="bg-white rounded-2xl p-8 border border-[#EAE6DF] shadow-card space-y-5">
-        <h3 className="font-serif font-bold text-lg text-[#1E2838]">
+      <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-card space-y-5">
+        <h3 className="font-heading font-bold text-lg text-slate-900">
           Información de Contacto
         </h3>
 
-        <div className="space-y-4 text-xs sm:text-sm text-[#4B586E]">
+        <div className="space-y-4 text-xs sm:text-sm text-slate-600">
           <div className="flex items-start gap-3">
-            <MapPin className="w-4 h-4 text-[#B23A2E] shrink-0 mt-0.5" />
+            <MapPin className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
             <div>
-              <strong className="text-[#1E2838] block">Sede Principal:</strong>
+              <strong className="text-slate-900 block font-heading">Sede Principal:</strong>
               <span>Huamanga, Ayacucho, Perú</span>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <Mail className="w-4 h-4 text-[#C59218] shrink-0 mt-0.5" />
+            <Mail className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
             <div>
-              <strong className="text-[#1E2838] block">Correo Electrónico:</strong>
+              <strong className="text-slate-900 block font-heading">Correo Electrónico:</strong>
               <a
                 href={`mailto:${siteConfig.email}`}
-                className="hover:text-[#B23A2E] underline decoration-dotted"
+                className="hover:text-brand-600 underline decoration-dotted"
               >
                 {siteConfig.email}
               </a>
@@ -64,15 +64,15 @@ export function DirectWhatsAppCard() {
           </div>
 
           <div className="flex items-start gap-3">
-            <Clock className="w-4 h-4 text-[#1E2838] shrink-0 mt-0.5" />
+            <Clock className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
             <div>
-              <strong className="text-[#1E2838] block">Horario de Atención:</strong>
+              <strong className="text-slate-900 block font-heading">Horario de Atención:</strong>
               <span>Lunes a Sábado: 8:00 AM – 8:00 PM</span>
             </div>
           </div>
         </div>
 
-        <div className="pt-3 border-t border-[#EAE6DF] text-[11px] text-[#4B586E]/70">
+        <div className="pt-3 border-t border-slate-100 text-xs text-slate-400">
           RUC: 20610987654 · Qatu Digital S.A.C.
         </div>
       </div>

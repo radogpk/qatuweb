@@ -89,9 +89,9 @@ export function ComparisonTable() {
     },
     {
       feature: "Renta mensual (Mantenimiento, hosting y dominio)",
-      informativa: "S/ 35 / mes",
-      comercio: "S/ 55 / mes",
-      reservas: "S/ 75 / mes",
+      informativa: "S/ 49 / mes",
+      comercio: "S/ 69 / mes",
+      reservas: "S/ 89 / mes",
       isPrice: true,
     },
   ];
@@ -99,60 +99,60 @@ export function ComparisonTable() {
   const renderCell = (val: boolean | string) => {
     if (typeof val === "boolean") {
       return val ? (
-        <div className="w-5 h-5 rounded-full bg-[#FCF8EC] text-[#C59218] mx-auto flex items-center justify-center">
+        <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
           <Check className="w-3.5 h-3.5 stroke-[3]" />
         </div>
       ) : (
-        <div className="text-[#4B586E]/30 flex justify-center">
+        <div className="text-slate-300 flex justify-center">
           <Minus className="w-4 h-4" />
         </div>
       );
     }
     return (
-      <span className="font-semibold text-xs sm:text-sm text-[#1E2838]">
+      <span className="font-bold text-xs sm:text-sm text-slate-900">
         {val}
       </span>
     );
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EAE6DF] shadow-card overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-[#EAE6DF] bg-[#FDFBF7]">
-              <th className="p-4 sm:p-5 text-sm font-serif font-bold text-[#1E2838] min-w-[240px]">
+            <tr className="border-b border-slate-200 bg-slate-50">
+              <th className="p-4 sm:p-5 text-sm font-heading font-bold text-slate-900 min-w-[240px]">
                 Característica / Servicio
               </th>
-              <th className="p-4 sm:p-5 text-center text-sm font-serif font-bold text-[#1E2838] min-w-[140px]">
+              <th className="p-4 sm:p-5 text-center text-sm font-heading font-bold text-slate-800 min-w-[140px]">
                 Web Informativa
               </th>
-              <th className="p-4 sm:p-5 text-center text-sm font-serif font-bold text-[#B23A2E] bg-[#FDF2F0]/60 min-w-[140px]">
+              <th className="p-4 sm:p-5 text-center text-sm font-heading font-extrabold text-brand-600 bg-brand-50/50 min-w-[140px]">
                 Comercio Básico ★
               </th>
-              <th className="p-4 sm:p-5 text-center text-sm font-serif font-bold text-[#1E2838] min-w-[140px]">
+              <th className="p-4 sm:p-5 text-center text-sm font-heading font-bold text-slate-800 min-w-[140px]">
                 Comercio + Reservas
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#EAE6DF] text-xs sm:text-sm">
+          <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
             {rows.map((row, idx) => (
               <tr
                 key={idx}
-                className={`hover:bg-[#FAF9F6] transition-colors ${
-                  row.isPrice ? "bg-[#FCF8EC]/40 font-semibold" : ""
+                className={`hover:bg-slate-50/60 transition-colors ${
+                  row.isPrice ? "bg-slate-50 font-bold" : ""
                 }`}
               >
-                <td className="p-4 sm:p-4.5 font-medium text-[#1E2838]">
+                <td className="p-4 sm:p-4.5 font-medium text-slate-800">
                   {row.feature}
                 </td>
-                <td className="p-4 sm:p-4.5 text-center text-[#4B586E]">
+                <td className="p-4 sm:p-4.5 text-center text-slate-600">
                   {renderCell(row.informativa)}
                 </td>
-                <td className="p-4 sm:p-4.5 text-center text-[#4B586E] bg-[#FDF2F0]/20">
+                <td className="p-4 sm:p-4.5 text-center text-slate-600 bg-brand-50/20">
                   {renderCell(row.comercio)}
                 </td>
-                <td className="p-4 sm:p-4.5 text-center text-[#4B586E]">
+                <td className="p-4 sm:p-4.5 text-center text-slate-600">
                   {renderCell(row.reservas)}
                 </td>
               </tr>

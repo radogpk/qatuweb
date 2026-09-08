@@ -1,26 +1,28 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { siteConfig } from "@/lib/config/site";
 
-const fraunces = Fraunces({
+const headingFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-heading",
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
-const inter = Inter({
+const sansFont = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    default: `${siteConfig.name} — Tu Web Profesional en tu Propio Subdominio`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    title: `${siteConfig.name} — Plataforma Web y Mercado Digital del Perú`,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    title: `${siteConfig.name} — Tu Web Profesional en tu Propio Subdominio`,
     description: siteConfig.description,
   },
 };
@@ -49,8 +51,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1E2838] antialiased selection:bg-[#B23A2E] selection:text-white">
+    <html lang="es" className={`${headingFont.variable} ${sansFont.variable}`}>
+      <body className="min-h-screen flex flex-col bg-white text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
