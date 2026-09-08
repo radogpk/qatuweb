@@ -40,6 +40,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/anuncios" className="hover:text-white transition-colors">
+                  Anuncios & Alquileres
+                </Link>
+              </li>
+              <li>
                 <Link href="/planes" className="hover:text-white transition-colors">
                   Planes y Tarifas
                 </Link>

@@ -43,10 +43,11 @@ export function Navbar() {
           {/* CTA Action Buttons */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              href="/directorio"
-              className="px-4 py-2 text-sm font-medium text-[#2B3A55] hover:text-[#B23A2E] transition-colors"
+              href="/anuncios"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-[#2B3A55] hover:text-[#B23A2E] hover:bg-[#FAF7F2] rounded-full border border-transparent hover:border-[#E8DEC8] transition-all"
             >
-              Ver vitrina
+              <span className="w-2 h-2 rounded-full bg-[#D4A017] animate-pulse" />
+              <span>Anuncios & Alquileres</span>
             </Link>
             <a
               href={getWhatsAppUrl()}
@@ -86,6 +87,14 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/anuncios"
+              onClick={() => setIsOpen(false)}
+              className="px-3 py-2.5 rounded-lg text-base font-medium text-[#B23A2E] bg-[#FDF0EE] hover:bg-[#FBEAE8] transition-colors flex items-center justify-between"
+            >
+              <span>Anuncios & Alquileres</span>
+              <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-[#D4A017] text-white">Nuevo</span>
+            </Link>
           </nav>
           <div className="pt-3 border-t border-[#E8DEC8] flex flex-col gap-2">
             <a
