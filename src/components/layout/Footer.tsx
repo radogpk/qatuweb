@@ -11,12 +11,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#4A5B78]/40">
           {/* Col 1 & 2: Brand and Story */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-[#FAF7F2] flex items-center justify-center text-[#B23A2E] shadow-sm">
-                <Store className="w-5 h-5" />
-              </div>
+            <Link href="/" className="inline-flex items-baseline gap-0.5">
               <span className="text-2xl font-serif font-bold text-white tracking-tight">
-                qatu<span className="text-[#D4A017]">.pe</span>
+                qatu<span className="text-[#C59218]">.pe</span>
               </span>
             </Link>
             <p className="text-sm text-[#FAF7F2]/80 max-w-sm leading-relaxed">

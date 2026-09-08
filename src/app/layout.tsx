@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col bg-[#F5EFE4] text-[#2B3A55] antialiased">
+      <body className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1E2838] antialiased selection:bg-[#B23A2E] selection:text-white">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

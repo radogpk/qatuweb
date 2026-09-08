@@ -20,16 +20,16 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <section className="py-20 bg-[#F5EFE4] border-b border-[#E8DEC8]">
+    <section className="py-20 bg-[#FAF9F6] border-b border-[#EAE6DF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-[#B23A2E]">
             Prueba Social
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#2B3A55]">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1E2838]">
             La experiencia de nuestros primeros negocios
           </h2>
-          <p className="text-sm text-[#4A5B78]">
+          <p className="text-sm text-[#4B586E]">
             Casos reales de emprendedores peruanos que ya operan con su propio subdominio en Qatu.
           </p>
         </div>
@@ -38,23 +38,23 @@ export function TestimonialsSection() {
           {testimonials.map((item, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-3xl p-8 border border-[#E8DEC8] shadow-warm flex flex-col justify-between relative"
+              className="bg-white rounded-2xl p-8 border border-[#EAE6DF] shadow-subtle hover:shadow-card transition-all flex flex-col justify-between relative"
             >
-              <Quote className="w-10 h-10 text-[#D4A017]/20 absolute top-6 right-6" />
+              <Quote className="w-8 h-8 text-[#C59218]/20 absolute top-6 right-6" />
 
               <div className="space-y-4">
-                <div className="flex items-center gap-1 text-[#D4A017]">
+                <div className="flex items-center gap-1 text-[#C59218]">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-current" />
                   ))}
                 </div>
-                <p className="text-sm sm:text-base text-[#2B3A55] italic leading-relaxed">
+                <p className="text-sm sm:text-base text-[#1E2838] italic leading-relaxed">
                   "{item.quote}"
                 </p>
               </div>
 
-              <div className="pt-6 border-t border-[#E8DEC8] flex items-center gap-4 mt-6">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#D4A017]">
+              <div className="pt-6 border-t border-[#EAE6DF] flex items-center gap-4 mt-6">
+                <div className="relative w-11 h-11 rounded-full overflow-hidden border border-[#EAE6DF]">
                   <Image
                     src={item.avatar}
                     alt={item.author}
@@ -63,10 +63,10 @@ export function TestimonialsSection() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-sm text-[#2B3A55]">
+                  <h4 className="font-serif font-bold text-sm text-[#1E2838]">
                     {item.author}
                   </h4>
-                  <p className="text-xs text-[#4A5B78]">
+                  <p className="text-xs text-[#4B586E]">
                     {item.role} · <span className="font-semibold text-[#B23A2E]">{item.business}</span>
                   </p>
                 </div>

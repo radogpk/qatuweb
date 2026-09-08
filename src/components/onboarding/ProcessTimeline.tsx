@@ -47,28 +47,28 @@ export function ProcessTimeline() {
           return (
             <div
               key={idx}
-              className="bg-white rounded-2xl p-6 border border-[#E8DEC8] shadow-warm flex flex-col justify-between space-y-4 relative"
+              className="bg-white rounded-xl p-5 sm:p-6 border border-[#EAE6DF] shadow-subtle hover:shadow-card transition-all flex flex-col justify-between space-y-4 relative"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-[#FDF0EE] text-[#B23A2E] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-[#FDF2F0] text-[#B23A2E] flex items-center justify-center">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FCF6E5] text-[#D4A017]">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-[#F4F1EA] text-[#C59218]">
                     {step.time}
                   </span>
                 </div>
 
-                <h3 className="font-serif font-bold text-sm sm:text-base text-[#2B3A55]">
+                <h3 className="font-serif font-bold text-sm sm:text-base text-[#1E2838]">
                   {step.title}
                 </h3>
 
-                <p className="text-xs text-[#4A5B78] leading-relaxed">
+                <p className="text-xs text-[#4B586E] leading-relaxed">
                   {step.desc}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-[#E8DEC8]/60 text-[11px] font-mono text-[#4A5B78]">
+              <div className="pt-2 border-t border-[#EAE6DF] text-[11px] font-mono text-[#4B586E]">
                 Paso {step.number}
               </div>
             </div>

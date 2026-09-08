@@ -33,47 +33,47 @@ export function StepsSection() {
   ];
 
   return (
-    <section className="py-20 bg-[#FAF7F2] border-b border-[#E8DEC8]">
+    <section className="py-20 bg-[#FDFBF7] border-b border-[#EAE6DF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-2.5">
           <span className="text-xs font-semibold uppercase tracking-widest text-[#B23A2E]">
             Proceso sin complicaciones
           </span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#2B3A55]">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1E2838]">
             ¿Cómo funciona tener tu web en Qatu?
           </h2>
-          <p className="text-sm sm:text-base text-[#4A5B78]">
+          <p className="text-sm sm:text-base text-[#4B586E]">
             En 4 sencillos pasos llevamos tu negocio local al mundo digital, sin que tengas que aprender código ni lidiar con servidores.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((step) => {
             const Icon = step.icon;
             return (
               <div
                 key={step.number}
-                className="relative bg-white rounded-2xl p-6 border border-[#E8DEC8] shadow-warm hover:shadow-warm-lg transition-shadow flex flex-col justify-between"
+                className="bg-white rounded-2xl p-6 border border-[#EAE6DF] shadow-subtle hover:shadow-card transition-shadow flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#FDF0EE] text-[#B23A2E] flex items-center justify-center font-serif font-bold text-lg">
-                      <Icon className="w-6 h-6" />
+                    <div className="w-11 h-11 rounded-xl bg-[#FDF2F0] text-[#B23A2E] flex items-center justify-center font-serif font-bold text-base">
+                      <Icon className="w-5 h-5" />
                     </div>
-                    <span className="text-2xl font-serif font-bold text-[#D4A017]/60">
+                    <span className="text-2xl font-serif font-bold text-[#C59218]/40">
                       {step.number}
                     </span>
                   </div>
 
-                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#FCF6E5] text-[#D4A017] text-[11px] font-semibold mb-2">
+                  <span className="inline-block px-2 py-0.5 rounded-md bg-[#F4F1EA] text-[#C59218] text-[11px] font-semibold mb-2">
                     {step.tag}
                   </span>
 
-                  <h3 className="text-lg font-serif font-bold text-[#2B3A55] mb-2">
+                  <h3 className="text-base font-serif font-bold text-[#1E2838] mb-2">
                     {step.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[#4A5B78] leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#4B586E] leading-relaxed">
                     {step.description}
                   </p>
                 </div>

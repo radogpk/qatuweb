@@ -50,22 +50,22 @@ export function AccordionFaq() {
         return (
           <div
             key={index}
-            className="bg-white rounded-2xl border border-[#E8DEC8] overflow-hidden shadow-xs transition-all"
+            className="bg-white rounded-xl border border-[#EAE6DF] overflow-hidden shadow-subtle transition-all"
           >
             <button
               onClick={() => toggle(index)}
-              className="w-full p-5 text-left flex items-center justify-between gap-4 font-serif font-bold text-[#2B3A55] hover:text-[#B23A2E] transition-colors"
+              className="w-full p-5 text-left flex items-center justify-between gap-4 font-serif font-bold text-[#1E2838] hover:text-[#B23A2E] transition-colors"
             >
               <span className="text-base sm:text-lg">{faq.question}</span>
               <ChevronDown
-                className={`w-5 h-5 text-[#D4A017] shrink-0 transition-transform duration-300 ${
+                className={`w-5 h-5 text-[#C59218] shrink-0 transition-transform duration-300 ${
                   isOpen ? "rotate-180 text-[#B23A2E]" : ""
                 }`}
               />
             </button>
 
             {isOpen && (
-              <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#4A5B78] leading-relaxed border-t border-[#E8DEC8]/60 bg-[#FAF7F2]/40">
+              <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#4B586E] leading-relaxed border-t border-[#EAE6DF] bg-[#FAF9F6]">
                 {faq.answer}
               </div>
             )}

@@ -43,38 +43,38 @@ export function DirectoryView({ initialBusinesses }: DirectoryViewProps) {
   return (
     <div className="space-y-8">
       {/* Search Bar & Filters Bar */}
-      <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#E8DEC8] shadow-warm space-y-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#EAE6DF] shadow-card space-y-4">
         {/* Search input */}
         <div className="relative">
-          <Search className="w-5 h-5 text-[#4A5B78] absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-5 h-5 text-[#4B586E] absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Buscar por nombre, rubro, producto (ej. flores, hotel, café)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-10 py-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-[#2B3A55] text-sm sm:text-base focus:outline-none focus:border-[#B23A2E] placeholder-[#4A5B78]/60"
+            className="w-full pl-12 pr-10 py-3 rounded-xl border border-[#EAE6DF] bg-[#FAF9F6] text-[#1E2838] text-sm sm:text-base focus:outline-none focus:border-[#B23A2E] placeholder-[#4B586E]/60"
           />
           {searchTerm && (
             <button
               onClick={() => setSearchTerm("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#4A5B78] hover:text-[#B23A2E]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#4B586E] hover:text-[#B23A2E]"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Category Pills */}
+        {/* Category Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 pt-1 scrollbar-none">
-          <Filter className="w-4 h-4 text-[#D4A017] shrink-0 ml-1 mr-1 hidden sm:inline" />
+          <Filter className="w-4 h-4 text-[#C59218] shrink-0 ml-1 mr-1 hidden sm:inline" />
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
                   ? "bg-[#B23A2E] text-white shadow-xs"
-                  : "bg-[#FAF7F2] text-[#2B3A55] hover:bg-[#EADDC8]/50 border border-[#E8DEC8]"
+                  : "bg-[#FAF9F6] text-[#1E2838] hover:bg-[#F4F1EA] border border-[#EAE6DF]"
               }`}
             >
               {cat.label}
@@ -84,9 +84,9 @@ export function DirectoryView({ initialBusinesses }: DirectoryViewProps) {
       </div>
 
       {/* Results Header / Counter */}
-      <div className="flex items-center justify-between text-xs sm:text-sm text-[#4A5B78] px-1">
+      <div className="flex items-center justify-between text-xs sm:text-sm text-[#4B586E] px-1">
         <span>
-          Mostrando <strong className="text-[#2B3A55] font-serif">{filteredBusinesses.length}</strong> {filteredBusinesses.length === 1 ? "negocio activo" : "negocios activos"}
+          Mostrando <strong className="text-[#1E2838] font-serif">{filteredBusinesses.length}</strong> {filteredBusinesses.length === 1 ? "negocio activo" : "negocios activos"}
         </span>
         {(searchTerm || selectedCategory !== "todos") && (
           <button
@@ -109,14 +109,14 @@ export function DirectoryView({ initialBusinesses }: DirectoryViewProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 px-4 bg-white rounded-3xl border border-[#E8DEC8] space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-[#FCF6E5] text-[#D4A017] mx-auto flex items-center justify-center">
-            <Store className="w-8 h-8" />
+        <div className="text-center py-16 px-4 bg-white rounded-2xl border border-[#EAE6DF] space-y-4 shadow-card">
+          <div className="w-14 h-14 rounded-2xl bg-[#FCF8EC] text-[#C59218] mx-auto flex items-center justify-center">
+            <Store className="w-7 h-7" />
           </div>
-          <h3 className="text-xl font-serif font-bold text-[#2B3A55]">
+          <h3 className="text-xl font-serif font-bold text-[#1E2838]">
             No encontramos negocios con esos criterios
           </h3>
-          <p className="text-sm text-[#4A5B78] max-w-md mx-auto">
+          <p className="text-sm text-[#4B586E] max-w-md mx-auto">
             Intenta con otro término de búsqueda o selecciona "Todos los rubros" para ver toda la vitrina de Qatu.
           </p>
           <button
@@ -124,7 +124,7 @@ export function DirectoryView({ initialBusinesses }: DirectoryViewProps) {
               setSearchTerm("");
               setSelectedCategory("todos");
             }}
-            className="px-5 py-2.5 rounded-full bg-[#2B3A55] text-white text-xs font-semibold hover:bg-[#1A2436] transition-colors"
+            className="px-5 py-2.5 rounded-xl bg-[#1E2838] text-white text-xs font-semibold hover:bg-[#121A24] transition-colors"
           >
             Ver todos los negocios
           </button>

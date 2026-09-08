@@ -10,17 +10,17 @@ export const metadata: Metadata = {
 
 export default function ContactoPage() {
   return (
-    <div className="py-12 sm:py-16 bg-[#F5EFE4]">
+    <div className="py-12 sm:py-16 bg-[#FAF9F6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Header */}
         <div className="max-w-3xl space-y-3">
           <span className="text-xs font-semibold uppercase tracking-widest text-[#B23A2E]">
             Canales de Atención
           </span>
-          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#2B3A55] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#1E2838] tracking-tight">
             Contáctanos y estrena tu web
           </h1>
-          <p className="text-sm sm:text-base text-[#4A5B78] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#4B586E] leading-relaxed">
             Estamos listos para resolver tus dudas, mostrarte ejemplos para tu rubro o iniciar la configuración de tu subdominio de inmediato.
           </p>
         </div>

@@ -10,25 +10,26 @@ const config: Config = {
     extend: {
       colors: {
         crudo: {
-          DEFAULT: "#F5EFE4",
-          light: "#FAF7F2",
-          dark: "#EADDC8",
+          DEFAULT: "#FAF9F6", // Blanco editorial con subtono arena neutro
+          light: "#FDFBF7",
+          dark: "#F0ECE1",
+          border: "#EAE6DF",
         },
         rojo: {
-          DEFAULT: "#B23A2E",
+          DEFAULT: "#B23A2E", // Rojo Ayacuchano / Terracota
           hover: "#962E24",
-          light: "#FDF0EE",
+          light: "#FDF2F0",
           dark: "#7A241C",
         },
         qori: {
-          DEFAULT: "#D4A017",
-          light: "#FCF6E5",
-          dark: "#A67C0E",
+          DEFAULT: "#C59218", // Dorado sobrio
+          light: "#FCF8EC",
+          dark: "#9E730E",
         },
         indigo: {
-          DEFAULT: "#2B3A55",
-          light: "#4A5B78",
-          dark: "#1A2436",
+          DEFAULT: "#1E2838", // Índigo profundo editorial
+          light: "#4B586E",
+          dark: "#121A24",
         },
       },
       fontFamily: {
@@ -36,8 +37,9 @@ const config: Config = {
         sans: ["var(--font-inter)", "system-ui", "-apple-system", "sans-serif"],
       },
       boxShadow: {
-        warm: "0 4px 20px -2px rgba(43, 58, 85, 0.08)",
-        "warm-lg": "0 10px 30px -4px rgba(43, 58, 85, 0.12)",
+        subtle: "0 1px 3px 0 rgba(30, 40, 56, 0.04), 0 1px 2px -1px rgba(30, 40, 56, 0.04)",
+        card: "0 4px 20px -2px rgba(30, 40, 56, 0.06)",
+        "card-hover": "0 12px 30px -4px rgba(30, 40, 56, 0.10)",
       },
     },
   },
