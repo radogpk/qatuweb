@@ -1,12 +1,24 @@
-export default function HomePage() {
+import { getFeaturedBusinesses } from "@/lib/data/businesses.repo";
+import { HeroSection } from "@/components/home/HeroSection";
+import { StepsSection } from "@/components/home/StepsSection";
+import { FeaturedGrid } from "@/components/home/FeaturedGrid";
+import { PricingPreview } from "@/components/home/PricingPreview";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { QuickContactSection } from "@/components/home/QuickContactSection";
+
+export const revalidate = 60; // ISR cada 60s
+
+export default async function HomePage() {
+  const featuredBusinesses = await getFeaturedBusinesses();
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-      <h1 className="text-4xl font-serif font-bold text-[#2B3A55]">
-        Tu puesto en el mercado digital del Perú
-      </h1>
-      <p className="mt-4 text-lg text-[#4A5B78]">
-        Cargando plataforma Qatu...
-      </p>
-    </div>
+    <>
+      <HeroSection />
+      <StepsSection />
+      <FeaturedGrid businesses={featuredBusinesses} />
+      <PricingPreview />
+      <TestimonialsSection />
+      <QuickContactSection />
+    </>
   );
 }
