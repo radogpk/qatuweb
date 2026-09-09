@@ -180,6 +180,7 @@ export function HeroSection() {
             </div>
             <Link
               href="/directorio"
+              prefetch={true}
               className="text-xs sm:text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline flex items-center gap-1"
             >
               <span>Ver todos los negocios</span>
@@ -202,6 +203,7 @@ export function HeroSection() {
                     src={store.image}
                     alt={store.name}
                     fill
+                    priority={idx === 0}
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />

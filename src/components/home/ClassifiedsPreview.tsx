@@ -28,6 +28,7 @@ export function ClassifiedsPreview() {
           <div className="flex items-center gap-3">
             <Link
               href="/anuncios"
+              prefetch={true}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-sm font-semibold shadow-xs transition-all group active:scale-95"
             >
               <span>Ver todos los avisos</span>

@@ -144,6 +144,7 @@ export default function PlanesPage() {
           <div className="pt-2">
             <Link
               href="/contacto"
+              prefetch={true}
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-card transition-all"
             >
               <span>Hablar con un asesor de Qatu</span>

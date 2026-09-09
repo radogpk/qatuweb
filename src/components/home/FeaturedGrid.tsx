@@ -30,6 +30,7 @@ export function FeaturedGrid({ businesses }: FeaturedGridProps) {
           <div>
             <Link
               href="/directorio"
+              prefetch={true}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-card hover:shadow-card-hover transition-all group active:scale-95"
             >
               <span>Ver directorio completo</span>

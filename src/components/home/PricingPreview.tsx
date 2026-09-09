@@ -113,6 +113,7 @@ export function PricingPreview() {
         <div className="mt-12 text-center">
           <Link
             href="/planes"
+            prefetch={true}
             className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline"
           >
             <span>Ver tabla comparativa detallada de todos los planes</span>

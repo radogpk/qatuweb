@@ -174,7 +174,7 @@ export default function NosotrosPage() {
           <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto leading-relaxed">
             Escríbeme directamente por WhatsApp. Te muestro cómo quedaría tu página con tus productos y evaluamos juntos la mejor opción sin ningún compromiso.
           </p>
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href={getWhatsAppUrl("Hola, leí sobre el proyecto Qatu y me gustaría conversar sobre una página web para mi negocio.")}
               target="_blank"
@@ -185,6 +185,13 @@ export default function NosotrosPage() {
               <span>Conversar conmigo por WhatsApp</span>
               <ArrowRight className="w-4 h-4" />
             </a>
+            <Link
+              href="/planes"
+              prefetch={true}
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm sm:text-base font-medium transition-all"
+            >
+              <span>Ver planes y tarifas</span>
+            </Link>
           </div>
         </div>
 

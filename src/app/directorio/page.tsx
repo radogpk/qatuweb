@@ -55,6 +55,7 @@ export default async function DirectorioPage() {
 
           <Link
             href="/para-tu-negocio"
+            prefetch={true}
             className="shrink-0 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-card hover:shadow-card-hover flex items-center gap-2 transition-all active:scale-95"
           >
             <span>Ver cómo funciona</span>

@@ -80,6 +80,7 @@ export function StepsSection() {
         <div className="mt-12 text-center">
           <Link
             href="/para-tu-negocio"
+            prefetch={true}
             className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline"
           >
             <span>Conoce los requisitos detallados y preguntas frecuentes</span>

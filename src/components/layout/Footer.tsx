@@ -11,7 +11,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
           {/* Col 1 & 2: Brand and Story */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
+            <Link href="/" prefetch={true} className="inline-flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-heading font-extrabold text-base shadow-sm">
                 Q
               </div>
@@ -35,32 +35,32 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
               <li>
-                <Link href="/directorio" className="hover:text-white transition-colors">
+                <Link href="/directorio" prefetch={true} className="hover:text-white transition-colors">
                   Directorio de Negocios
                 </Link>
               </li>
               <li>
-                <Link href="/anuncios" className="hover:text-white transition-colors">
+                <Link href="/anuncios" prefetch={true} className="hover:text-white transition-colors">
                   Anuncios & Traspasos
                 </Link>
               </li>
               <li>
-                <Link href="/planes" className="hover:text-white transition-colors">
+                <Link href="/planes" prefetch={true} className="hover:text-white transition-colors">
                   Planes y Tarifas
                 </Link>
               </li>
               <li>
-                <Link href="/para-tu-negocio" className="hover:text-white transition-colors">
+                <Link href="/para-tu-negocio" prefetch={true} className="hover:text-white transition-colors">
                   Cómo Funciona
                 </Link>
               </li>
               <li>
-                <Link href="/nosotros" className="hover:text-white transition-colors">
+                <Link href="/nosotros" prefetch={true} className="hover:text-white transition-colors">
                   Sobre Nosotros
                 </Link>
               </li>
               <li>
-                <Link href="/contacto" className="hover:text-white transition-colors">
+                <Link href="/contacto" prefetch={true} className="hover:text-white transition-colors">
                   Contacto & Soporte
                 </Link>
               </li>
@@ -98,6 +98,7 @@ export function Footer() {
               <li className="pt-2">
                 <Link
                   href="/para-tu-negocio"
+                  prefetch={true}
                   className="text-brand-400 hover:text-brand-300 transition-colors text-xs font-semibold inline-flex items-center gap-1"
                 >
                   <Sparkles className="w-3 h-3" />
