@@ -17,7 +17,10 @@ import {
   ShoppingBag,
   Sparkles,
   X,
-  Filter
+  ArrowRight,
+  ShieldCheck,
+  Zap,
+  Eye
 } from "lucide-react";
 
 interface ClassifiedsViewProps {
@@ -35,6 +38,11 @@ export function ClassifiedsView({ initialAds }: ClassifiedsViewProps) {
     { id: "traspaso", label: "Traspasos de Negocios", count: initialAds.filter(a => a.type === "traspaso").length, icon: RefreshCw },
     { id: "venta", label: "Equipamiento Comercial", count: initialAds.filter(a => a.type === "venta").length, icon: ShoppingBag },
   ];
+
+  // Pick the featured ad for the top hook card
+  const featuredAd = useMemo(() => {
+    return initialAds.find((a) => a.featured) || initialAds[0];
+  }, [initialAds]);
 
   // Unique zones for filtering
   const zones = useMemo(() => {
@@ -63,116 +71,238 @@ export function ClassifiedsView({ initialAds }: ClassifiedsViewProps) {
   }, [initialAds, searchTerm, selectedType, selectedZone]);
 
   return (
-    <div className="space-y-8 sm:space-y-10">
-      {/* 1. SINGLE, ELEGANT HEADER (Zero duplicate boxes, matches the rest of Qatu) */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
-        <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-semibold">
-            <Megaphone className="w-3.5 h-3.5 text-brand-600" />
-            <span>Tablón Comercial & Oportunidades</span>
-          </div>
+    <div className="space-y-10">
+      
+      {/* 1. THE HOOK: DYNAMIC SPLIT HERO (Headline + Search on Left, Featured Real Opportunity Card on Right) */}
+      <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-card">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          
+          {/* Left Column: Punchy value proposition & quick search */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-semibold">
+              <Megaphone className="w-3.5 h-3.5 text-brand-600" />
+              <span>Tablón Comercial de Ayacucho</span>
+              <span className="text-brand-300">•</span>
+              <span className="text-brand-600 font-bold">{initialAds.length} disponibles</span>
+            </div>
 
-          <h1 className="text-3xl sm:text-5xl font-heading font-extrabold text-slate-900 tracking-tight">
-            Anuncios, Alquileres y Traspasos
-          </h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+              Locales comerciales, traspasos y maquinaria en Ayacucho.
+            </h1>
 
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-            Un espacio de encuentro directo para comerciantes y emprendedores: encuentra o publica locales en alquiler, traspasos de negocios en marcha y compra/venta de equipamiento comercial en Ayacucho.
-          </p>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
+              El espacio de contacto directo entre propietarios y emprendedores. Encuentra tu próximo local o traspaso llave en mano <strong className="text-slate-900 font-bold">sin comisiones de intermediación</strong>.
+            </p>
 
-          {/* Micro trust indicators */}
-          <div className="pt-1 flex flex-wrap items-center gap-4 text-xs text-slate-600 font-medium">
-            <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-              0% comisiones por intermediación
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-              Trato directo con el dueño
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-              Contacto directo por WhatsApp
-            </span>
-          </div>
-        </div>
+            {/* Quick Hero Search Input */}
+            <div className="relative max-w-lg">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Buscar por local, mampara, Jr. 28 de Julio, Bellido, cafetería..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-9 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all placeholder:text-slate-400"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
 
-        {/* Action Button: Publicar mi aviso gratis */}
-        <div className="shrink-0">
-          <a
-            href={getWhatsAppUrl("Hola Qatu, deseo publicar un aviso comercial de alquiler/traspaso/equipamiento en la web.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-card hover:shadow-card-hover transition-all active:scale-95 whitespace-nowrap"
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Publicar mi aviso gratis</span>
-          </a>
-        </div>
-      </div>
-
-      {/* 2. UNIFIED SEARCH & CATEGORY FILTER BAR */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-card space-y-4">
-        {/* Search input */}
-        <div className="relative">
-          <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Buscar por local, stand, traspaso, vitrina, Jr. 28 de Julio, Bellido..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-10 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all placeholder:text-slate-400"
-          />
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-
-        {/* Category Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isSelected = selectedType === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedType(cat.id)}
-                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
-                  isSelected
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                }`}
+            {/* Quick Action Buttons & Trust */}
+            <div className="pt-1 flex flex-wrap items-center gap-3">
+              <a
+                href={getWhatsAppUrl("Hola Qatu, deseo publicar un aviso comercial de alquiler/traspaso/equipamiento en la web.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs sm:text-sm shadow-card hover:shadow-card-hover transition-all active:scale-95 flex items-center gap-2"
               >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{cat.label}</span>
-                <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-                    isSelected ? "bg-white/20 text-white" : "bg-white text-slate-700"
+                <PlusCircle className="w-4 h-4" />
+                <span>Publicar mi aviso gratis</span>
+              </a>
+
+              <a
+                href="#catalogo"
+                className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm transition-all"
+              >
+                <span>Ver todos los avisos ({initialAds.length})</span>
+              </a>
+            </div>
+
+            {/* Micro Trust Tags */}
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500 font-medium">
+              <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                0% comisiones
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                Trato directo con el dueño
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                Contacto directo por WhatsApp
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: THE HOOK CARD (Real featured listing with photography & price visible immediately!) */}
+          {featuredAd && (
+            <div className="lg:col-span-5">
+              <div className="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:shadow-card transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold uppercase tracking-wider">
+                    <Sparkles className="w-3 h-3 text-amber-600" />
+                    <span>Oportunidad Destacada</span>
+                  </span>
+                  <span className="text-xs text-slate-500 font-medium">{featuredAd.publishedAt}</span>
+                </div>
+
+                {/* Photo */}
+                <div className="relative h-48 sm:h-52 w-full rounded-xl overflow-hidden bg-slate-200">
+                  <Image
+                    src={featuredAd.imageUrl}
+                    alt={featuredAd.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    priority
+                  />
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-xs font-semibold backdrop-blur-md">
+                      {featuredAd.typeLabel}
+                    </span>
+                  </div>
+                  <div className="absolute top-2.5 right-2.5">
+                    <span className="px-3 py-1 rounded-lg bg-emerald-600 text-white font-heading font-extrabold text-xs shadow-xs">
+                      {featuredAd.priceText}{" "}
+                      {featuredAd.periodLabel && (
+                        <span className="text-[10px] font-normal font-sans opacity-90">
+                          {featuredAd.periodLabel}
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-slate-950/80 to-transparent">
+                    <p className="text-white text-xs font-medium flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-brand-400 shrink-0" />
+                      <span className="truncate">{featuredAd.location}</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Body */}
+                <div className="mt-3.5 space-y-2">
+                  <h3 className="font-heading font-bold text-base text-slate-900 line-clamp-2 leading-snug">
+                    {featuredAd.title}
+                  </h3>
+
+                  {/* Specs row */}
+                  {featuredAd.specs && (
+                    <div className="flex flex-wrap gap-1.5 pt-0.5">
+                      {featuredAd.specs.slice(0, 3).map((spec, i) => (
+                        <span
+                          key={i}
+                          className="px-2 py-0.5 rounded-md bg-white text-slate-700 text-[11px] font-medium border border-slate-200"
+                        >
+                          <span className="text-slate-400">{spec.label}: </span>
+                          <strong>{spec.value}</strong>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* CTAs */}
+                  <div className="pt-2">
+                    <a
+                      href={`https://wa.me/${featuredAd.contactWhatsapp}?text=${encodeURIComponent(
+                        `Hola, vi la oportunidad destacada en Qatu sobre "${featuredAd.title}" y deseo coordinar una visita / más información.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm shadow-xs active:scale-95 transition-all"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-white" />
+                      <span>Preguntar por WhatsApp al dueño</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      </section>
+
+      {/* 2. CATEGORY TABS & FILTER CAPSULE */}
+      <div id="catalogo" className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          
+          {/* Category Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const isSelected = selectedType === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedType(cat.id)}
+                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
+                    isSelected
+                      ? "bg-slate-900 text-white shadow-xs"
+                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
                   }`}
                 >
-                  {cat.count}
-                </span>
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{cat.label}</span>
+                  <span
+                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                      isSelected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    {cat.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Results counter & Reset */}
+          <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-2 shrink-0">
+            <span>
+              Mostrando <strong className="text-slate-900 font-bold">{filteredAds.length}</strong> avisos
+            </span>
+            {(searchTerm || selectedType !== "todos" || selectedZone !== "todas") && (
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedType("todos");
+                  setSelectedZone("todas");
+                }}
+                className="text-brand-600 hover:underline font-semibold cursor-pointer ml-1"
+              >
+                Limpiar filtros
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
 
-        {/* Zone chips */}
-        <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-slate-400 font-medium">Filtrar por zona:</span>
+        {/* Quick zone pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+          <span className="text-slate-400 font-medium whitespace-nowrap mr-1">Zona:</span>
           {zones.map((zone) => (
             <button
               key={zone}
               onClick={() => setSelectedZone(zone)}
-              className={`px-2.5 py-1 rounded-lg font-medium cursor-pointer transition-colors ${
+              className={`px-2.5 py-1 rounded-lg font-medium cursor-pointer transition-colors whitespace-nowrap ${
                 selectedZone === zone
                   ? "bg-brand-50 text-brand-700 border border-brand-200 font-semibold"
-                  : "text-slate-600 hover:bg-slate-100 border border-transparent"
+                  : "text-slate-600 hover:bg-white border border-transparent"
               }`}
             >
               {zone === "todas" ? "Todas las zonas" : zone}
@@ -181,26 +311,7 @@ export function ClassifiedsView({ initialAds }: ClassifiedsViewProps) {
         </div>
       </div>
 
-      {/* 3. RESULTS COUNTER */}
-      <div className="flex items-center justify-between text-xs sm:text-sm text-slate-500 px-1">
-        <span>
-          Mostrando <strong className="text-slate-900 font-bold">{filteredAds.length}</strong> {filteredAds.length === 1 ? "aviso disponible" : "avisos disponibles"}
-        </span>
-        {(searchTerm || selectedType !== "todos" || selectedZone !== "todas") && (
-          <button
-            onClick={() => {
-              setSearchTerm("");
-              setSelectedType("todos");
-              setSelectedZone("todas");
-            }}
-            className="text-brand-600 hover:underline font-semibold cursor-pointer"
-          >
-            Limpiar filtros
-          </button>
-        )}
-      </div>
-
-      {/* 4. BALANCED 3-COLUMN ADS GRID */}
+      {/* 3. BALANCED 3-COLUMN ADS GRID */}
       {filteredAds.length === 0 ? (
         <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-4 shadow-card">
           <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 mx-auto flex items-center justify-center">
@@ -321,7 +432,7 @@ export function ClassifiedsView({ initialAds }: ClassifiedsViewProps) {
         </div>
       )}
 
-      {/* 5. PUBLISH GUIDE BANNER (Warm, clear, matching the rest of the site) */}
+      {/* 4. PUBLISH GUIDE BANNER */}
       <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-card">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-3">
@@ -358,8 +469,10 @@ export function ClassifiedsView({ initialAds }: ClassifiedsViewProps) {
           </div>
         </div>
       </div>
+
     </div>
   );
 }
+
 
 
