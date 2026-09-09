@@ -5,8 +5,10 @@ export interface ClassifiedAd {
   title: string;
   type: ClassifiedType;
   typeLabel: string;
+  priceNumeric: number;
   priceText: string;
-  periodLabel?: string; // e.g., "mes", "precio único", "traspaso"
+  periodLabel?: string; // e.g., "/ mes", "llave en mano", "pago único"
+  conditionTag?: string; // e.g., "Garantía 2x1", "Trato Directo", "Seminuevo"
   location: string;
   zone: string; // e.g. "Centro Histórico", "San Juan Bautista", "Magdalena"
   description: string;
@@ -19,5 +21,7 @@ export interface ClassifiedAd {
   specs?: { label: string; value: string }[];
   featured?: boolean;
   urgent?: boolean;
+  viewsCount?: number;
 }
+
 
