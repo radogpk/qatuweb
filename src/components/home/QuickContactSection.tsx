@@ -24,8 +24,8 @@ export function QuickContactSection() {
     : "Hola Qatu, quiero información para crear mi página web y subdominio.";
 
   return (
-    <section id="contacto-rapido" className="py-24 md:py-32 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contacto-rapido" className="py-20 md:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 lg:p-16 border border-slate-800 shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             

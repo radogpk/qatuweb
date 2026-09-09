@@ -24,8 +24,8 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-slate-50 border-b border-slate-200/80">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 md:py-24 bg-slate-50 border-b border-slate-200/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">

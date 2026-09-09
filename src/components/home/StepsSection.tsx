@@ -24,8 +24,8 @@ export function StepsSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-slate-50 border-b border-slate-200/80">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 md:py-24 bg-slate-50 border-b border-slate-200/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="max-w-2xl space-y-4 mb-16">

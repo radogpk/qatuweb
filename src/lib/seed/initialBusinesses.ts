@@ -72,7 +72,7 @@ export const initialBusinesses: Business[] = [
     longDescription: "Espacio gastronómico y de tertulia en el centro de Huamanga que sirve café de especialidad de origen VRAEM, panes de huatía y repostería artesanal.",
     logoUrl: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=150&auto=format&fit=crop&q=80",
     coverUrl: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop&q=80",
-    featured: false,
+    featured: true,
     active: true,
     address: "Portal Constitución 18, Plaza Mayor, Ayacucho",
     phone: "+51 966 555 111",
