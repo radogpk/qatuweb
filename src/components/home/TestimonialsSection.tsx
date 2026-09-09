@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Quote, Star, Sparkles } from "lucide-react";
+import { Quote, Star, Sparkles, ExternalLink } from "lucide-react";
 
 export function TestimonialsSection() {
   const testimonials = [
@@ -8,6 +8,7 @@ export function TestimonialsSection() {
       author: "Rosa Gutiérrez",
       role: "Propietaria",
       business: "Florería Las Flores (Ayacucho)",
+      subdomain: "lasflores.qatu.pe",
       avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80",
       rating: 5,
     },
@@ -16,47 +17,61 @@ export function TestimonialsSection() {
       author: "Carlos Mendoza",
       role: "Administrador",
       business: "Hotel Umaru Ayacucho",
+      subdomain: "hotelumaru.qatu.pe",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
       rating: 5,
     },
   ];
 
   return (
-    <section className="py-20 bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 md:py-32 bg-slate-50 border-b border-slate-200/80">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Historias Reales de Éxito</span>
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight">
+            <span>Casos Reales</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
             La experiencia de nuestros negocios piloto
           </h2>
-          <p className="text-base text-slate-600">
-            Casos reales de emprendedores y empresas que ya transformaron sus ventas con Qatu.
+          <p className="text-base text-slate-600 leading-relaxed">
+            Emprendedores y empresarios locales que ya convirtieron su presencia en internet en una herramienta real de ventas diarias.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {/* 2 Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {testimonials.map((item, idx) => (
             <div
               key={idx}
-              className="bg-slate-50/70 rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between relative group hover:bg-white"
+              className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between relative group"
             >
-              <Quote className="w-10 h-10 text-slate-200 group-hover:text-brand-200 transition-colors absolute top-6 right-6" />
-
-              <div className="space-y-4">
-                <div className="flex items-center gap-1 text-amber-500">
-                  {[...Array(item.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-500" />
-                  ))}
+              <div className="space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-amber-500">
+                    {[...Array(item.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-500" />
+                    ))}
+                  </div>
+                  <a
+                    href={`https://${item.subdomain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-mono text-slate-500 hover:text-brand-600 transition-colors"
+                  >
+                    <span>{item.subdomain}</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
                 </div>
-                <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+
+                <p className="text-base text-slate-700 leading-relaxed">
                   "{item.quote}"
                 </p>
               </div>
 
-              <div className="pt-6 border-t border-slate-200 flex items-center gap-4 mt-6">
+              <div className="pt-6 border-t border-slate-100 flex items-center gap-4 mt-8">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-brand-500 shrink-0 shadow-xs">
                   <Image
                     src={item.avatar}
@@ -66,7 +81,7 @@ export function TestimonialsSection() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-heading font-bold text-sm text-slate-900">
+                  <h4 className="font-heading font-bold text-base text-slate-900">
                     {item.author}
                   </h4>
                   <p className="text-xs text-slate-500">
@@ -77,6 +92,7 @@ export function TestimonialsSection() {
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

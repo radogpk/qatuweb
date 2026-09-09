@@ -5,20 +5,111 @@ import Image from "next/image";
 import Link from "next/link";
 import { getWhatsAppUrl } from "@/lib/config/site";
 import { 
-  ArrowUpRight, 
-  Zap, 
+  ArrowRight, 
   ShieldCheck, 
   CheckCircle2, 
-  ArrowRight, 
   Sparkles,
-  Smartphone,
-  Globe,
   MessageCircle,
-  Check
+  ExternalLink,
+  ChevronRight,
+  Store
 } from "lucide-react";
+
+interface DemoBusiness {
+  id: string;
+  name: string;
+  subdomain: string;
+  category: string;
+  location: string;
+  coverImage: string;
+  badgeText: string;
+  items: {
+    title: string;
+    price: string;
+    image: string;
+    desc: string;
+  }[];
+  sampleMessage: string;
+}
+
+const DEMO_BUSINESSES: DemoBusiness[] = [
+  {
+    id: "floreriatest",
+    name: "Florería Las Flores",
+    subdomain: "lasflores.qatu.pe",
+    category: "Florería & Regalos",
+    location: "Jr. 28 de Julio, Huamanga",
+    coverImage: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80",
+    badgeText: "Arreglos Florales · Envíos Hoy",
+    items: [
+      {
+        title: "Ramo 12 Rosas Premium",
+        price: "S/ 65.00",
+        image: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=300&q=80",
+        desc: "Moño de seda, follaje fino y tarjeta con dedicatoria.",
+      },
+      {
+        title: "Caja Tulipanes & Girasoles",
+        price: "S/ 85.00",
+        image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=300&q=80",
+        desc: "Arreglo primaveral fresco con base de madera artesanal.",
+      },
+    ],
+    sampleMessage: "¡Hola Las Flores! Quiero pedir 1x Ramo 12 Rosas Premium (S/ 65.00) para entrega hoy en Huamanga.",
+  },
+  {
+    id: "hoteltest",
+    name: "Hotel Boutique Umaru",
+    subdomain: "hotelumaru.qatu.pe",
+    category: "Hospedaje & Turismo",
+    location: "Centro Histórico, Ayacucho",
+    coverImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+    badgeText: "Casona Colonial · Desayuno Incluido",
+    items: [
+      {
+        title: "Habitación Matrimonial Superior",
+        price: "S/ 140 / noche",
+        image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=300&q=80",
+        desc: "Cama Queen, baño privado, agua caliente 24h y WiFi de alta velocidad.",
+      },
+      {
+        title: "Suite Colonial con Balcón",
+        price: "S/ 190 / noche",
+        image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=300&q=80",
+        desc: "Vista a la plaza, arquitectura virreinal y ambiente acogedor.",
+      },
+    ],
+    sampleMessage: "¡Hola Hotel Umaru! Deseo consultar disponibilidad para Habitación Matrimonial del 15 al 18 de este mes.",
+  },
+  {
+    id: "cafetest",
+    name: "Café del Centro",
+    subdomain: "cafedelcentro.qatu.pe",
+    category: "Cafetería de Especialidad",
+    location: "Portal Constitución, Ayacucho",
+    coverImage: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80",
+    badgeText: "Café Ayacuchano · Tostado Propio",
+    items: [
+      {
+        title: "Combo Desayuno Tradicional",
+        price: "S/ 24.00",
+        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=300&q=80",
+        desc: "Café pasado o espresso + pan con chicharrón artesanal.",
+      },
+      {
+        title: "Bolsa Café de Origen 250g",
+        price: "S/ 32.00",
+        image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=300&q=80",
+        desc: "Grano selecto del VRAEM con notas a chocolate y miel.",
+      },
+    ],
+    sampleMessage: "¡Hola Café del Centro! Quiero pedir 1x Combo Desayuno Tradicional para recoger en 15 minutos.",
+  },
+];
 
 export function HeroSection() {
   const [subdomainInput, setSubdomainInput] = useState("");
+  const [selectedDemo, setSelectedDemo] = useState<DemoBusiness>(DEMO_BUSINESSES[0]);
 
   const sanitizedSubdomain = subdomainInput
     .toLowerCase()
@@ -28,290 +119,262 @@ export function HeroSection() {
 
   const claimUrl = getWhatsAppUrl(
     sanitizedSubdomain
-      ? `¡Hola Qatu! Quiero reclamar el subdominio ${sanitizedSubdomain}.qatu.pe para mi negocio y crear mi página web.`
-      : `¡Hola Qatu! Quiero crear la página web para mi negocio en mi propio subdominio.`
+      ? `¡Hola Qatu! Quiero reclamar el subdominio ${sanitizedSubdomain}.qatu.pe para mi negocio.`
+      : `¡Hola Qatu! Quiero información para crear la página web de mi negocio.`
   );
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-gradient-to-b from-slate-50 via-white to-white border-b border-slate-200/80">
-      {/* Background Glows for Modern Atmosphere */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-gradient-to-tr from-brand-500/10 via-indigo-500/5 to-transparent blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-brand-400/5 blur-[100px] pointer-events-none -z-10" />
+    <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-white border-b border-slate-200/80">
+      {/* Soft atmospheric gradient */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-radial from-slate-100/80 via-white to-white pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
-          {/* Columna Izquierda: Mensaje y Simulador de Subdominio */}
-          <div className="lg:col-span-7 space-y-7 text-left">
-            {/* Eyebrow Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 border border-brand-200/70 text-brand-700 text-xs font-semibold shadow-xs">
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
-              </span>
-              <span>Plataforma Digital para Negocios en el Perú</span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-[1.1]">
-              Tu negocio en internet con{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-500">
-                tu propia web
-              </span>{" "}
-              y pedidos a WhatsApp.
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
-              Obtén tu página web profesional en tu propio subdominio (<span className="font-semibold text-slate-900">tunegocio.qatu.pe</span>) con catálogo interactivo, botón para recibir pedidos directos a tu WhatsApp y soporte mensual. Cero comisiones por venta.
-            </p>
-
-            {/* Interactive Subdomain Claim Simulator */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
-              <label htmlFor="subdomain-input" className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Verifica la disponibilidad de tu web:
-              </label>
-              
-              <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
-                <div className="relative flex-1 flex items-center bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 focus-within:ring-2 focus-within:ring-brand-500 focus-within:border-brand-500 transition-all">
-                  <span className="text-xs sm:text-sm text-slate-400 select-none mr-1 font-mono">https://</span>
-                  <input
-                    id="subdomain-input"
-                    type="text"
-                    value={subdomainInput}
-                    onChange={(e) => setSubdomainInput(e.target.value)}
-                    placeholder="nombre-de-tu-negocio"
-                    className="w-full bg-transparent font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal text-sm focus:outline-hidden font-mono"
-                  />
-                  <span className="text-xs sm:text-sm font-semibold text-brand-600 select-none ml-1 font-mono">
-                    .qatu.pe
-                  </span>
-                </div>
-
-                <a
-                  href={claimUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-card hover:shadow-card-hover transition-all active:scale-95 whitespace-nowrap"
-                >
-                  <span>Reclamar mi web</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-
-              {/* Real-time feedback badge */}
-              <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span className="font-medium text-slate-700">
-                    {sanitizedSubdomain ? (
-                      <>
-                        <strong className="text-emerald-700">{sanitizedSubdomain}.qatu.pe</strong> está disponible
-                      </>
-                    ) : (
-                      "Escribe el nombre de tu marca para comprobarlo"
-                    )}
-                  </span>
-                </div>
-                <span className="text-[11px] text-slate-400 hidden sm:inline">
-                  ⚡ Entrega de 3 a 5 días hábiles
-                </span>
-              </div>
-            </div>
-
-            {/* Quick action buttons & links */}
-            <div className="flex flex-wrap items-center gap-4 pt-1">
-              <Link
-                href="/directorio"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-brand-600 transition-colors"
-              >
-                <span>Ver negocios ya activos en la vitrina</span>
-                <ArrowUpRight className="w-4 h-4 text-brand-600" />
-              </Link>
-              <span className="text-slate-300">•</span>
-              <Link
-                href="/planes"
-                className="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
-              >
-                Ver planes y precios desde S/ 49/mes
-              </Link>
-            </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Editorial Top Center Container */}
+        <div className="text-center max-w-3xl mx-auto space-y-6">
+          {/* Eyebrow Chip */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200/80 text-slate-700 text-xs font-semibold tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-brand-600 animate-pulse" />
+            <span>Infraestructura digital para negocios de Ayacucho y Perú</span>
           </div>
 
-          {/* Columna Derecha: Mockup Visual de Tienda Activa en Celular */}
-          <div className="lg:col-span-5 relative flex justify-center">
-            {/* Background Decoration Glow */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-brand-500/20 to-indigo-500/20 rounded-3xl blur-2xl -z-10" />
+          {/* Main Headline */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+            Tu propia web en internet con{" "}
+            <span className="text-brand-600">
+              pedidos directos a WhatsApp.
+            </span>
+          </h1>
 
-            {/* Smartphone Mockup */}
-            <div className="w-full max-w-[340px] bg-slate-900 rounded-[40px] p-3 shadow-2xl border-4 border-slate-800">
-              {/* Phone Speaker & Camera Notch */}
-              <div className="h-5 flex items-center justify-center mb-1">
-                <div className="w-20 h-3.5 bg-slate-800 rounded-full flex items-center justify-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
-                  <div className="w-2 h-2 rounded-full bg-slate-600" />
-                </div>
+          {/* Subtitle */}
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Te entregamos tu sitio en <strong className="text-slate-900 font-semibold">tunegocio.qatu.pe</strong> en menos de 5 días. Con catálogo interactivo, cobro directo con Yape o Plin y soporte de personas reales. Cero comisiones por venta.
+          </p>
+
+          {/* Subdomain Claim Interactive Bar */}
+          <div className="pt-2 max-w-xl mx-auto">
+            <div className="p-2 sm:p-2.5 rounded-2xl bg-slate-50 border border-slate-300 shadow-card flex flex-col sm:flex-row items-stretch gap-2 transition-all focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20">
+              <div className="flex-1 flex items-center px-3 py-2 bg-white rounded-xl border border-slate-200">
+                <span className="text-xs text-slate-400 font-mono select-none mr-1">qatu.pe/</span>
+                <input
+                  type="text"
+                  value={subdomainInput}
+                  onChange={(e) => setSubdomainInput(e.target.value)}
+                  placeholder="nombre-de-tu-negocio"
+                  className="w-full bg-transparent font-medium text-slate-900 placeholder:text-slate-400 text-sm focus:outline-hidden font-mono"
+                />
               </div>
 
-              {/* Phone Screen Container */}
-              <div className="bg-white rounded-[32px] overflow-hidden border border-slate-100 flex flex-col text-slate-900">
-                {/* Browser Address Bar */}
-                <div className="bg-slate-100 px-3 py-2 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-600 font-mono">
-                  <div className="flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                    <span className="font-semibold text-slate-800">lasflores.qatu.pe</span>
-                  </div>
-                  <span className="text-[10px] text-slate-400">SSL Activo</span>
-                </div>
-
-                {/* Simulated Business Header */}
-                <div className="relative h-28 w-full bg-slate-100">
-                  <Image
-                    src="https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80"
-                    alt="Florería Las Flores en Qatu"
-                    fill
-                    className="object-cover"
-                    sizes="320px"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 left-3 right-3 text-white">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold font-heading">Florería Las Flores</span>
-                      <span className="text-[9px] bg-brand-600 text-white px-1.5 py-0.2 rounded font-semibold">
-                        Verificado
-                      </span>
-                    </div>
-                    <p className="text-[10px] text-slate-200">Arreglos florales · Ayacucho</p>
-                  </div>
-                </div>
-
-                {/* Simulated Store Content */}
-                <div className="p-3 space-y-2.5 bg-slate-50/50">
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="font-bold text-slate-900 font-heading">Catálogo Destacado</span>
-                    <span className="text-emerald-700 font-semibold text-[10px] flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Abierto ahora
-                    </span>
-                  </div>
-
-                  {/* Product Card 1 */}
-                  <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-2.5">
-                    <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                      <Image
-                        src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=200&q=80"
-                        alt="Ramo Rosas"
-                        fill
-                        className="object-cover"
-                        sizes="60px"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-bold text-slate-900 truncate">Ramo 12 Rosas Rojas</h4>
-                      <p className="text-[10px] text-slate-500 truncate">Moño fino & dedicatoria</p>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-xs font-extrabold text-brand-600">S/ 65.00</span>
-                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[9px] font-bold shadow-xs">
-                          <MessageCircle className="w-2.5 h-2.5" />
-                          <span>Pedir</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Payment Badges in App */}
-                  <div className="pt-1 flex items-center justify-between text-[10px] text-slate-500 px-1">
-                    <span>Acepta:</span>
-                    <div className="flex items-center gap-1.5 font-bold">
-                      <span className="px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 text-[9px]">Yape</span>
-                      <span className="px-1.5 py-0.5 rounded bg-cyan-100 text-cyan-700 text-[9px]">Plin</span>
-                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 text-[9px]">Efectivo</span>
-                    </div>
-                  </div>
-
-                  {/* Live Order Simulation Toast */}
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-2 flex items-center gap-2 text-[10px] text-emerald-800">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Pedido recibido directo a tu WhatsApp con el detalle listo</span>
-                  </div>
-                </div>
-              </div>
+              <a
+                href={claimUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-card hover:shadow-card-hover transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
+              >
+                <span>Reclamar mi web</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
 
-            {/* Floating Metric 1 */}
-            <div className="absolute -bottom-4 -left-4 sm:-left-8 bg-white p-3 rounded-xl border border-slate-200 shadow-xl flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
-                0%
+            {/* Instant Subdomain Status */}
+            <div className="mt-2.5 flex items-center justify-between text-xs text-slate-500 px-2">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>
+                  {sanitizedSubdomain ? (
+                    <>
+                      <strong className="text-slate-900 font-bold">{sanitizedSubdomain}.qatu.pe</strong> está disponible
+                    </>
+                  ) : (
+                    "Escribe tu nombre comercial para verificar disponibilidad"
+                  )}
+                </span>
               </div>
-              <div className="text-left">
-                <p className="text-xs font-bold text-slate-900">0% comisiones</p>
-                <p className="text-[11px] text-slate-500">100% de tus ventas para ti</p>
-              </div>
+              <span className="text-slate-400 hidden sm:inline font-medium">Entrega en 3 a 5 días</span>
             </div>
-
-            {/* Floating Metric 2 */}
-            <div className="absolute top-8 -right-2 sm:-right-6 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xl flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs font-bold text-slate-900">Listo en 3 días</p>
-                <p className="text-[10px] text-slate-500">Diseñado a medida</p>
-              </div>
-            </div>
-
           </div>
         </div>
 
-        {/* Feature Value Grid */}
-        <div className="mt-16 pt-8 border-t border-slate-200">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0">
-                <Globe className="w-5 h-5" />
+        {/* The Hero Centerpiece: Interactive Live Store Showcase */}
+        <div className="mt-14 max-w-4xl mx-auto">
+          {/* Showcase Category Switcher Tabs */}
+          <div className="flex items-center justify-center gap-2 mb-4 overflow-x-auto pb-1">
+            <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider mr-2 hidden sm:inline">
+              Ver tienda de ejemplo:
+            </span>
+            {DEMO_BUSINESSES.map((b) => (
+              <button
+                key={b.id}
+                onClick={() => setSelectedDemo(b)}
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                  selectedDemo.id === b.id
+                    ? "bg-slate-900 text-white shadow-md"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                {b.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Browser Window Mockup Frame */}
+          <div className="rounded-3xl border border-slate-300 bg-white shadow-2xl overflow-hidden">
+            {/* Window Browser Header */}
+            <div className="bg-slate-100/90 px-4 py-3 border-b border-slate-200 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-400/80" />
+                <div className="w-3 h-3 rounded-full bg-amber-400/80" />
+                <div className="w-3 h-3 rounded-full bg-emerald-400/80" />
               </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900">Subdominio Propio</h4>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  tunegocio.qatu.pe con hosting de alta velocidad y certificado SSL incluido.
-                </p>
+
+              {/* URL Address Bar */}
+              <div className="flex-1 max-w-md mx-auto bg-white rounded-lg px-3 py-1.5 border border-slate-200 flex items-center justify-between text-xs text-slate-700 font-mono shadow-2xs">
+                <div className="flex items-center gap-1.5 truncate">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span className="font-semibold text-slate-900">{selectedDemo.subdomain}</span>
+                </div>
+                <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">
+                  SSL Activo
+                </span>
+              </div>
+
+              <div className="text-xs text-slate-400 hidden sm:flex items-center gap-1 font-medium">
+                <span>Qatu Engine</span>
               </div>
             </div>
 
-            <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <MessageCircle className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900">Pedidos a WhatsApp</h4>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Tus clientes eligen los productos y el pedido te llega formateado al WhatsApp.
-                </p>
-              </div>
-            </div>
+            {/* Window Content: Live Store View */}
+            <div className="p-5 sm:p-8 space-y-6">
+              {/* Store Cover Header Banner */}
+              <div className="relative h-44 sm:h-52 w-full rounded-2xl overflow-hidden bg-slate-100">
+                <Image
+                  src={selectedDemo.coverImage}
+                  alt={selectedDemo.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
+                
+                <div className="absolute bottom-4 left-4 right-4 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                  <div>
+                    <span className="inline-block px-2.5 py-0.5 rounded-md bg-brand-600 text-white text-xs font-bold uppercase tracking-wider mb-1 shadow-xs">
+                      {selectedDemo.category}
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white drop-shadow-xs">
+                      {selectedDemo.name}
+                    </h3>
+                    <p className="text-xs text-slate-200 mt-0.5">{selectedDemo.location}</p>
+                  </div>
 
-            <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                <Zap className="w-5 h-5" />
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-md text-white text-xs font-medium border border-white/20">
+                      {selectedDemo.badgeText}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900">Cobro con Yape y Plin</h4>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Muestra tus códigos QR y números para cobrar al instante sin comisiones de pasarela.
-                </p>
-              </div>
-            </div>
 
-            <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-5 h-5" />
+              {/* Store Catalog Items Grid */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-heading font-bold text-slate-900 text-sm sm:text-base">
+                    Catálogo de Productos & Precios
+                  </h4>
+                  <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Pedidos abiertos
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {selectedDemo.items.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 flex items-center gap-3.5 transition-all"
+                    >
+                      <div className="relative w-18 h-18 rounded-xl overflow-hidden bg-slate-200 shrink-0">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="80px"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-heading font-bold text-slate-900 text-sm truncate">
+                          {item.title}
+                        </h5>
+                        <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                          {item.desc}
+                        </p>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="font-heading font-extrabold text-slate-900 text-sm text-brand-600">
+                            {item.price}
+                          </span>
+                          <a
+                            href={getWhatsAppUrl(`Hola ${selectedDemo.name}, quiero pedir ${item.title}`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs active:scale-95 transition-all"
+                          >
+                            <MessageCircle className="w-3 h-3 fill-white" />
+                            <span>Pedir</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900">Soporte y Cambios</h4>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Nosotros nos encargamos de actualizar tus precios, fotos y menú cada mes.
-                </p>
+
+              {/* Order Simulation Callout */}
+              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div className="flex items-start gap-2.5">
+                  <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    ✓
+                  </div>
+                  <div>
+                    <span className="font-bold text-emerald-950 block">
+                      Así llega el pedido al WhatsApp del negocio:
+                    </span>
+                    <p className="text-emerald-800 italic mt-0.5 font-mono">
+                      "{selectedDemo.sampleMessage}"
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-[11px] font-bold text-slate-500">Cobro:</span>
+                  <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-700 font-bold text-[11px]">Yape</span>
+                  <span className="px-2 py-0.5 rounded bg-cyan-100 text-cyan-700 font-bold text-[11px]">Plin</span>
+                </div>
               </div>
+
+            </div>
+          </div>
+        </div>
+
+        {/* Trust Badges Ribbon */}
+        <div className="mt-14 max-w-4xl mx-auto pt-8 border-t border-slate-200/80">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="font-heading font-extrabold text-2xl text-slate-900">0%</div>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">Comisiones por venta</p>
+            </div>
+            <div>
+              <div className="font-heading font-extrabold text-2xl text-slate-900">3 a 5 días</div>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">Entrega lista al aire</p>
+            </div>
+            <div>
+              <div className="font-heading font-extrabold text-2xl text-slate-900">100% Móvil</div>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">Catálogo y WhatsApp</p>
+            </div>
+            <div>
+              <div className="font-heading font-extrabold text-2xl text-slate-900">Soporte Local</div>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">Ayacucho y todo el Perú</p>
             </div>
           </div>
         </div>

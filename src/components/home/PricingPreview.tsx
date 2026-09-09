@@ -1,30 +1,33 @@
 import Link from "next/link";
 import { initialPricingPlans } from "@/lib/seed/initialBusinesses";
 import { getWhatsAppUrl } from "@/lib/config/site";
-import { Check, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
+import { Check, ArrowRight, Sparkles } from "lucide-react";
 
 export function PricingPreview() {
   return (
-    <section className="py-20 bg-slate-50 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 md:py-32 bg-white border-b border-slate-200/80">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Precios Claros y Transparentes</span>
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight">
-            Planes diseñados para comercios peruanos
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+            Un plan pensado para tu negocio
           </h2>
-          <p className="text-base text-slate-600">
-            Sin comisiones por venta: un pago único de diseño y configuración inicial + una cuota mensual económica para soporte, hosting y subdominio.
+          <p className="text-base text-slate-600 leading-relaxed">
+            Sin comisiones por venta: un pago único de diseño inicial y una cuota mensual accesible para que tu web nunca se caiga y tenga soporte técnico permanente.
           </p>
         </div>
 
+        {/* 3 Pricing Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {initialPricingPlans.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 relative bg-white ${
+              className={`rounded-3xl p-8 sm:p-9 flex flex-col justify-between transition-all duration-300 relative bg-white ${
                 plan.popular
                   ? "border-2 border-brand-600 shadow-card-hover lg:-translate-y-2 ring-4 ring-brand-500/10"
                   : "border border-slate-200 shadow-card hover:shadow-card-hover"
@@ -46,19 +49,20 @@ export function PricingPreview() {
                   </span>
                 )}
 
-                <h3 className="text-2xl font-heading font-extrabold text-slate-900 mb-1">
+                <h3 className="text-2xl font-heading font-extrabold text-slate-900 mb-1.5">
                   {plan.name}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-500 min-h-[40px] mb-6">
+                <p className="text-xs sm:text-sm text-slate-500 min-h-[42px] mb-6 leading-relaxed">
                   {plan.tagline}
                 </p>
 
                 {/* Precios: Setup y Mensualidad */}
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 mb-6 space-y-3">
+                <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 mb-6 space-y-3">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-slate-500 font-medium">Setup inicial (único):</span>
+                    <span className="text-xs text-slate-500 font-medium">Setup inicial:</span>
                     <span className="text-lg font-heading font-extrabold text-slate-900">
-                      S/ {plan.setupPrice}
+                      S/ {plan.setupPrice}{" "}
+                      <span className="text-[11px] font-normal text-slate-400">(pago único)</span>
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between border-t border-slate-200 pt-2.5">
@@ -115,6 +119,7 @@ export function PricingPreview() {
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
       </div>
     </section>
   );
