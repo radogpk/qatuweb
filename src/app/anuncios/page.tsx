@@ -10,9 +10,12 @@ export const metadata: Metadata = {
 
 export default function AnunciosPage() {
   return (
-    <main className="min-h-screen bg-slate-50">
-      <ClassifiedsView initialAds={initialClassifieds} />
-    </main>
+    <div className="py-12 sm:py-16 bg-slate-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ClassifiedsView initialAds={initialClassifieds} />
+      </div>
+    </div>
   );
 }
+
 
