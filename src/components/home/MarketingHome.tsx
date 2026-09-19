@@ -50,13 +50,9 @@ export function MarketingHome() {
           <div className="hero-story">
             <p className="section-kicker">WEB Y CATÁLOGO PARA TU NEGOCIO</p>
             <h1>
-              Tu marca <br />
-              en una web.
+              Tu marca en una web.
               <br />
-              <span>
-                Tus pedidos <br />
-                en WhatsApp.
-              </span>
+              <span>Tus pedidos en WhatsApp.</span>
             </h1>
             <p className="hero-description">
               Tus productos, precios y pedidos en un solo enlace. Diseñamos tu
@@ -78,15 +74,14 @@ export function MarketingHome() {
                 Probar el catálogo <ArrowRight size={16} />
               </a>
             </div>
-            <p className="hero-price">
-              Catálogo con pedidos desde{" "}
-              <strong>S/ {commerce.monthlyPrice}/mes</strong>
-              <br />
-              <span>
-                + S/ {commerce.setupPrice} de creación inicial. Sin comisión de
-                Qatu por venta.
-              </span>
-            </p>
+            <div className="hero-pricing-pill">
+              <span className="hero-pricing-status" />
+              <p>
+                Catálogo con pedidos desde{" "}
+                <strong>S/ {commerce.monthlyPrice}/mes</strong>
+                <span> · Creación única S/ {commerce.setupPrice} · Sin comisión de Qatu por venta</span>
+              </p>
+            </div>
           </div>
           <ProductDemo />
         </div>

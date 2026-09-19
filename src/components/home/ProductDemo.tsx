@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Check,
   ChevronRight,
+  Globe2,
   MessageCircle,
   Minus,
   Plus,
@@ -50,7 +51,7 @@ export function ProductDemo() {
   return (
     <div className="product-demo" id="demo">
       <div className="demo-toolbar">
-        <span>PRUEBA UN EJEMPLO</span>
+        <span className="demo-toolbar-label">PRUEBA UN EJEMPLO</span>
         <div
           className="demo-switcher"
           role="group"
@@ -76,11 +77,16 @@ export function ProductDemo() {
         className={`demo-window ${view === "order" ? "demo-window-order" : ""}`}
       >
         <div className="demo-address">
-          <span>
-            qatu<span className="demo-address-dot">.</span>
+          <div className="demo-address-dots">
+            <span />
+            <span />
+            <span />
+          </div>
+          <span className="demo-address-url">
+            <Globe2 size={11} />
+            {catalog.domain}
           </span>
-          <span>{catalog.domain}</span>
-          <span>DEMO</span>
+          <span className="demo-address-tag">DEMO</span>
         </div>
         {view === "catalog" ? (
           <div className="demo-catalog">
@@ -90,7 +96,8 @@ export function ProductDemo() {
                 alt={catalog.coverAlt}
                 fill
                 priority
-                sizes="(max-width: 760px) 95vw, 570px"
+                unoptimized
+                sizes="(max-width: 760px) 95vw, 450px"
               />
               <div className="demo-cover-shade" />
               <div className="demo-store-name">
@@ -117,7 +124,8 @@ export function ProductDemo() {
                           src={product.image}
                           alt={product.name}
                           fill
-                          sizes="110px"
+                          unoptimized
+                          sizes="80px"
                         />
                       </div>
                       <div className="demo-product-copy">
