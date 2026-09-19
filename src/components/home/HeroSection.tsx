@@ -7,11 +7,10 @@ import { getWhatsAppUrl } from "@/lib/config/site";
 import { 
   ArrowRight, 
   ExternalLink,
-  Sparkles,
   Check,
   Search,
-  Store,
-  MapPin
+  MapPin,
+  Clock
 } from "lucide-react";
 
 interface ShowcaseStore {
@@ -30,7 +29,7 @@ const SHOWCASE_STORES: ShowcaseStore[] = [
     category: "Florería & Regalos",
     location: "Huamanga, Ayacucho",
     image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=700&q=80",
-    highlight: "Catálogo de rosas y ramos con pedidos a WhatsApp",
+    highlight: "Catálogo interactivo con recepción directa de pedidos por WhatsApp.",
   },
   {
     name: "Hotel Boutique Umaru",
@@ -38,7 +37,7 @@ const SHOWCASE_STORES: ShowcaseStore[] = [
     category: "Hospedaje Colonial",
     location: "Centro Histórico, Ayacucho",
     image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=700&q=80",
-    highlight: "Reservas directas de habitaciones sin comisiones",
+    highlight: "Reservas directas de habitaciones y atención al huésped sin comisiones.",
   },
   {
     name: "Café Andino Huamanga",
@@ -46,7 +45,7 @@ const SHOWCASE_STORES: ShowcaseStore[] = [
     category: "Café de Especialidad",
     location: "Plaza Mayor, Ayacucho",
     image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=700&q=80",
-    highlight: "Carta digital completa y cobros inmediatos por Yape",
+    highlight: "Carta digital con cobros inmediatos por Yape y Plin para delivery y mesa.",
   },
 ];
 
@@ -67,21 +66,27 @@ export function HeroSection() {
 
   return (
     <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-white border-b border-slate-200/80">
-      {/* Subtle warm atmospheric light glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-gradient-to-b from-slate-50 via-white to-white pointer-events-none -z-10" />
+      {/* Subtle warm atmospheric glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[560px] bg-radial from-slate-100/70 via-slate-50/40 to-transparent pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Editorial Top Headline & Value Narrative */}
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          {/* Eyebrow Chip */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold tracking-wide shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-brand-600 animate-pulse" />
-            <span>MERCADO DIGITAL & PLATAFORMA WEB DEL PERÚ 🇵🇪</span>
+          
+          {/* Eyebrow Chip (Clean, emoji-free, subtle animation) */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200/90 text-slate-700 text-xs font-medium tracking-wide shadow-2xs">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
+            </span>
+            <span className="font-semibold text-slate-900">Plataforma Web & Catálogo Digital</span>
+            <span className="text-slate-300">|</span>
+            <span className="text-slate-600">Perú</span>
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-[1.08] sm:leading-[1.1]">
             Tu negocio merece{" "}
             <span className="text-brand-600">
               su propia página web.
@@ -89,16 +94,20 @@ export function HeroSection() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Te entregamos tu tienda lista en <strong className="text-slate-900 font-bold">tunegocio.qatu.pe</strong> en menos de 5 días. Con catálogo interactivo, cobros con Yape o Plin y soporte de personas reales. Cero comisiones por venta.
+          <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Te entregamos tu tienda oficial en{" "}
+            <span className="text-slate-900 font-semibold font-mono text-[0.95em] px-1.5 py-0.5 rounded-md bg-slate-100 border border-slate-200/80">
+              tunegocio.qatu.pe
+            </span>{" "}
+            lista en 3 a 5 días. Catálogo a WhatsApp, cobros con Yape y cero comisiones por venta.
           </p>
 
           {/* Centered Protagonist: High-End Interactive Subdomain Search Bar */}
-          <div className="pt-4 max-w-2xl mx-auto">
-            <div className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-slate-300 shadow-xl flex flex-col sm:flex-row items-stretch gap-2 transition-all focus-within:border-brand-600 focus-within:ring-4 focus-within:ring-brand-500/10">
+          <div className="pt-3 max-w-2xl mx-auto">
+            <div className="p-1.5 sm:p-2 rounded-2xl bg-white border border-slate-300 shadow-xl shadow-slate-200/60 flex flex-col sm:flex-row items-stretch gap-2 transition-all focus-within:border-brand-600 focus-within:ring-4 focus-within:ring-brand-500/10">
               
-              <div className="flex-1 flex items-center px-4 py-3 bg-slate-50/80 rounded-xl border border-slate-200">
-                <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+              <div className="flex-1 flex items-center px-3.5 py-2.5 sm:py-3 bg-slate-50/80 rounded-xl border border-slate-200/80 transition-colors">
+                <Search className="w-4 h-4 text-slate-400 mr-2.5 shrink-0" />
                 <span className="text-sm font-mono text-slate-400 select-none hidden sm:inline mr-1">
                   https://
                 </span>
@@ -108,6 +117,7 @@ export function HeroSection() {
                   onChange={(e) => setSubdomainInput(e.target.value)}
                   placeholder="nombre-de-tu-negocio"
                   className="w-full bg-transparent font-medium text-slate-900 placeholder:text-slate-400 text-sm sm:text-base focus:outline-hidden font-mono"
+                  aria-label="Nombre del subdominio de tu negocio"
                 />
                 <span className="text-sm font-bold font-mono text-brand-600 select-none ml-1">
                   .qatu.pe
@@ -118,7 +128,7 @@ export function HeroSection() {
                 href={claimUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-7 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm sm:text-base shadow-card hover:shadow-card-hover transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
+                className="px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm sm:text-base shadow-sm hover:shadow-md hover:shadow-brand-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
               >
                 <span>Reclamar mi web</span>
                 <ArrowRight className="w-4 h-4" />
@@ -128,7 +138,7 @@ export function HeroSection() {
             {/* Instant Real-Time Availability Feedback */}
             <div className="mt-3 flex items-center justify-between text-xs sm:text-sm text-slate-500 px-3">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
                 <span>
                   {sanitizedSubdomain ? (
                     <>
@@ -139,13 +149,14 @@ export function HeroSection() {
                   )}
                 </span>
               </div>
-              <span className="text-slate-500 font-medium hidden sm:inline">
-                ⚡ Entrega lista en 3 a 5 días
-              </span>
+              <div className="hidden sm:flex items-center gap-1.5 text-slate-500 font-medium">
+                <Clock className="w-3.5 h-3.5 text-slate-400" />
+                <span>Listo en 3 a 5 días hábiles</span>
+              </div>
             </div>
 
             {/* Micro-Trust Pillars */}
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-600">
+            <div className="pt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-600">
               <div className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
                 <span>0% comisiones por venta</span>
@@ -160,30 +171,30 @@ export function HeroSection() {
               </div>
               <div className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                <span>Hosting SSL incluido</span>
+                <span>Hosting SSL seguro incluido</span>
               </div>
             </div>
 
           </div>
         </div>
 
-        {/* High-Level Editorial Showcase: Real Peruvian Businesses (Shopify / Airbnb caliber) */}
+        {/* High-Level Editorial Showcase: Real Peruvian Businesses */}
         <div className="mt-16 sm:mt-20">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-600 block mb-1">
                 Negocios que ya confían en Qatu
               </span>
-              <h3 className="font-heading font-extrabold text-lg sm:text-xl text-slate-900">
+              <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">
                 Tu web se verá así de profesional
               </h3>
             </div>
             <Link
               href="/directorio"
               prefetch={true}
-              className="text-xs sm:text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline flex items-center gap-1"
+              className="text-xs sm:text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline flex items-center gap-1.5 self-start sm:self-auto"
             >
-              <span>Ver todos los negocios</span>
+              <span>Ver todos los negocios en el directorio</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -195,7 +206,7 @@ export function HeroSection() {
                 href={`https://${store.subdomain}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-card hover:shadow-card-hover transition-all duration-300 flex flex-col"
+                className="group bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
               >
                 {/* Image Frame */}
                 <div className="relative h-56 sm:h-64 w-full bg-slate-100 overflow-hidden">
@@ -204,14 +215,14 @@ export function HeroSection() {
                     alt={store.name}
                     fill
                     priority={idx === 0}
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent" />
 
                   {/* Subdomain Pill */}
                   <div className="absolute top-3.5 left-3.5">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900/90 text-white text-xs font-mono font-medium backdrop-blur-md border border-white/10 shadow-xs">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-950/85 text-white text-xs font-mono font-medium backdrop-blur-md border border-white/10 shadow-xs">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                       {store.subdomain}
                     </span>
@@ -219,7 +230,7 @@ export function HeroSection() {
 
                   {/* Category Pill */}
                   <div className="absolute top-3.5 right-3.5">
-                    <span className="px-2.5 py-1 rounded-lg bg-white/95 text-slate-800 text-[11px] font-bold backdrop-blur-md border border-slate-200 shadow-xs">
+                    <span className="px-2.5 py-1 rounded-lg bg-white/95 text-slate-900 text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border border-slate-200/80 shadow-xs">
                       {store.category}
                     </span>
                   </div>
@@ -229,8 +240,8 @@ export function HeroSection() {
                     <h4 className="text-xl font-heading font-extrabold text-white leading-tight drop-shadow-xs">
                       {store.name}
                     </h4>
-                    <div className="flex items-center gap-1 text-xs text-slate-200 mt-1">
-                      <MapPin className="w-3.5 h-3.5 text-brand-400" />
+                    <div className="flex items-center gap-1.5 text-xs text-slate-200 mt-1">
+                      <MapPin className="w-3.5 h-3.5 text-brand-400 shrink-0" />
                       <span>{store.location}</span>
                     </div>
                   </div>
@@ -255,20 +266,20 @@ export function HeroSection() {
         {/* Seamless Metrics & Impact Ribbon */}
         <div className="mt-16 sm:mt-20 pt-10 border-t border-slate-200/80">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="space-y-1">
-              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900">0%</div>
+            <div className="space-y-1.5 md:border-r border-slate-100 last:border-r-0">
+              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">0%</div>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">Comisiones por venta</p>
             </div>
-            <div className="space-y-1">
-              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900">3 a 5 días</div>
+            <div className="space-y-1.5 md:border-r border-slate-100 last:border-r-0">
+              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">3 a 5 días</div>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">Tu web lista al aire</p>
             </div>
-            <div className="space-y-1">
-              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900">100% Celular</div>
+            <div className="space-y-1.5 md:border-r border-slate-100 last:border-r-0">
+              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">100% Celular</div>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">Adaptado a WhatsApp</p>
             </div>
-            <div className="space-y-1">
-              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900">Ayacucho</div>
+            <div className="space-y-1.5">
+              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight">Ayacucho</div>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">Sede y soporte local</p>
             </div>
           </div>
