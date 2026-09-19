@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Qatu.pe",
-  tagline: "Tu puesto en el mercado digital del Perú",
-  description: "Plataforma web que impulsa a negocios peruanos con su propio subdominio, catálogo digital y presencia web profesional sin complicaciones técnicas.",
+  tagline: "Tu marca en una web. Tus pedidos en WhatsApp.",
+  description: "Creamos la web y el catálogo de tu negocio con pedidos directos a WhatsApp. Diseño acompañado, precios claros y sin comisión de Qatu por venta.",
   url: "https://qatu.pe",
   ogImage: "https://qatu.pe/og-qatu.jpg",
   whatsappNumber: "51966123456", // Número oficial WhatsApp Business de Qatu
@@ -22,7 +22,7 @@ export const siteConfig = {
 };
 
 export function getWhatsAppUrl(message?: string): string {
-  const defaultMsg = "¡Hola Qatu! Quiero información sobre cómo obtener mi propia página web y subdominio para mi negocio.";
+  const defaultMsg = "Hola Qatu, quiero conversar sobre una web con catálogo y pedidos por WhatsApp para mi negocio.";
   const encodedMsg = encodeURIComponent(message || defaultMsg);
   return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodedMsg}`;
 }

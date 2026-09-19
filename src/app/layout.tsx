@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
+import "./marketing.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
@@ -22,7 +23,7 @@ const sansFont = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} — Tu Web Profesional en tu Propio Subdominio`,
+    default: `${siteConfig.name} — Tu marca en una web. Tus pedidos en WhatsApp.`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: `${siteConfig.name} — Plataforma Web y Mercado Digital del Perú`,
+    title: `${siteConfig.name} — Web y catálogo para tu negocio`,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — Tu Web Profesional en tu Propio Subdominio`,
+    title: `${siteConfig.name} — Tu marca en una web. Tus pedidos en WhatsApp.`,
     description: siteConfig.description,
   },
 };
@@ -54,10 +55,11 @@ export default function RootLayout({
     <html lang="es" className={`${headingFont.variable} ${sansFont.variable}`}>
       <body className="min-h-screen flex flex-col bg-white text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main id="contenido" className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
       </body>
     </html>
   );
 }
+
