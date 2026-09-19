@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteConfig, getWhatsAppUrl } from "@/lib/config/site";
-import { Menu, X, ArrowUpRight, Sparkles, Store, Megaphone } from "lucide-react";
+import { Menu, X, ArrowUpRight, Store, Megaphone } from "lucide-react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +74,6 @@ export function Navbar() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold shadow-card hover:shadow-card-hover transition-all active:scale-95"
             >
-              <Sparkles className="w-4 h-4 text-brand-200" />
               <span>Crear mi web</span>
               <ArrowUpRight className="w-4 h-4" />
             </a>

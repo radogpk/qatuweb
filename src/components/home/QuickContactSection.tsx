@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { getWhatsAppUrl } from "@/lib/config/site";
-import { MessageCircle, Send, CheckCircle2, ArrowUpRight, Sparkles } from "lucide-react";
+import { MessageCircle, Send, CheckCircle2, ArrowUpRight } from "lucide-react";
 
 export function QuickContactSection() {
   const [submitted, setSubmitted] = useState(false);
@@ -31,10 +31,9 @@ export function QuickContactSection() {
             
             {/* Left Column: Direct Callout & WhatsApp */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800 text-emerald-400 text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Atención Rápida y Personalizada</span>
-              </div>
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-400 block">
+                Empecemos hoy
+              </span>
 
               <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-white leading-tight tracking-tight">
                 Empieza a vender con tu propia web esta misma semana.

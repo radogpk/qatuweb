@@ -73,17 +73,6 @@ export function HeroSection() {
         
         {/* Editorial Top Headline & Value Narrative */}
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          
-          {/* Eyebrow Chip (Clean, emoji-free, subtle animation) */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200/90 text-slate-700 text-xs font-medium tracking-wide shadow-2xs">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
-            </span>
-            <span className="font-semibold text-slate-900">Plataforma Web & Catálogo Digital</span>
-            <span className="text-slate-300">|</span>
-            <span className="text-slate-600">Perú</span>
-          </div>
 
           {/* Master Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 tracking-tight leading-[1.08] sm:leading-[1.1]">

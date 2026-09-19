@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { initialPricingPlans } from "@/lib/seed/initialBusinesses";
 import { getWhatsAppUrl } from "@/lib/config/site";
-import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 
 export function PricingPreview() {
   return (
@@ -9,16 +9,15 @@ export function PricingPreview() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Precios Claros y Transparentes</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-xs font-bold uppercase tracking-wider text-brand-600 block mb-1.5">
+            Tarifas transparentes
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
             Un plan pensado para tu negocio
           </h2>
-          <p className="text-base text-slate-600 leading-relaxed">
-            Sin comisiones por venta: un pago único de diseño inicial y una cuota mensual accesible para que tu web nunca se caiga y tenga soporte técnico permanente.
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            Sin comisiones por venta: un pago único de diseño inicial y una cuota mensual accesible para que tu web nunca se caiga y tenga soporte permanente.
           </p>
         </div>
 
@@ -29,15 +28,14 @@ export function PricingPreview() {
               key={plan.id}
               className={`rounded-3xl p-8 sm:p-9 flex flex-col justify-between transition-all duration-300 relative bg-white ${
                 plan.popular
-                  ? "border-2 border-brand-600 shadow-card-hover lg:-translate-y-2 ring-4 ring-brand-500/10"
-                  : "border border-slate-200 shadow-card hover:shadow-card-hover"
+                  ? "border-2 border-brand-600 shadow-xl lg:-translate-y-2 ring-4 ring-brand-500/10"
+                  : "border border-slate-200/90 shadow-sm hover:shadow-md"
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="px-4 py-1 rounded-full bg-brand-600 text-white text-xs font-bold tracking-wide uppercase shadow-md flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    {plan.badge || "Más Popular"}
+                  <span className="px-3.5 py-1 rounded-full bg-brand-600 text-white text-[11px] font-bold tracking-wider uppercase shadow-xs">
+                    Recomendado
                   </span>
                 </div>
               )}

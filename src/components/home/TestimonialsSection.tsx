@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Quote, Star, Sparkles, ExternalLink } from "lucide-react";
+import { Quote, Star, ExternalLink } from "lucide-react";
 
 export function TestimonialsSection() {
   const testimonials = [
@@ -28,16 +28,15 @@ export function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Casos Reales</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-xs font-bold uppercase tracking-wider text-brand-600 block mb-1.5">
+            Historias reales
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
             La experiencia de nuestros negocios piloto
           </h2>
-          <p className="text-base text-slate-600 leading-relaxed">
-            Emprendedores y empresarios locales que ya convirtieron su presencia en internet en una herramienta real de ventas diarias.
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            Emprendedores y empresarios locales que convirtieron su presencia en internet en un canal de ventas diario.
           </p>
         </div>
 

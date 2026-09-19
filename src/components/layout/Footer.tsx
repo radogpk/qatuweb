@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig, getWhatsAppUrl } from "@/lib/config/site";
-import { MessageCircle, Mail, MapPin, Heart, ArrowUpRight, Sparkles } from "lucide-react";
+import { MessageCircle, Mail, MapPin, Heart, ArrowUpRight } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -24,7 +24,7 @@ export function Footer() {
             </p>
             <div className="pt-2 flex items-center gap-2 text-xs text-slate-400">
               <MapPin className="w-4 h-4 text-brand-400 shrink-0" />
-              <span>Nacidos en Ayacucho para potenciar a todo el Perú 🇵🇪</span>
+              <span>Nacidos en Ayacucho para potenciar a todo el Perú</span>
             </div>
           </div>
 
@@ -101,8 +101,8 @@ export function Footer() {
                   prefetch={true}
                   className="text-brand-400 hover:text-brand-300 transition-colors text-xs font-semibold inline-flex items-center gap-1"
                 >
-                  <Sparkles className="w-3 h-3" />
                   <span>Quiero sumar mi negocio</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
               </li>
             </ul>

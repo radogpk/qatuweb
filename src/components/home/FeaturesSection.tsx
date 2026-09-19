@@ -39,14 +39,14 @@ export function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl space-y-3 mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
-            <span>Tecnología Práctica para Comercios</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight">
+        <div className="max-w-3xl mb-16">
+          <span className="text-xs font-bold uppercase tracking-wider text-brand-600 block mb-1.5">
+            Ventajas claras
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
             Todo lo que incluye tu página web en Qatu
           </h2>
-          <p className="text-base text-slate-600 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
             Una solución completa pensada para el día a día de un negocio real: rápida, fácil para tus clientes y sin costos sorpresa.
           </p>
         </div>
@@ -58,10 +58,10 @@ export function FeaturesSection() {
             return (
               <div
                 key={idx}
-                className="bg-slate-50/70 hover:bg-slate-50 rounded-3xl p-7 sm:p-8 border border-slate-200 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
+                className="bg-slate-50/60 hover:bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 hover:border-slate-300 hover:shadow-md transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white text-brand-600 border border-slate-200 shadow-xs flex items-center justify-center group-hover:scale-105 group-hover:bg-brand-600 group-hover:text-white transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-white text-brand-600 border border-slate-200 shadow-2xs flex items-center justify-center group-hover:scale-105 group-hover:bg-brand-600 group-hover:text-white transition-all">
                     <Icon className="w-6 h-6" />
                   </div>
 
