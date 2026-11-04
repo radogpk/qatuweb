@@ -651,11 +651,11 @@ export function StorefrontView({
       )}
 
       {/* Pie de Página: Marca Qatu */}
-      <footer className="mt-16 text-center text-xs text-stone-500 py-6 border-t border-stone-200">
+      <footer className="mt-16 text-center text-xs text-stone-500 py-6 border-t border-stone-200 space-y-1.5">
         <p>
           Sitio oficial de {config.businessName} • Ayacucho, Perú
         </p>
-        <p className="mt-1 text-[11px] text-stone-400">
+        <p className="text-[11px] text-stone-400">
           Tecnología y catálogo por{' '}
           <a
             href="/"
@@ -664,6 +664,14 @@ export function StorefrontView({
             QatuWeb.com
           </a>{' '}
           (Tu web y pedidos por S/ 30/mes)
+        </p>
+        <p className="pt-2">
+          <a
+            href={`/demo/${config.slug.includes('pasteleria') ? 'pasteleria' : 'calzados'}/admin`}
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-stone-400 hover:text-stone-700 bg-stone-100 hover:bg-stone-200 px-3 py-1 rounded-full transition"
+          >
+            <span>⚙️ Panel de Bolsillo (Dueño)</span>
+          </a>
         </p>
       </footer>
     </div>
