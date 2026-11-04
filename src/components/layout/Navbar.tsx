@@ -8,8 +8,8 @@ import { getWhatsAppUrl } from "@/lib/config/site";
 
 const primaryLinks = [
   { href: "/#como-funciona", label: "Cómo funciona" },
-  { href: "/#ejemplos", label: "Ejemplos" },
   { href: "/planes", label: "Planes y precios" },
+  { href: "/#ejemplos", label: "Ejemplos" },
 ];
 const secondaryLinks = [
   { href: "/directorio", label: "Directorio de negocios" },
@@ -88,7 +88,7 @@ export function Navbar() {
               aria-controls="community-navigation"
               onClick={() => setCommunityOpen(!communityOpen)}
             >
-              Conoce Qatu <ChevronDown size={13} />
+              Recursos <ChevronDown size={13} />
             </button>
             {communityOpen && (
               <div className="community-dropdown" id="community-navigation">
@@ -102,14 +102,19 @@ export function Navbar() {
             )}
           </div>
         </nav>
-        <a
-          className="marketing-button button-dark nav-primary-action"
-          href={getWhatsAppUrl()}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Quiero mi web <ArrowUpRight size={16} />
-        </a>
+        <div className="nav-actions-group">
+          <Link href="/login" className="nav-login-link">
+            Mi Panel
+          </Link>
+          <a
+            className="marketing-button button-brand nav-primary-action"
+            href={getWhatsAppUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Quiero mi web <ArrowUpRight size={16} />
+          </a>
+        </div>
         <button
           type="button"
           ref={mobileButton}
@@ -134,6 +139,10 @@ export function Navbar() {
               <ArrowUpRight size={15} />
             </Link>
           ))}
+          <Link href="/login" onClick={closeMenus}>
+            Mi Panel (Clientes / Admin)
+            <ArrowUpRight size={15} />
+          </Link>
           <a
             className="marketing-button button-brand"
             href={getWhatsAppUrl()}

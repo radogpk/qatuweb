@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Business, ServiceRequest } from '@/types/panel';
 import { panelService } from '@/lib/services/panel.service';
@@ -9,7 +9,7 @@ import { ClientBusinessCard } from '@/components/portal/ClientBusinessCard';
 import { RequestServiceModal } from '@/components/portal/RequestServiceModal';
 import { Sparkles, PlusCircle, Store, Zap } from 'lucide-react';
 
-export default function PortalPage() {
+function PortalContent() {
   const searchParams = useSearchParams();
   const queryUser = searchParams.get('user');
 
@@ -142,5 +142,19 @@ export default function PortalPage() {
         onRequest={handleRequestNewService}
       />
     </div>
+  );
+}
+
+export default function PortalPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#F5EFE4] text-stone-600 text-sm">
+          Cargando Portal de Clientes...
+        </div>
+      }
+    >
+      <PortalContent />
+    </Suspense>
   );
 }
