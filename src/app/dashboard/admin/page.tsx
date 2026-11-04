@@ -79,6 +79,19 @@ export default function SuperAdminDashboardPage() {
   const loadData = async () => {
     setLoading(true);
     try {
+      const res = await fetch('/api/tenants');
+      if (res.ok) {
+        const data = await res.json();
+        setTenants(data.tenants || []);
+        setVaults(data.vaults || []);
+        setPayments(data.payments || []);
+        return;
+      }
+    } catch {
+      // Fallback local si falla la red
+    }
+
+    try {
       const [tenantsList, vaultsList, paymentsList] = await Promise.all([
         qatuCentralService.getTenants(),
         qatuCentralService.getAllVaults(),
@@ -107,6 +120,31 @@ export default function SuperAdminDashboardPage() {
       : `¿Reactivar "${tenant.business_name}"? El subdominio volverá a responder en línea.`;
 
     if (!window.confirm(message)) return;
+
+    try {
+      const res = await fetch('/api/tenants', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenantId: tenant.id,
+          status: nextStatus,
+          killswitchOverride: nextOverride,
+        }),
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        setTenants((prev) => prev.map((t) => (t.id === tenant.id ? updated : t)));
+        showToast(
+          nextStatus === 'active'
+            ? `✅ "${tenant.business_name}" ACTIVADO con éxito.`
+            : `⚠️ "${tenant.business_name}" SUSPENDIDO por Kill-Switch.`
+        );
+        return;
+      }
+    } catch {
+      // Fallback
+    }
 
     const updated = await qatuCentralService.updateTenantStatus(
       tenant.id,
@@ -147,6 +185,22 @@ export default function SuperAdminDashboardPage() {
 
   // 4. Aprobación de Pago Yape / Plin en 1 Toque
   const handleApprovePayment = async (paymentId: string) => {
+    try {
+      const res = await fetch('/api/tenants', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'approve_payment', paymentId }),
+      });
+      if (res.ok) {
+        showToast('🎉 Pago aprobado con éxito.');
+        await loadData();
+        setSelectedVoucherPayment(null);
+        return;
+      }
+    } catch {
+      // Fallback
+    }
+
     const res = await qatuCentralService.approvePayment(paymentId);
     if (res.success && res.tenant) {
       showToast(`🎉 Pago aprobado. Nueva fecha de facturación: ${res.tenant.next_billing_date}`);
@@ -168,26 +222,53 @@ export default function SuperAdminDashboardPage() {
         nextDue.setMonth(nextDue.getMonth() + 1);
       }
 
-      await qatuCentralService.createTenantWithVault(
-        {
-          business_name: wizardName.trim(),
-          subdomain: wizardSubdomain.toLowerCase().trim(),
-          owner_name: wizardOwnerName.trim(),
-          owner_email: wizardOwnerEmail.trim(),
-          owner_phone: wizardOwnerPhone.trim(),
-          rubro: wizardRubro,
-          plan_type: wizardPlan,
-          status: 'active',
-          next_billing_date: nextDue.toISOString().split('T')[0],
-          vercel_target_url: wizardVercelUrl.trim(),
-          killswitch_override: false,
-        },
-        {
-          client_email_account: wizardGmail.trim(),
-          client_supabase_url: wizardSupabaseUrl.trim(),
-          client_supabase_anon_key: wizardSupabaseAnon.trim(),
+      const tenantPayload = {
+        business_name: wizardName.trim(),
+        subdomain: wizardSubdomain.toLowerCase().trim(),
+        owner_name: wizardOwnerName.trim(),
+        owner_email: wizardOwnerEmail.trim(),
+        owner_phone: wizardOwnerPhone.trim(),
+        rubro: wizardRubro,
+        plan_type: wizardPlan,
+        status: 'active' as const,
+        next_billing_date: nextDue.toISOString().split('T')[0],
+        vercel_target_url: wizardVercelUrl.trim(),
+        killswitch_override: false,
+      };
+
+      const vaultPayload = {
+        client_email_account: wizardGmail.trim(),
+        client_supabase_url: wizardSupabaseUrl.trim(),
+        client_supabase_anon_key: wizardSupabaseAnon.trim(),
+      };
+
+      try {
+        const res = await fetch('/api/tenants', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tenantData: tenantPayload,
+            vaultData: vaultPayload,
+          }),
+        });
+
+        if (res.ok) {
+          showToast(`✨ Tenant "${wizardName}" aprovisionado con éxito.`);
+          setIsWizardOpen(false);
+          await loadData();
+          setWizardName('');
+          setWizardSubdomain('');
+          setWizardVercelUrl('');
+          setWizardSupabaseUrl('');
+          setWizardSupabaseAnon('');
+          setWizardGmail('');
+          return;
         }
-      );
+      } catch {
+        // Fallback
+      }
+
+      await qatuCentralService.createTenantWithVault(tenantPayload, vaultPayload);
 
       showToast(`✨ Tenant "${wizardName}" aprovisionado con éxito.`);
       setIsWizardOpen(false);

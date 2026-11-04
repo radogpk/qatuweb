@@ -167,10 +167,49 @@ const INITIAL_PAYMENTS: Payment[] = [
   },
 ];
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __qatu_mock_store:
+    | {
+        tenants: Tenant[];
+        vaults: Record<string, TenantVault>;
+        payments: Payment[];
+      }
+    | undefined;
+}
+
+const getStore = () => {
+  if (!globalThis.__qatu_mock_store) {
+    globalThis.__qatu_mock_store = {
+      tenants: [...INITIAL_TENANTS],
+      vaults: { ...INITIAL_VAULTS },
+      payments: [...INITIAL_PAYMENTS],
+    };
+  }
+  return globalThis.__qatu_mock_store;
+};
+
 class QatuCentralService {
-  private tenants: Tenant[] = [...INITIAL_TENANTS];
-  private vaults: Record<string, TenantVault> = { ...INITIAL_VAULTS };
-  private payments: Payment[] = [...INITIAL_PAYMENTS];
+  private get tenants(): Tenant[] {
+    return getStore().tenants;
+  }
+  private set tenants(val: Tenant[]) {
+    getStore().tenants = val;
+  }
+
+  private get vaults(): Record<string, TenantVault> {
+    return getStore().vaults;
+  }
+  private set vaults(val: Record<string, TenantVault>) {
+    getStore().vaults = val;
+  }
+
+  private get payments(): Payment[] {
+    return getStore().payments;
+  }
+  private set payments(val: Payment[]) {
+    getStore().payments = val;
+  }
 
   // ==========================================
   // TENANTS & GOBERNANZA

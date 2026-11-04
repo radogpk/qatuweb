@@ -2,7 +2,17 @@ export interface TenantConfig {
   slug: string;
   businessName: string;
   tagline: string;
-  rubro: 'calzado' | 'pasteleria' | 'boutique' | 'general';
+  rubro:
+    | 'calzado'
+    | 'pasteleria'
+    | 'boutique'
+    | 'gastronomia'
+    | 'restaurante'
+    | 'gym'
+    | 'comercio'
+    | 'hospedaje'
+    | 'general'
+    | (string & {});
   whatsappNumber: string; // ej: "51966888777" (sin + ni espacios)
   currency: string;
   location: string;
