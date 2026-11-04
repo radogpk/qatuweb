@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -7,424 +6,257 @@ import {
   ChevronDown,
   Globe2,
   MessageCircle,
-  Smartphone,
+  MoveUpRight,
+  ShieldCheck,
 } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/config/site";
 import { initialPricingPlans } from "@/lib/seed/initialBusinesses";
-import { demoCatalogs } from "@/lib/data/demo-catalogs";
-import { ProductDemo } from "./ProductDemo";
+import { StorefrontPreview } from "./StorefrontPreview";
+import { PremiumHero } from "./PremiumHero";
+import { QatuPricingSection } from "./QatuPricingSection";
+import "./qatu-home.css";
 
-const faqs = [
+const questions = [
   [
-    "¿Qué incluye el mantenimiento mensual?",
-    "El alojamiento de tu web, el certificado de seguridad, soporte y los cambios incluidos en tu plan. En Comercio se contemplan actualizaciones mensuales de productos y precios. Acordamos contigo el alcance antes de empezar.",
+    "¿Qué es Qatu y para quién es?",
+    "Qatu es un servicio de diseño de páginas web y catálogos digitales para pequeños negocios en Perú. Desde Ayacucho, te ayudamos a presentar tu marca, mostrar lo que vendes y recibir consultas o pedidos en tu WhatsApp. Tú compartes tu información; nosotros diseñamos y configuramos la web.",
   ],
   [
-    "¿Puedo cambiar mis productos y precios?",
-    "Sí. Nos compartes los cambios y los coordinamos según el mantenimiento de tu plan. Si necesitas ampliar el catálogo o cambiar la estructura, revisamos contigo el trabajo y el coste antes de hacerlo.",
+    "¿Cuánto cuesta una página web con Qatu?",
+    "Ofrecemos dos planes claros y sin sorpresas: el Plan Mensual por S/ 30 al mes (con un pago único de activación de S/ 90), y el Plan Anual Recomendado por S/ 300 al año con instalación y subida inicial totalmente GRATIS (ahorras 2 meses). Ambos cubren alojamiento, subdominio, catálogo para WhatsApp y soporte técnico.",
   ],
   [
-    "¿Cómo funcionan WhatsApp, Yape y Plin?",
-    "Tu cliente prepara su pedido y continúa en tu WhatsApp. Tú confirmas la disponibilidad, entrega y pago. Los planes de Comercio incluyen la presentación de tu QR de Yape o Plin; Qatu no procesa ni verifica automáticamente esos pagos.",
+    "¿Cómo llegan los pedidos a mi WhatsApp?",
+    "En los planes de comercio, tu cliente elige productos y cantidades en el catálogo. La web prepara un resumen con el total y abre WhatsApp para que el cliente te lo envíe. Tú confirmas disponibilidad, entrega y pago directamente con él. Qatu no cobra comisión por venta.",
   ],
   [
-    "¿Necesito saber de tecnología o tener una web?",
-    "No. Necesitamos la información de tu negocio, fotos, productos o servicios, precios y tus datos de contacto. Diseñamos tu web y la revisamos contigo antes de publicarla.",
+    "¿Puedo cobrar con Yape o Plin?",
+    "Sí. Los planes de comercio permiten mostrar tu QR de Yape o Plin. El cliente paga a tu cuenta y tú verificas el abono. Es una presentación de tu medio de pago; no es una pasarela con confirmación automática de pagos.",
   ],
   [
-    "¿Cuánto tarda y cuánto tengo que pagar?",
-    "Hay un pago único de creación y una cuota mensual, ambos visibles en los planes. El plazo es de 3 a 5 días hábiles para Web Informativa, de 5 a 7 para Comercio Básico y de 7 a 10 para Comercio + Reservas, una vez reunidos los materiales necesarios.",
+    "¿En cuánto tiempo estará lista mi web?",
+    "La Web Informativa se entrega en 3 a 5 días hábiles; Comercio Básico, en 5 a 7; y Comercio + Reservas, en 7 a 10. El plazo empieza cuando recibimos las fotos, textos, precios y datos necesarios. Revisamos el diseño contigo antes de publicarlo.",
   ],
   [
-    "¿Qatu cobra una comisión por cada venta?",
-    "Qatu no cobra comisión por tus ventas. Tus clientes se coordinan y pagan directamente contigo. Las condiciones que pueda aplicar tu proveedor de pagos son independientes del servicio de Qatu.",
+    "¿Necesito saber de tecnología o estar en Ayacucho?",
+    "No necesitas programar ni diseñar. Trabajamos desde Ayacucho y atendemos negocios de todo el Perú de forma remota. Nos compartes tus materiales, coordinamos los detalles contigo y te acompañamos durante la publicación y el mantenimiento.",
   ],
 ];
 
+const planFeatures: Record<string, string[]> = {
+  informativa: [
+    "Tu marca, fotos, horarios y ubicación",
+    "Dirección tunegocio.qatu.pe",
+    "Botón de contacto por WhatsApp",
+    "Alojamiento, seguridad y soporte",
+  ],
+  comercio: [
+    "Todo lo de Web Informativa",
+    "Catálogo de hasta 30 productos",
+    "Carrito con resumen a WhatsApp",
+    "Presentación de tu QR Yape o Plin",
+  ],
+  reservas: [
+    "Todo lo de Comercio Básico",
+    "Solicitud de citas o reservas",
+    "Galería de servicios o ambientes",
+    "Soporte prioritario",
+  ],
+};
+
 export function MarketingHome() {
-  const commerce = initialPricingPlans.find((plan) => plan.id === "comercio")!;
   return (
-    <div className="marketing-home">
-      <section className="marketing-hero">
-        <div className="marketing-shell hero-grid">
-          <div className="hero-story">
-            <p className="section-kicker">WEB Y CATÁLOGO PARA TU NEGOCIO</p>
-            <h1>
-              Tu marca en una web.
-              <br />
-              <span>Tus pedidos en WhatsApp.</span>
-            </h1>
-            <p className="hero-description">
-              Tus productos, precios y pedidos en un solo enlace. Diseñamos tu
-              web para que tus clientes elijan y tú sigas atendiendo por
-              WhatsApp.
-            </p>
-            <div className="hero-actions">
-              <a
-                className="marketing-button button-brand"
-                href={getWhatsAppUrl(
-                  "Hola Qatu, quiero una web con catálogo y pedidos por WhatsApp para mi negocio.",
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Quiero mi web <ArrowUpRight size={17} />
-              </a>
-              <a className="marketing-text-link" href="#demo">
-                Probar el catálogo <ArrowRight size={16} />
-              </a>
-            </div>
-            <div className="hero-pricing-pill">
-              <span className="hero-pricing-status" />
-              <p>
-                Catálogo con pedidos desde{" "}
-                <strong>S/ {commerce.monthlyPrice}/mes</strong>
-                <span> · Creación única S/ {commerce.setupPrice} · Sin comisión de Qatu por venta</span>
-              </p>
-            </div>
-          </div>
-          <ProductDemo />
+    <div className="q-home">
+      <PremiumHero />
+      <section
+        className="q-container q-section p-demo-section"
+        aria-labelledby="p-demo-title"
+      >
+        <div className="p-demo-story">
+          <p className="q-eyebrow">BUEN DISEÑO. MEJOR EXPERIENCIA.</p>
+          <h2 id="p-demo-title">
+            De «me gusta»
+            <br />
+            <em>a «lo quiero».</em>
+          </h2>
+          <p>
+            La buena impresión es solo el principio. Tus clientes encuentran lo
+            que buscan, eligen sus productos y te envían un pedido claro a
+            WhatsApp.
+          </p>
+          <ol>
+            <li>
+              <span>01</span> Elige un tipo de negocio.
+            </li>
+            <li>
+              <span>02</span> Añade productos al pedido.
+            </li>
+            <li>
+              <span>03</span> Mira el mensaje que recibirías.
+            </li>
+          </ol>
+          <a className="q-text-link" href="#planes">
+            Encuentra el plan para tu negocio <ArrowRight size={17} />
+          </a>
+        </div>
+        <div className="q-hero-stage">
+          <StorefrontPreview />
         </div>
       </section>
-      <div className="service-facts">
-        <div className="marketing-shell">
-          <span>
-            <Check size={17} />
-            Diseñamos y cargamos tu catálogo
-          </span>
-          <span>
-            <Check size={17} />
-            Tus clientes te contactan directamente
-          </span>
-          <span>
-            <Check size={17} />
-            Te acompañamos desde Ayacucho
-          </span>
-        </div>
-      </div>
 
-      <section className="marketing-section marketing-shell" id="como-funciona">
-        <div className="section-heading">
-          <div>
-            <p className="section-kicker">
-              MENOS IDAS Y VUELTAS. MÁS CLARIDAD.
-            </p>
-            <h2>
-              Tu cliente elige.
-              <br />
-              Tú recibes el pedido.
-            </h2>
-          </div>
-          <p>
-            Una web que ordena lo que vendes y se conecta con la forma en que ya
-            atiendes.
-          </p>
-        </div>
-        <div className="journey-grid">
-          <article>
-            <span className="journey-number">01 / COMPARTE</span>
-            <div className="journey-visual journey-link">
-              <Globe2 size={22} />
-              <span>
-                tunegocio<span>.qatu.pe</span>
-              </span>
-              <ArrowUpRight size={20} />
+      <section
+        className="q-journey"
+        id="como-funciona"
+        aria-labelledby="q-journey-title"
+      >
+        <div className="q-container q-section">
+          <div className="q-section-head">
+            <div>
+              <p className="q-eyebrow">DE MIRAR A PEDIR, SIN DAR VUELTAS</p>
+              <h2 id="q-journey-title">
+                Menos «¿tienes fotos?».
+                <br />
+                <em>Más «quiero esto».</em>
+              </h2>
             </div>
-            <h3>Un enlace para todo tu negocio</h3>
             <p>
-              En tu Instagram, tus estados o tu local. Tus productos, precios y
-              contacto, siempre en el mismo lugar.
+              Un catálogo web que responde las primeras preguntas y deja la
+              conversación importante en tus manos.
             </p>
-          </article>
-          <article>
-            <span className="journey-number">02 / RECIBE</span>
-            <div className="journey-visual journey-order">
-              <MessageCircle size={23} />
-              <div>
-                <strong>2 × Café de la casa</strong>
+          </div>
+          <div className="q-journey-grid">
+            <article>
+              <div className="q-step-top">
+                <span>01</span>
+                <Globe2 size={24} />
+              </div>
+              <h3>Comparte un solo enlace.</h3>
+              <p>
+                Pon tu web en Instagram, en tus redes o en el QR de tu local.
+                Tus fotos, precios y datos, en un mismo lugar.
+              </p>
+              <div className="q-url-example">
+                tunegocio.qatu.pe <ArrowUpRight size={17} />
+              </div>
+            </article>
+            <article>
+              <div className="q-step-top">
+                <span>02</span>
+                <MessageCircle size={24} />
+              </div>
+              <h3>Recibe un pedido claro.</h3>
+              <p>
+                Tu cliente elige productos y cantidades. El catálogo prepara el
+                detalle y el total para enviarlos a tu WhatsApp.
+              </p>
+              <div className="q-message-example">
+                «¡Hola! Quiero 2 cafés de la casa.»
                 <span>
-                  Total de productos <b>S/ 24.00</b>
+                  2 × S/ 12.00 <strong>S/ 24.00</strong>
                 </span>
               </div>
-            </div>
-            <h3>El pedido llega con los detalles</h3>
-            <p>
-              Tu cliente elige cantidades y continúa en WhatsApp con un resumen.
-              Menos preguntas repetidas sobre precios.
-            </p>
-          </article>
-          <article>
-            <span className="journey-number">03 / COORDINA</span>
-            <div className="journey-visual journey-payment">
-              <span>Yape</span>
-              <span>Plin</span>
-              <small>DIRECTO A TU NEGOCIO</small>
-            </div>
-            <h3>Cobras y atiendes directamente</h3>
-            <p>
-              Confirmas disponibilidad y entrega. Compartes tus datos de pago y
-              mantienes el control de la conversación.
-            </p>
-          </article>
-        </div>
-        <p className="journey-footnote">
-          El pedido de arriba es ilustrativo. Qatu no procesa pagos ni confirma
-          depósitos automáticamente.
-        </p>
-      </section>
-
-      <section className="examples-section" id="ejemplos">
-        <div className="marketing-shell marketing-section">
-          <div className="section-heading">
-            <div>
-              <p className="section-kicker">
-                TU NEGOCIO TIENE SU PROPIA PERSONALIDAD
-              </p>
-              <h2>
-                Tu web también
-                <br />
-                debería tenerla.
-              </h2>
-            </div>
-            <p>
-              Una carta para tu café. Un catálogo para tus flores. Una vitrina
-              para tus productos. La estructura se adapta a lo que haces.
-            </p>
-          </div>
-          <div className="examples-grid">
-            {demoCatalogs.map((catalog, index) => (
-              <article
-                key={catalog.id}
-                className={`example-card example-${catalog.id}`}
-              >
-                <div className="example-photo">
-                  <Image
-                    src={catalog.cover}
-                    alt={catalog.coverAlt}
-                    fill
-                    sizes="(max-width: 700px) 90vw, 380px"
-                  />
-                  <span>0{index + 1}</span>
-                </div>
-                <div className="example-copy">
-                  <span>{catalog.label.toUpperCase()} / EJEMPLO</span>
-                  <h3>
-                    {catalog.id === "cafe"
-                      ? "Una carta que abre el apetito."
-                      : catalog.id === "flores"
-                        ? "Detalles que se eligen con calma."
-                        : "Una vitrina abierta a tus ideas."}
-                  </h3>
-                  <p>
-                    {catalog.id === "cafe"
-                      ? "Fotos, precios y pedidos para recoger o coordinar delivery."
-                      : catalog.id === "flores"
-                        ? "Arreglos, opciones y una conversación para cada ocasión."
-                        : "Productos organizados y un camino claro para consultarte."}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="examples-bottom">
-            <span>
-              Diseños y fotografías ilustrativos. Cada web se prepara con tu
-              marca y tus contenidos.
-            </span>
-            <a className="marketing-text-link" href="#demo">
-              Cambiar de rubro en la demo <ArrowUpRight size={16} />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="support-section marketing-shell marketing-section">
-        <div className="support-note">
-          <p>
-            DETRÁS DE CADA NEGOCIO,
-            <br />
-            HAY ALGUIEN HACIENDO QUE PASE.
-          </p>
-          <h2>
-            Tú ponle
-            <br />
-            tu esencia.
-            <br />
-            <span>
-              Nosotros,
-              <br />
-              la web.
-            </span>
-          </h2>
-          <div>
-            <Smartphone size={18} />
-            <span>
-              Atención cercana.
-              <br />
-              Desde Ayacucho, para el Perú.
-            </span>
-          </div>
-        </div>
-        <div className="support-content">
-          <p className="section-kicker">NO TIENES QUE HACERLO SOLO</p>
-          <h2>
-            De tus primeras fotos
-            <br />
-            al primer enlace que compartes.
-          </h2>
-          <div className="support-steps">
-            {[
-              [
-                "01",
-                "Nos cuentas qué necesitas",
-                "Conversamos sobre tu negocio y elegimos el plan. Nos compartes tus fotos, precios y datos de contacto.",
-              ],
-              [
-                "02",
-                "Lo diseñamos contigo",
-                "Preparamos tu web, cargamos tu información y revisamos el resultado contigo antes de publicarla.",
-              ],
-              [
-                "03",
-                "Publicamos y te acompañamos",
-                "Te entregamos tu enlace, te sumamos al directorio y coordinamos el soporte y los cambios de tu plan.",
-              ],
-            ].map(([number, title, text]) => (
-              <div key={number}>
-                <span>{number}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </div>
+            </article>
+            <article>
+              <div className="q-step-top">
+                <span>03</span>
+                <ShieldCheck size={24} />
               </div>
-            ))}
-          </div>
-          <Link href="/para-tu-negocio" className="marketing-text-link">
-            Conocer el proceso completo <ArrowUpRight size={16} />
-          </Link>
-        </div>
-      </section>
-
-      <section className="plans-section" id="planes">
-        <div className="marketing-shell marketing-section">
-          <div className="section-heading">
-            <div>
-              <p className="section-kicker">
-                SABES LO QUE PAGAS. SABES LO QUE RECIBES.
+              <h3>Tú cierras la venta.</h3>
+              <p>
+                Confirmas el pedido, coordinas la entrega y recibes el pago en
+                tu cuenta. La relación con tu cliente sigue siendo tuya.
               </p>
-              <h2>
-                Empieza con lo que
-                <br />
-                tu negocio necesita.
-              </h2>
-            </div>
-            <p>
-              Un pago para crear tu web.
-              <br />
-              Una mensualidad para mantenerla.
-              <br />
-              Cero comisiones de Qatu por venta.
-            </p>
+              <div className="q-payment-example">
+                <span>Yape</span>
+                <span>Plin</span>
+                <span>Transferencia</span>
+              </div>
+            </article>
           </div>
-          <div className="marketing-plans">
-            {initialPricingPlans.map((plan) => (
-              <article
-                key={plan.id}
-                className={`marketing-plan ${plan.popular ? "plan-featured" : ""}`}
-              >
-                <p className="plan-label">
-                  {plan.id === "informativa"
-                    ? "PARA QUE TE ENCUENTREN"
-                    : plan.id === "comercio"
-                      ? "PARA RECIBIR PEDIDOS"
-                      : "PARA AGENDAR SERVICIOS"}
-                </p>
-                <h3>{plan.name}</h3>
-                <p className="plan-description">{plan.tagline}</p>
-                <div className="plan-price">
-                  <span>S/</span>
-                  {plan.monthlyPrice}
-                  <small>/ mes</small>
-                </div>
-                <p className="plan-setup">
-                  + S/ {plan.setupPrice} de creación inicial
-                </p>
-                <ul>
-                  {(plan.id === "informativa"
-                    ? [
-                        "Web con tu identidad y dirección propia",
-                        "Fotos, ubicación y horarios",
-                        "Botón de contacto a WhatsApp",
-                        "Soporte y cambios menores",
-                      ]
-                    : plan.id === "comercio"
-                      ? [
-                          "Todo lo de Web Informativa",
-                          "Catálogo de hasta 30 productos",
-                          "Carrito y resumen a WhatsApp",
-                          "Presentación de tu QR Yape / Plin",
-                        ]
-                      : [
-                          "Todo lo de Comercio Básico",
-                          "Solicitud de citas o reservas",
-                          "Galería de servicios o ambientes",
-                          "Soporte prioritario",
-                        ]
-                  ).map((feature) => (
-                    <li key={feature}>
-                      <Check size={15} />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={getWhatsAppUrl(
-                    `Hola Qatu, me interesa el plan ${plan.name}. Quiero conversar sobre la web de mi negocio.`,
-                  )}
-                  className={`marketing-button ${plan.popular ? "button-brand" : "button-outline"}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Consultar este plan <ArrowUpRight size={16} />
-                </a>
-                <p className="plan-delivery">Entrega: {plan.deliveryDays}</p>
-              </article>
-            ))}
-          </div>
-          <div className="plans-bottom">
-            <span>
-              Plazos a partir de la entrega de los materiales necesarios.
-            </span>
-            <Link href="/planes" className="marketing-text-link">
-              Ver todos los detalles de los planes <ArrowRight size={16} />
-            </Link>
-          </div>
+          <p className="q-journey-note">
+            El carrito y la presentación de QR están incluidos en los planes de
+            comercio. Tú verificas cada pago.
+          </p>
         </div>
       </section>
 
-      <section className="marketing-faq marketing-shell marketing-section">
-        <div>
-          <p className="section-kicker">ANTES DE DAR EL PASO</p>
-          <h2>
-            Las cosas claras,
+      <section
+        className="q-service q-section q-container"
+        aria-labelledby="q-service-title"
+      >
+        <div className="q-service-heading">
+          <p className="q-eyebrow">TÚ ATIENDES TU NEGOCIO. NOSOTROS, TU WEB.</p>
+          <h2 id="q-service-title">
+            No tienes que
             <br />
-            desde el inicio.
+            <em>hacerlo todo.</em>
           </h2>
           <p>
-            Si tu negocio necesita algo distinto,
-            <br />
-            lo conversamos contigo.
+            Qatu es un servicio de diseño web y catálogos digitales para
+            negocios en Perú. Desde Ayacucho, te acompañamos desde la primera
+            idea hasta la publicación.
           </p>
-          <Link href="/contacto" className="marketing-text-link">
-            Hacer otra pregunta <ArrowUpRight size={16} />
+          <Link className="q-text-link" href="/para-tu-negocio">
+            Conoce cómo trabajamos <ArrowUpRight size={17} />
           </Link>
         </div>
-        <div className="marketing-faq-list">
-          {faqs.map(([question, answer]) => (
+        <ol className="q-service-steps">
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Nos cuentas qué vendes.</h3>
+              <p>
+                Definimos el plan y reunimos tus fotos, precios e información.
+                Te orientamos sobre lo que hace falta.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Le damos forma a tu marca.</h3>
+              <p>
+                Diseñamos, cargamos tu contenido y revisamos contigo cada
+                detalle antes de publicar.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Tu web lista. Y nosotros cerca.</h3>
+              <p>
+                Recibes tu enlace y el soporte de tu plan para mantener la web y
+                actualizar la información.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <QatuPricingSection />
+
+      <section
+        className="q-faq q-container q-section"
+        aria-labelledby="q-faq-title"
+      >
+        <div>
+          <p className="q-eyebrow">CONVERSÉMOSLO CLARO</p>
+          <h2 id="q-faq-title">
+            Buenas preguntas.
+            <br />
+            <em>Sin letra pequeña.</em>
+          </h2>
+          <Link className="q-text-link" href="/contacto">
+            Tengo otra pregunta <ArrowUpRight size={17} />
+          </Link>
+        </div>
+        <div className="q-faq-list">
+          {questions.map(([question, answer]) => (
             <details key={question}>
               <summary>
                 {question}
-                <ChevronDown size={18} />
+                <ChevronDown size={19} />
               </summary>
               <p>{answer}</p>
             </details>
@@ -432,30 +264,28 @@ export function MarketingHome() {
         </div>
       </section>
 
-      <section className="marketing-close">
-        <div className="marketing-shell">
-          <div>
-            <p className="section-kicker">EMPECEMOS POR TU NEGOCIO</p>
+      <section className="q-close">
+        <div className="q-container">
+          <p className="q-eyebrow">DALE A TU NEGOCIO SU PROPIO LUGAR</p>
+          <div className="q-close-row">
             <h2>
-              Ya haces algo bueno.
+              Tu siguiente paso
               <br />
-              <span>Hagamos que se vea.</span>
+              <em>empieza aquí.</em>
             </h2>
-            <p>Cuéntanos qué vendes. Te ayudamos a elegir cómo mostrarlo.</p>
-          </div>
-          <div>
-            <a
-              className="marketing-button button-brand"
-              href={getWhatsAppUrl(
-                "Hola Qatu, quiero conversar sobre una web para mi negocio. Me gustaría conocer qué plan me conviene.",
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle size={18} />
-              Conversemos por WhatsApp <ArrowUpRight size={17} />
-            </a>
-            <span>Sin formularios largos. Sin compromiso.</span>
+            <div>
+              <a
+                className="q-button q-button-light"
+                href={getWhatsAppUrl(
+                  "Hola Qatu, quiero una web para mi negocio. Me gustaría contarles mi idea.",
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Cuéntanos tu idea <MoveUpRight size={22} />
+              </a>
+              <p>Hablemos por WhatsApp. Sin compromiso.</p>
+            </div>
           </div>
         </div>
       </section>
