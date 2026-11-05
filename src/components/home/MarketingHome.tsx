@@ -153,14 +153,9 @@ const SHOWCASES: Record<IndustryTab, IndustryShowcase> = {
 };
 
 const BRANDS_LIST = [
-  { name: 'QuinuaQ', rubro: 'Superfoods & Granos Andinos', loc: 'Jr. Asamblea' },
-  { name: 'TrankilandiaGym', rubro: 'Fitness & Suplementos', loc: 'Av. Mariscal Cáceres' },
-  { name: 'Huamanga Coffee', rubro: 'Cafetería de Especialidad', loc: 'Plaza Mayor' },
-  { name: 'Restaurante Las Flores', rubro: 'Gastronomía & Carta QR', loc: 'Jr. Bellido' },
-  { name: 'Boticas del Centro', rubro: 'Salud & Cuidado', loc: 'Jr. 28 de Julio' },
-  { name: 'Panadería El Sol', rubro: 'Panadería Artesanal', loc: 'Jr. Callao' },
-  { name: 'Ayacucho Moda', rubro: 'Boutique & Ropa', loc: 'Jr. 9 de Diciembre' },
-  { name: 'AgroAndina Gourmet', rubro: 'Exportación Orgánica', loc: 'Jr. Cusco' },
+  { name: 'QuinuaQ', rubro: 'Restaurante de Campo & Carta QR', loc: 'Quinua, Ayacucho' },
+  { name: 'Mama Alice ONG', rubro: 'ONG & Formación Social', loc: 'Huamanga, Ayacucho' },
+  { name: 'TrankilandiaGym', rubro: 'Fitness & Control DNI', loc: 'Av. Mariscal Cáceres' },
 ];
 
 export function MarketingHome() {
@@ -205,7 +200,7 @@ export function MarketingHome() {
     },
     {
       q: '¿Puedo usar mi propio dominio como .com o .pe?',
-      a: 'Sí. Tu plan incluye gratis el subdominio seguro tunegocio.qatuweb.com con certificado SSL. Si deseas conectar tu propio dominio (ej: calzadoslucas.com o mifarmacia.pe), lo vinculamos sin costo técnico adicional.',
+      a: 'Sí. Tu plan incluye gratis el subdominio seguro tunegocio.qatuweb.com con certificado SSL. Si deseas conectar tu propio dominio (ej: quinuaq.com o trankilandia.pe), lo vinculamos sin costo técnico adicional.',
     },
     {
       q: '¿En cuánto tiempo entregan el sistema funcionando?',
@@ -253,7 +248,7 @@ export function MarketingHome() {
 
             {/* Subtítulo con Densidad Semántica de Negocio */}
             <p className="text-sm sm:text-base lg:text-[17px] text-slate-600 leading-relaxed max-w-xl font-normal mx-auto lg:mx-0">
-              La plataforma todo en uno para digitalizar tu negocio: catálogo web ultrarrápido, pedidos directos y organizados a tu WhatsApp y cobros por Yape o Plin con <strong>0% comisiones por venta</strong>. Creado para marcas y comercios en Ayacucho y todo el país.
+              La plataforma todo en uno para digitalizar tu negocio: catálogo web ultrarrápido, pedidos directos y organizados a tu WhatsApp y cobros por Yape o Plin con <strong>0% comisiones por venta</strong>. Creado para marcas y proyectos en Ayacucho y todo el país.
             </p>
 
             {/* Tarjeta de Captura Interactiva Estilo Shopify (Simulador en Vivo) */}
@@ -271,7 +266,7 @@ export function MarketingHome() {
               </div>
 
               <p className="text-xs text-slate-400 font-normal">
-                Escribe el nombre de tu marca para ver cómo lucirá tu tienda oficial en tiempo real:
+                Escribe tu negocio (ej. QuinuaQ, TrankilandiaGym, Mama Alice, Outlet...) para ver la vista previa:
               </p>
 
               <form onSubmit={handleQuickLead} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl p-1.5 focus-within:ring-2 focus-within:ring-emerald-500 transition shadow-inner">
@@ -281,7 +276,7 @@ export function MarketingHome() {
                     type="text"
                     value={businessInput}
                     onChange={(e) => setBusinessInput(e.target.value)}
-                    placeholder="Tu marca (ej. QuinuaQ, TrankilandiaGym)"
+                    placeholder="Tu negocio (ej. QuinuaQ, TrankilandiaGym, Mama Alice, Outlet...)"
                     className="w-full bg-transparent py-1.5 sm:py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none font-medium"
                   />
                 </div>
@@ -314,56 +309,133 @@ export function MarketingHome() {
 
           </div>
 
-          {/* ── COLUMNA DERECHA: Canvas de Estudio Reactivo (Span 5) ── */}
+          {/* ── COLUMNA DERECHA: Canvas de Estudio Reactivo Inteligente (Span 5) ── */}
           <div className="lg:col-span-5 flex justify-center">
 
             {(() => {
               const inputLower = businessInput.trim().toLowerCase();
-              const isGym = inputLower.includes('gym') || inputLower.includes('trankilandia') || inputLower.includes('fitness');
-              const isShoes = inputLower.includes('calzado') || inputLower.includes('zapato');
+              const cleanSlug = businessInput.trim()
+                ? businessInput.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '') || 'mitienda'
+                : 'quinuaq';
 
-              const activeData = isGym ? {
+              // Clasificación inteligente multi-rubro
+              const isNGO = inputLower.includes('mamaalice') || inputLower.includes('mama alice') || inputLower.includes('ong') || inputLower.includes('fundacion') || inputLower.includes('social') || inputLower.includes('donacion');
+              const isGym = inputLower.includes('gym') || inputLower.includes('trankilandia') || inputLower.includes('fitness') || inputLower.includes('pesas') || inputLower.includes('crossfit');
+              const isOutlet = inputLower.includes('outlet') || inputLower.includes('moda') || inputLower.includes('ropa') || inputLower.includes('boutique') || inputLower.includes('zapatilla') || inputLower.includes('sneaker') || inputLower.includes('streetwear') || inputLower.includes('calzado') || inputLower.includes('jeans');
+              const isFood = inputLower.includes('restaurante') || inputLower.includes('restaurant') || inputLower.includes('comida') || inputLower.includes('cafe') || inputLower.includes('cafeteria') || inputLower.includes('polleria') || inputLower.includes('ceviche') || inputLower.includes('pizza') || inputLower.includes('burger') || inputLower.includes('chifa') || inputLower.includes('bar');
+              const isTech = inputLower.includes('tech') || inputLower.includes('tecnologia') || inputLower.includes('celular') || inputLower.includes('iphone') || inputLower.includes('laptop') || inputLower.includes('computo') || inputLower.includes('gadgets');
+              const isBeauty = inputLower.includes('barber') || inputLower.includes('barberia') || inputLower.includes('salon') || inputLower.includes('spa') || inputLower.includes('belleza') || inputLower.includes('cosmetica') || inputLower.includes('skincare');
+              const isMarket = inputLower.includes('market') || inputLower.includes('minimarket') || inputLower.includes('bodega') || inputLower.includes('licor') || inputLower.includes('licoreria') || inputLower.includes('bebida') || inputLower.includes('pisco');
+              const isHealth = inputLower.includes('botica') || inputLower.includes('farmacia') || inputLower.includes('salud') || inputLower.includes('dental') || inputLower.includes('clinica');
+
+              const activeData = isNGO ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'MAMA ALICE ONG',
+                slug: cleanSlug || 'mamaalice',
+                tagline: 'ONG & IMPACTO SOCIAL • HUAMANGA, AYACUCHO',
+                p1: { name: 'Educación y Niños', img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Capacitación y Oficios', img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Comunidad Solidaria', img: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=300&auto=format&fit=crop&q=80' },
+                card: {
+                  title: 'Donación / Kit Escolar',
+                  price: 'S/ 50',
+                  img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&auto=format&fit=crop&q=80'
+                }
+              } : isGym ? {
                 storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'TRANKILANDIAGYM',
-                slug: businessInput.trim()
-                  ? businessInput.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '') || 'trankilandia'
-                  : 'trankilandia',
-                tagline: 'FITNESS & SUPLEMENTOS • TIENDA OFICIAL',
+                slug: cleanSlug || 'trankilandia',
+                tagline: 'FITNESS & CONTROL DE MEMBRESÍAS • AYACUCHO',
                 p1: { name: 'Whey Protein Isolate', img: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=300&auto=format&fit=crop&q=80' },
                 p2: { name: 'Creatina Monohidratada', img: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=300&auto=format&fit=crop&q=80' },
-                p3: { name: 'Shaker Pro Deportivo', img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Entrenamiento & Pesas', img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=300&auto=format&fit=crop&q=80' },
                 card: {
-                  title: businessInput.trim() ? `${businessInput.trim()}` : 'Whey Protein Isolate 2kg',
-                  price: 'S/ 149',
+                  title: 'Membresía Mensual Libre',
+                  price: 'S/ 120',
                   img: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=300&auto=format&fit=crop&q=80'
                 }
-              } : isShoes ? {
-                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'CALZADOS',
-                slug: businessInput.trim()
-                  ? businessInput.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '') || 'calzados'
-                  : 'calzados',
-                tagline: 'CALZADO & MODA URBANA • TIENDA OFICIAL',
-                p1: { name: 'Botín Cuero Caña Alta', img: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=300&auto=format&fit=crop&q=80' },
-                p2: { name: 'Zapatilla Urbana Classic', img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&auto=format&fit=crop&q=80' },
-                p3: { name: 'Sneakers Streetwear', img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&auto=format&fit=crop&q=80' },
+              } : isOutlet ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'OUTLET URBANO',
+                slug: cleanSlug || 'outlet',
+                tagline: 'OUTLET DE MODA & SNEAKERS • TIENDA OFICIAL',
+                p1: { name: 'Sneakers Streetwear', img: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Casaca Denim Street', img: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Zapatilla Urban Classic', img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&auto=format&fit=crop&q=80' },
                 card: {
-                  title: businessInput.trim() ? `${businessInput.trim()}` : 'Botín Cuero Caña Alta',
-                  price: 'S/ 120',
-                  img: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=300&auto=format&fit=crop&q=80'
+                  title: 'Sneaker Urbano Streetwear',
+                  price: 'S/ 119',
+                  img: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=300&auto=format&fit=crop&q=80'
+                }
+              } : isTech ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'TECH STORE',
+                slug: cleanSlug || 'techstore',
+                tagline: 'TECNOLOGÍA & ACCESORIOS • ENVÍOS PERÚ',
+                p1: { name: 'Audífonos Pro Wireless', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Smartwatch Deportivo', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Gadgets & Carga Rápida', img: 'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=300&auto=format&fit=crop&q=80' },
+                card: {
+                  title: 'Audífonos Pro Noise Cancelling',
+                  price: 'S/ 89',
+                  img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=80'
+                }
+              } : isBeauty ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'STUDIO & BEAUTY',
+                slug: cleanSlug || 'studio',
+                tagline: 'BELLEZA & CUIDADO PERSONAL • TIENDA OFICIAL',
+                p1: { name: 'Sérum Facial Botánico', img: 'https://images.unsplash.com/photo-1608248597359-59750047b4d1?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Cosmética Natural', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Barber & Estética', img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300&auto=format&fit=crop&q=80' },
+                card: {
+                  title: 'Sérum Facial Botánico 50ml',
+                  price: 'S/ 48',
+                  img: 'https://images.unsplash.com/photo-1608248597359-59750047b4d1?w=300&auto=format&fit=crop&q=80'
+                }
+              } : isMarket ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'MARKET EXPRESS',
+                slug: cleanSlug || 'market',
+                tagline: 'MINIMARKET & LICORERÍA • DELIVERY EN MINUTOS',
+                p1: { name: 'Pack Pisco Quebranta', img: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Vinos & Bebidas', img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Snacks & Abarrotes', img: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=300&auto=format&fit=crop&q=80' },
+                card: {
+                  title: 'Pack Pisco Quebranta + Mixers',
+                  price: 'S/ 65',
+                  img: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?w=300&auto=format&fit=crop&q=80'
+                }
+              } : isHealth ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'BOTICA & SALUD',
+                slug: cleanSlug || 'botica',
+                tagline: 'BOTICA & SALUD INTEGRAL • ATENCIÓN INMEDIATA',
+                p1: { name: 'Multivitamínico Zinc', img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Botiquín y Cuidado', img: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Suplementos Nutricionales', img: 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=300&auto=format&fit=crop&q=80' },
+                card: {
+                  title: 'Multivitamínico Zinc + Vitamina C',
+                  price: 'S/ 38',
+                  img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&auto=format&fit=crop&q=80'
+                }
+              } : isFood ? {
+                storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'RESTAURANTE & CARTA',
+                slug: cleanSlug || 'restaurant',
+                tagline: 'GASTRONOMÍA & CARTA QR • PEDIDOS POR WHATSAPP',
+                p1: { name: 'Plato Especial a la Carta', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Bebida y Café Pasado', img: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Parrilla & Especialidad', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&auto=format&fit=crop&q=80' },
+                card: {
+                  title: 'Plato a la Carta / Especial',
+                  price: 'S/ 32',
+                  img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=80'
                 }
               } : {
-                // Default: QuinuaQ (Superfoods & Alimentos Andinos Peruanos)
+                // Caso por defecto: QUINUAQ (Restaurante de Campo en Quinua, Ayacucho)
                 storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'QUINUAQ',
-                slug: businessInput.trim()
-                  ? businessInput.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '') || 'quinuaq'
-                  : 'quinuaq',
-                tagline: 'SUPERFOODS & ALIMENTOS ANDINOS • PERÚ',
-                p1: { name: 'Quinua Real Orgánica', img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&auto=format&fit=crop&q=80' },
-                p2: { name: 'Café de Altura Gourmet', img: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300&auto=format&fit=crop&q=80' },
-                p3: { name: 'Cacao Chuncho 70%', img: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=300&auto=format&fit=crop&q=80' },
+                slug: cleanSlug || 'quinuaq',
+                tagline: businessInput.trim() ? 'CATÁLOGO DIGITAL & PEDIDOS • AYACUCHO, PERÚ' : 'RESTAURANTE DE CAMPO & CARTA DIGITAL • QUINUA, AYACUCHO',
+                p1: { name: 'Trucha Andina a la Parrilla', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=80' },
+                p2: { name: 'Café de Especialidad y Postre', img: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=300&auto=format&fit=crop&q=80' },
+                p3: { name: 'Parrilla Campestre Tradicional', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&auto=format&fit=crop&q=80' },
                 card: {
-                  title: businessInput.trim() ? `${businessInput.trim()}` : 'Quinua Real Orgánica 1kg',
-                  price: 'S/ 24',
-                  img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&auto=format&fit=crop&q=80'
+                  title: businessInput.trim() ? `${businessInput.trim()}` : 'Trucha Andina a la Parrilla',
+                  price: 'S/ 36',
+                  img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=80'
                 }
               };
 
@@ -497,10 +569,10 @@ export function MarketingHome() {
 
         </div>
 
-        {/* ── BARRA DESLIZANTE INFINITA: Marquee de Negocios en el Perú (Ajuste Compacto para encajar en Pantalla) ── */}
+        {/* ── BARRA DESLIZANTE INFINITA: Marquee de Nuestros 3 Proyectos Reales ── */}
         <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-200/80">
           <p className="text-center text-[11px] sm:text-xs uppercase font-bold tracking-widest text-slate-500 mb-2.5">
-            Más de 40 comercios y marcas independientes venden con Qatu Web en el Perú
+            Nuestros 3 proyectos y marcas activas en producción con Qatu Web
           </p>
 
           {/* Carril de Marquesina Continua */}
@@ -510,29 +582,33 @@ export function MarketingHome() {
             <div className="absolute right-0 inset-y-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
 
             <div className="animate-marquee flex items-center gap-4 sm:gap-6">
-              {/* Primer bloque de marcas */}
-              {BRANDS_LIST.map((b, idx) => (
+              {/* Primer bloque de marcas (los 3 proyectos reales repetidos para continuidad de loop) */}
+              {[...BRANDS_LIST, ...BRANDS_LIST].map((b, idx) => (
                 <div
                   key={`b1-${idx}`}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
-                  <span className="text-[10px] text-emerald-600 font-mono font-bold">#{idx + 1}</span>
+                  <span className="text-[10px] text-emerald-600 font-mono font-bold">#{((idx) % 3) + 1}</span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[11px] font-medium text-slate-500">{b.loc}</span>
+                  <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
+                  <span className="text-slate-300">•</span>
+                  <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">{b.loc}</span>
                 </div>
               ))}
 
               {/* Segundo bloque idéntico para continuidad infinita */}
-              {BRANDS_LIST.map((b, idx) => (
+              {[...BRANDS_LIST, ...BRANDS_LIST].map((b, idx) => (
                 <div
                   key={`b2-${idx}`}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
-                  <span className="text-[10px] text-emerald-600 font-mono font-bold">#{idx + 1}</span>
+                  <span className="text-[10px] text-emerald-600 font-mono font-bold">#{((idx) % 3) + 1}</span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[11px] font-medium text-slate-500">{b.loc}</span>
+                  <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
+                  <span className="text-slate-300">•</span>
+                  <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">{b.loc}</span>
                 </div>
               ))}
             </div>
@@ -542,68 +618,27 @@ export function MarketingHome() {
       </section>
 
       {/* ============================================================== */}
-      {/* 2. BENTO GRID DE LAS 3 VERTICALES OFICIALES                   */}
+      {/* 2. BENTO GRID DE LOS 3 PROYECTOS REALES EN AYACUCHO           */}
       {/* ============================================================== */}
       <section className="py-20 sm:py-24 bg-slate-50 border-y border-slate-200/80" id="demos">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200/80 text-slate-800 border border-slate-300/80">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Tres Negocios Reales en Huamanga</span>
+              <span>Nuestros 3 Proyectos Reales en Ayacucho</span>
               <span className="text-slate-400">•</span>
-              <span>Demos 100% Funcionales</span>
+              <span>Casos 100% en Producción</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
-              Sistemas probados para cada rubro
+              Sistemas a medida para marcas reales
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Toca para abrir la tienda que verá tu cliente en su celular, y el panel privado desde donde controlarás precios y pedidos en segundos.
+              Descubre las soluciones creadas por Qatu Web para gastronomía, impacto social y fitness en Ayacucho. Sistemas en vivo con pedidos por WhatsApp y paneles de control inmediato.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" id="soluciones">
-            {/* Vertical 1: Calzados Lucas */}
-            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-xs">
-                  <Store className="w-6 h-6 text-emerald-400" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
-                    Comercio & Calzado
-                  </span>
-                  <h3 className="text-xl font-black text-slate-950 mt-1">
-                    Calzados Lucas Huamanga
-                  </h3>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Catálogo móvil táctil con selector de tallas y variantes, carrito rápido y comanda automática lista para enviar directo al WhatsApp del dueño.
-                </p>
-                <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Caso activo: <strong>calzadoslucas.qatuweb.com</strong></span>
-                </div>
-              </div>
-
-              <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
-                <Link
-                  href="/demo/calzados"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition active:scale-95"
-                >
-                  <span>Probar Tienda Móvil</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
-                </Link>
-                <Link
-                  href="/demo/calzados/admin"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200 transition"
-                >
-                  <Smartphone className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Ver Panel de Bolsillo (/admin)</span>
-                </Link>
-              </div>
-            </article>
-
-            {/* Vertical 2: Restaurante Las Flores */}
+            {/* Proyecto 1: QuinuaQ */}
             <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center shadow-xs">
@@ -611,18 +646,18 @@ export function MarketingHome() {
                 </div>
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-wider text-amber-700">
-                    Gastronomía & Carta QR
+                    Gastronomía de Campo & Carta QR
                   </span>
                   <h3 className="text-xl font-black text-slate-950 mt-1">
-                    Restaurante Las Flores
+                    QuinuaQ Restaurante de Campo
                   </h3>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Carta QR interactiva para mesas y delivery, cero comisiones de apps externas, y switch instantáneo de plato agotado en tiempo real.
+                  Carta digital QR campestre para mesas y pedidos a domicilio en Quinua y Huamanga. Switch de platos agotados en un toque y recepción de comandas automáticas organizadas por WhatsApp sin comisiones abusivas.
                 </p>
                 <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Caso activo: <strong>lasflores.qatuweb.com</strong></span>
+                  <span>Caso activo: <strong>quinuaq.qatuweb.com</strong></span>
                 </div>
               </div>
 
@@ -631,7 +666,7 @@ export function MarketingHome() {
                   href="/demo/pasteleria"
                   className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition active:scale-95"
                 >
-                  <span>Probar Carta QR & Delivery</span>
+                  <span>Probar Carta Digital QuinuaQ</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <Link
@@ -639,12 +674,55 @@ export function MarketingHome() {
                   className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-50 text-amber-900 text-xs font-semibold hover:bg-amber-100 transition"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Ver Panel de Cocina / Admin</span>
+                  <span>Ver Panel de Cocina / Pedidos</span>
                 </Link>
               </div>
             </article>
 
-            {/* Vertical 3: Trankilandia Gym */}
+            {/* Proyecto 2: Mama Alice ONG */}
+            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+                  <ShieldCheck className="w-6 h-6 text-indigo-200" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700">
+                    ONG & Formación Social
+                  </span>
+                  <h3 className="text-xl font-black text-slate-950 mt-1">
+                    Mama Alice ONG
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Plataforma para difusión de proyectos educativos y sociales, registro de voluntarios, canal de donaciones transparentes y catálogo de oficios técnicos de gastronomía y hospitalidad para jóvenes de Ayacucho.
+                </p>
+                <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <span>Caso activo: <strong>mamaalice.qatuweb.com</strong></span>
+                </div>
+              </div>
+
+              <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
+                <Link
+                  href="/portal"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition active:scale-95"
+                >
+                  <span>Ver Portal Solidario</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </Link>
+                <a
+                  href="https://www.mamaalice.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-50 text-indigo-900 text-xs font-semibold hover:bg-indigo-100 transition"
+                >
+                  <Globe2 className="w-3.5 h-3.5 text-indigo-700" />
+                  <span>Conocer Proyecto Oficial Mama Alice</span>
+                </a>
+              </div>
+            </article>
+
+            {/* Proyecto 3: Trankilandia Gym */}
             <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
@@ -659,7 +737,7 @@ export function MarketingHome() {
                   </h3>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Control de membresías activas vs vencidas, check-in express escaneando el código de barras del DNI, y arqueo de caja diario para counter.
+                  Control de membresías activas vs vencidas, check-in express escaneando el código de barras del DNI, venta de suplementos deportivos y arqueo de caja diario para counter en Huamanga.
                 </p>
                 <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
