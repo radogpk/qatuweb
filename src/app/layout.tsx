@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, Caveat } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import "./marketing.css";
 import "./interior.css";
@@ -19,13 +19,6 @@ const sansFont = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const handwritingFont = Caveat({
-  subsets: ["latin"],
-  variable: "--font-handwriting",
-  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -59,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${headingFont.variable} ${sansFont.variable} ${handwritingFont.variable}`}
+      className={`${headingFont.variable} ${sansFont.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-white text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
         <Navbar />
