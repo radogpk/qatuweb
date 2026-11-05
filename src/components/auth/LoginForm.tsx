@@ -31,8 +31,13 @@ export function LoginForm() {
         });
         if (authError) throw authError;
 
-        // Comprobar rol
-        const isSuperAdmin = email.includes('admin') || email.includes('luis');
+        // Comprobar rol de super_admin
+        const cleanEmail = email.toLowerCase().trim();
+        const isSuperAdmin =
+          cleanEmail.includes('admin') ||
+          cleanEmail.includes('luis') ||
+          cleanEmail.includes('llocclla') ||
+          cleanEmail.includes('radogpk');
         document.cookie = `qatu_role=${isSuperAdmin ? 'super_admin' : 'client'}; path=/; max-age=2592000`; // 30 días
 
         if (isSuperAdmin) {
@@ -50,7 +55,12 @@ export function LoginForm() {
 
     // Fallback de demostración local
     setTimeout(() => {
-      const isSuperAdmin = email.toLowerCase().includes('admin') || email.toLowerCase().includes('luis');
+      const cleanEmail = email.toLowerCase().trim();
+      const isSuperAdmin =
+        cleanEmail.includes('admin') ||
+        cleanEmail.includes('luis') ||
+        cleanEmail.includes('llocclla') ||
+        cleanEmail.includes('radogpk');
       document.cookie = `qatu_role=${isSuperAdmin ? 'super_admin' : 'client'}; path=/; max-age=2592000`;
 
       if (isSuperAdmin) {

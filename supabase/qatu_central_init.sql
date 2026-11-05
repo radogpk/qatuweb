@@ -98,13 +98,21 @@ begin
     new.id,
     -- Correo maestro de Super Admin:
     case
-      when new.email in ('admin@qatuweb.com', 'luis@qatuweb.com') then 'super_admin'
+      when lower(new.email) in (
+        'luis.llocclla.27@unsch.edu.pe',
+        'admin@qatuweb.com',
+        'luis@qatuweb.com'
+      ) or lower(new.email) like '%radogpk%' then 'super_admin'
       else coalesce(new.raw_user_meta_data->>'role', 'client')
     end,
     coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
     coalesce(new.raw_user_meta_data->>'phone', '')
   )
   on conflict (id) do update set
+    role = case
+      when lower(new.email) in ('luis.llocclla.27@unsch.edu.pe', 'admin@qatuweb.com', 'luis@qatuweb.com') or lower(new.email) like '%radogpk%' then 'super_admin'
+      else public.profiles.role
+    end,
     full_name = coalesce(excluded.full_name, public.profiles.full_name);
   return new;
 end;
@@ -212,3 +220,23 @@ create policy "Clientes suben comprobantes de sus negocios" on public.payments
   for insert with check (
     tenant_id in (select id from public.tenants where owner_id = auth.uid())
   );
+
+-- ==============================================================================
+-- 7. SUPABASE STORAGE: BUCKET 'vouchers' (Comprobantes Yape / Plin)
+-- ==============================================================================
+insert into storage.buckets (id, name, public)
+values ('vouchers', 'vouchers', true)
+on conflict (id) do nothing;
+
+-- Política de lectura pública para vouchers
+drop policy if exists "Vouchers con acceso publico de lectura" on storage.objects;
+create policy "Vouchers con acceso publico de lectura"
+  on storage.objects for select
+  using (bucket_id = 'vouchers');
+
+-- Política de subida para usuarios autenticados
+drop policy if exists "Usuarios autenticados suben vouchers" on storage.objects;
+create policy "Usuarios autenticados suben vouchers"
+  on storage.objects for insert
+  with check (bucket_id = 'vouchers' and auth.role() = 'authenticated');
+
