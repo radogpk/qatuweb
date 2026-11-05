@@ -76,9 +76,9 @@ export function Navbar() {
           </a>
           <a
             href="/#precios"
-            className="px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:bg-white transition"
+            className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
           >
-            Precios (S/ 30)
+            Planes
           </a>
         </nav>
 
@@ -167,9 +167,9 @@ export function Navbar() {
             <a
               href="/#precios"
               onClick={() => setMobileOpen(false)}
-              className="px-3 py-2 rounded-xl text-emerald-700 hover:bg-emerald-50 transition font-bold"
+              className="px-3 py-2 rounded-xl text-slate-800 hover:bg-slate-50 transition font-medium"
             >
-              Precios y Módulos (S/ 30)
+              Planes y Precios
             </a>
             <Link
               href="/login"
