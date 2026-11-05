@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Caveat } from "next/font/google";
 import "./globals.css";
 import "./marketing.css";
+import "./interior.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
@@ -21,6 +22,13 @@ const sansFont = Inter({
   display: "swap",
 });
 
+const handwritingFont = Caveat({
+  subsets: ["latin"],
+  variable: "--font-handwriting",
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${siteConfig.name} — Tu marca en una web. Tus pedidos en WhatsApp.`,
@@ -28,9 +36,6 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     title: `${siteConfig.name} — Web y catálogo para tu negocio`,
     description: siteConfig.description,
@@ -52,14 +57,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${headingFont.variable} ${sansFont.variable}`}>
+    <html
+      lang="es"
+      className={`${headingFont.variable} ${sansFont.variable} ${handwritingFont.variable}`}
+    >
       <body className="min-h-screen flex flex-col bg-white text-slate-900 antialiased selection:bg-brand-500 selection:text-white">
         <Navbar />
-        <main id="contenido" className="flex-1">{children}</main>
+        <main id="contenido" className="flex-1">
+          {children}
+        </main>
         <Footer />
         <WhatsAppFloat />
       </body>
     </html>
   );
 }
-

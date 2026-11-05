@@ -1,81 +1,62 @@
 import { siteConfig, getWhatsAppUrl } from "@/lib/config/site";
-import { MessageCircle, Mail, MapPin, Clock, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Mail, MapPin, ArrowUpRight } from "lucide-react";
 
 export function DirectWhatsAppCard() {
   return (
-    <div className="space-y-6">
-      {/* WhatsApp Business Card */}
-      <div className="bg-slate-900 text-white rounded-2xl p-8 border border-slate-800 shadow-card space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md">
-            <MessageCircle className="w-6 h-6 fill-white" />
-          </div>
-          <div>
-            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">
-              Canal Prioritario
-            </span>
-            <h3 className="text-xl font-heading font-extrabold text-white">
-              WhatsApp Business
-            </h3>
-          </div>
-        </div>
-
-        <p className="text-sm text-slate-300 leading-relaxed">
-          ¿Prefieres una respuesta inmediata? Escríbenos directamente y te atenderá un miembro de nuestro equipo sin esperas.
+    <aside className="overflow-hidden rounded-2xl border border-[#d5dccb] bg-gradient-to-br from-[#eef2e6] via-[#f6f5eb] to-[#fffaf1] p-6 sm:p-8 shadow-[0_8px_30px_-24px_#283d30]">
+      <div className="mb-8 flex items-center gap-3 text-[#476047]">
+        <MessageCircle aria-hidden="true" className="h-5 w-5" />
+        <p className="text-[10px] font-semibold uppercase tracking-[0.14em]">
+          Contacto directo
         </p>
-
-        <a
-          href={getWhatsAppUrl("Hola Qatu, deseo consultar sobre una página web para mi negocio.")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-center font-semibold text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-95"
-        >
-          <span>Escribir al WhatsApp (+51 966 123 456)</span>
-          <ArrowUpRight className="w-4 h-4" />
-        </a>
       </div>
 
-      {/* Office & Direct info */}
-      <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-card space-y-5">
-        <h3 className="font-heading font-bold text-lg text-slate-900">
-          Información de Contacto
-        </h3>
+      <h2 className="max-w-xs font-heading text-[32px] font-semibold leading-[1.12] tracking-[-0.035em] text-[#2d3d30] sm:text-[36px]">
+        Hablemos de tu negocio.
+      </h2>
+      <p className="mt-4 max-w-sm text-sm leading-7 text-[#596650]">
+        Si prefieres conversar, empieza por WhatsApp. Cuéntanos qué vendes y qué
+        necesitas de tu web.
+      </p>
 
-        <div className="space-y-4 text-xs sm:text-sm text-slate-600">
-          <div className="flex items-start gap-3">
-            <MapPin className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-slate-900 block font-heading">Sede Principal:</strong>
-              <span>Huamanga, Ayacucho, Perú</span>
-            </div>
-          </div>
+      <a
+        href={getWhatsAppUrl(
+          "Hola Qatu, deseo consultar sobre una página web para mi negocio.",
+        )}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group mt-7 flex min-h-[52px] w-full items-center justify-between gap-3 rounded-lg bg-[#2d4936] px-5 py-3.5 text-sm font-semibold text-[#fffdf5] transition duration-200 hover:bg-[#203b29] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2d4936] active:scale-[0.98]"
+      >
+        <span>
+          Abrir WhatsApp
+          <span className="sr-only"> (se abre en una pestaña nueva)</span>
+        </span>
+        <ArrowUpRight
+          aria-hidden="true"
+          className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
+        />
+      </a>
 
-          <div className="flex items-start gap-3">
-            <Mail className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-slate-900 block font-heading">Correo Electrónico:</strong>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="hover:text-brand-600 underline decoration-dotted"
-              >
-                {siteConfig.email}
-              </a>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <Clock className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-slate-900 block font-heading">Horario de Atención:</strong>
-              <span>Lunes a Sábado: 8:00 AM – 8:00 PM</span>
-            </div>
-          </div>
+      <address className="mt-8 space-y-5 border-t border-[#d4dbca] pt-6 not-italic">
+        <div>
+          <p className="mb-1 text-xs text-[#64715c]">También por correo</p>
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="inline-flex min-h-[44px] max-w-full items-center gap-3 text-sm font-medium text-[#324732] underline decoration-[#aebba5] underline-offset-4 transition-colors hover:text-brand-700"
+          >
+            <Mail aria-hidden="true" className="h-4 w-4 shrink-0" />
+            <span className="break-all">{siteConfig.email}</span>
+          </a>
         </div>
 
-        <div className="pt-3 border-t border-slate-100 text-xs text-slate-400">
-          RUC: 20610987654 · Qatu Digital S.A.C.
+        <div className="flex items-start gap-3 text-[#52624a]">
+          <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-[#324732]">Desde Ayacucho</p>
+            <p className="text-xs leading-5">{siteConfig.location}</p>
+          </div>
         </div>
-      </div>
-    </div>
+      </address>
+    </aside>
   );
 }

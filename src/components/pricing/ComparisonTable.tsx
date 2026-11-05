@@ -1,6 +1,12 @@
+import { initialPricingPlans } from "@/lib/seed/initialBusinesses";
 import { Check, Minus } from "lucide-react";
 
 export function ComparisonTable() {
+  const informativa = initialPricingPlans.find(
+    (plan) => plan.id === "informativa",
+  )!;
+  const comercio = initialPricingPlans.find((plan) => plan.id === "comercio")!;
+  const reservas = initialPricingPlans.find((plan) => plan.id === "reservas")!;
   const rows = [
     {
       feature: "Subdominio propio (tunegocio.qatu.pe)",
@@ -40,9 +46,9 @@ export function ComparisonTable() {
     },
     {
       feature: "Catálogo interactivo con precios y fotos",
-      informativa: "Básico (hasta 10)",
+      informativa: "Presentación informativa",
       comercio: "Extenso (hasta 30)",
-      reservas: "Extenso (hasta 40)",
+      reservas: "Hasta 30 productos",
     },
     {
       feature: "Carrito de compras con pedido ordenado a WhatsApp",
@@ -70,28 +76,28 @@ export function ComparisonTable() {
     },
     {
       feature: "Tiempo estimado de entrega",
-      informativa: "3 a 5 días",
-      comercio: "5 a 7 días",
-      reservas: "7 a 10 días",
+      informativa: informativa.deliveryDays,
+      comercio: comercio.deliveryDays,
+      reservas: reservas.deliveryDays,
     },
     {
       feature: "Soporte técnico y cambios menores incluidos",
-      informativa: "1 cambio/mes",
-      comercio: "2 cambios/mes",
+      informativa: "Cambios menores cada mes",
+      comercio: "Productos y precios cada mes",
       reservas: "Soporte prioritario",
     },
     {
-      feature: "Pago único de Setup (Diseño y Configuración)",
-      informativa: "S/ 250",
-      comercio: "S/ 450",
-      reservas: "S/ 650",
+      feature: "Creación de tu web (pago único)",
+      informativa: `S/ ${informativa.setupPrice}`,
+      comercio: `S/ ${comercio.setupPrice}`,
+      reservas: `S/ ${reservas.setupPrice}`,
       isPrice: true,
     },
     {
-      feature: "Renta mensual (Mantenimiento, hosting y dominio)",
-      informativa: "S/ 49 / mes",
-      comercio: "S/ 69 / mes",
-      reservas: "S/ 89 / mes",
+      feature: "Mensualidad (mantenimiento, hosting y subdominio)",
+      informativa: `S/ ${informativa.monthlyPrice} / mes`,
+      comercio: `S/ ${comercio.monthlyPrice} / mes`,
+      reservas: `S/ ${reservas.monthlyPrice} / mes`,
       isPrice: true,
     },
   ];
@@ -100,38 +106,58 @@ export function ComparisonTable() {
     if (typeof val === "boolean") {
       return val ? (
         <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
-          <Check className="w-3.5 h-3.5 stroke-[3]" />
+          <Check aria-hidden="true" className="w-3.5 h-3.5 stroke-[3]" />
+          <span className="sr-only">Incluido</span>
         </div>
       ) : (
         <div className="text-slate-300 flex justify-center">
-          <Minus className="w-4 h-4" />
+          <Minus aria-hidden="true" className="w-4 h-4" />
+          <span className="sr-only">No incluido</span>
         </div>
       );
     }
     return (
-      <span className="font-bold text-xs sm:text-sm text-slate-900">
-        {val}
-      </span>
+      <span className="font-bold text-xs sm:text-sm text-slate-900">{val}</span>
     );
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
-      <div className="overflow-x-auto">
+    <div className="relative min-w-0 max-w-full bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+      <div
+        className="relative max-w-full overflow-x-auto"
+        tabIndex={0}
+        role="region"
+        aria-label="Comparación de planes: desplaza horizontalmente para ver todas las columnas"
+      >
         <table className="w-full text-left border-collapse">
+          <caption className="sr-only">
+            Funciones y precios de los planes de Qatu
+          </caption>
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">
-              <th className="p-4 sm:p-5 text-sm font-heading font-bold text-slate-900 min-w-[240px]">
+              <th
+                scope="col"
+                className="p-4 sm:p-5 text-sm font-heading font-bold text-slate-900 min-w-[240px]"
+              >
                 Característica / Servicio
               </th>
-              <th className="p-4 sm:p-5 text-center text-sm font-heading font-bold text-slate-800 min-w-[140px]">
-                Web Informativa
+              <th
+                scope="col"
+                className="p-4 sm:p-5 text-center text-sm font-heading font-bold text-slate-800 min-w-[140px]"
+              >
+                {informativa.name}
               </th>
-              <th className="p-4 sm:p-5 text-center text-sm font-heading font-extrabold text-brand-600 bg-brand-50/50 min-w-[140px]">
-                Comercio Básico ★
+              <th
+                scope="col"
+                className="p-4 sm:p-5 text-center text-sm font-heading font-extrabold text-brand-600 bg-brand-50/50 min-w-[140px]"
+              >
+                {comercio.name}
               </th>
-              <th className="p-4 sm:p-5 text-center text-sm font-heading font-bold text-slate-800 min-w-[140px]">
-                Comercio + Reservas
+              <th
+                scope="col"
+                className="p-4 sm:p-5 text-center text-sm font-heading font-bold text-slate-800 min-w-[140px]"
+              >
+                {reservas.name}
               </th>
             </tr>
           </thead>
@@ -143,9 +169,12 @@ export function ComparisonTable() {
                   row.isPrice ? "bg-slate-50 font-bold" : ""
                 }`}
               >
-                <td className="p-4 sm:p-4.5 font-medium text-slate-800">
+                <th
+                  scope="row"
+                  className="p-4 sm:p-4.5 font-medium text-slate-800"
+                >
                   {row.feature}
-                </td>
+                </th>
                 <td className="p-4 sm:p-4.5 text-center text-slate-600">
                   {renderCell(row.informativa)}
                 </td>

@@ -1,34 +1,33 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  ChevronRight,
-  Globe2,
+  Battery,
+  CheckCheck,
+  Lock,
   MessageCircle,
   Minus,
   Plus,
-  RotateCcw,
   ShoppingBag,
+  Wifi,
 } from "lucide-react";
 import { demoCatalogs, formatSoles } from "@/lib/data/demo-catalogs";
 
 export function ProductDemo() {
   const [catalogIndex, setCatalogIndex] = useState(0);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const [view, setView] = useState<"catalog" | "order">("catalog");
-  const orderTitle = useRef<HTMLHeadingElement>(null);
-  const catalogTitle = useRef<HTMLHeadingElement>(null);
   const catalog = demoCatalogs[catalogIndex];
+
   const items = catalog.products.filter(
-    (product) => quantities[product.id] > 0,
+    (product) => (quantities[product.id] || 0) > 0,
   );
-  const count = items.reduce((sum, product) => sum + quantities[product.id], 0);
+  const count = items.reduce(
+    (sum, product) => sum + (quantities[product.id] || 0),
+    0,
+  );
   const total = items.reduce(
-    (sum, product) => sum + product.price * quantities[product.id],
+    (sum, product) => sum + product.price * (quantities[product.id] || 0),
     0,
   );
 
@@ -39,233 +38,205 @@ export function ProductDemo() {
     }));
   }
 
-  function changeView(next: "catalog" | "order") {
-    setView(next);
-    requestAnimationFrame(() =>
-      (next === "order" ? orderTitle : catalogTitle).current?.focus({
-        preventScroll: true,
-      }),
-    );
-  }
-
   return (
     <div className="product-demo" id="demo">
-      <div className="demo-toolbar">
-        <span className="demo-toolbar-label">PRUEBA UN EJEMPLO</span>
-        <div
-          className="demo-switcher"
-          role="group"
-          aria-label="Tipo de negocio de la demostración"
-        >
-          {demoCatalogs.map((item, index) => (
-            <button
-              type="button"
-              key={item.id}
-              aria-pressed={catalogIndex === index}
-              onClick={() => {
-                setCatalogIndex(index);
-                setQuantities({});
-                setView("catalog");
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div
-        className={`demo-window ${view === "order" ? "demo-window-order" : ""}`}
-      >
-        <div className="demo-address">
-          <div className="demo-address-dots">
-            <span />
-            <span />
-            <span />
+      {/* Smartphone Mockup */}
+      <div className="phone-showcase-container">
+        {/* Phone chassis */}
+        <div className="smartphone-mockup">
+          {/* Top bezel & Dynamic Island */}
+          <div className="phone-island-container">
+            <span className="phone-clock">9:41</span>
+            <div className="phone-island" />
+            <div className="phone-status-icons">
+              <Wifi size={11} />
+              <Battery size={13} />
+            </div>
           </div>
-          <span className="demo-address-url">
-            <Globe2 size={11} />
-            {catalog.domain}
-          </span>
-          <span className="demo-address-tag">DEMO</span>
-        </div>
-        {view === "catalog" ? (
-          <div className="demo-catalog">
-            <div className="demo-cover">
+
+          {/* In-phone Browser Address Bar */}
+          <div className="phone-browser-bar">
+            <div className="phone-url-pill">
+              <Lock size={10} className="phone-lock-icon" />
+              <span>{catalog.domain}</span>
+            </div>
+            <span className="phone-live-tag">EN VIVO</span>
+          </div>
+
+          {/* Phone Screen Content */}
+          <div className="phone-screen-content">
+            {/* Store Banner */}
+            <div className="phone-cover">
               <Image
                 src={catalog.cover}
                 alt={catalog.coverAlt}
                 fill
                 priority
                 unoptimized
-                sizes="(max-width: 760px) 95vw, 450px"
+                sizes="340px"
               />
-              <div className="demo-cover-shade" />
-              <div className="demo-store-name">
-                <p>{catalog.subtitle}</p>
-                <h2 ref={catalogTitle} tabIndex={-1}>
-                  {catalog.name}
-                  <span>.</span>
-                </h2>
-                <span>Hecho con cuidado. Elegido por ti.</span>
+              <div className="phone-cover-overlay" />
+              <div className="phone-cover-text">
+                <span className="phone-store-kicker">{catalog.subtitle}</span>
+                <h3 className="phone-store-name">{catalog.name}.</h3>
               </div>
             </div>
-            <div className="demo-catalog-body">
-              <div className="demo-catalog-heading">
-                <h3>Elige algo para ti</h3>
-                <span>Catálogo de ejemplo</span>
+
+            {/* Products List */}
+            <div className="phone-catalog-body">
+              <div className="phone-catalog-header">
+                <span>Catálogo del local</span>
+                <span>Toca + para pedir</span>
               </div>
-              <div className="demo-products">
+
+              <div className="phone-products-list">
                 {catalog.products.map((product) => {
                   const quantity = quantities[product.id] || 0;
                   return (
-                    <article className="demo-product" key={product.id}>
-                      <div className="demo-product-photo">
+                    <article className="phone-product-card" key={product.id}>
+                      <div className="phone-product-img">
                         <Image
                           src={product.image}
                           alt={product.name}
                           fill
                           unoptimized
-                          sizes="80px"
+                          sizes="60px"
                         />
                       </div>
-                      <div className="demo-product-copy">
+                      <div className="phone-product-info">
                         <h4>{product.name}</h4>
                         <p>{product.detail}</p>
                         <strong>{formatSoles(product.price)}</strong>
                       </div>
-                      <div className="demo-quantity">
+                      <div className="phone-product-stepper">
                         {quantity > 0 && (
                           <>
                             <button
                               type="button"
-                              aria-label={`Quitar una unidad de ${product.name}`}
+                              aria-label={`Quitar uno de ${product.name}`}
                               onClick={() => updateQuantity(product.id, -1)}
                             >
-                              <Minus size={14} />
+                              <Minus size={12} />
                             </button>
-                            <span aria-label={`${quantity} unidades`}>
-                              {quantity}
-                            </span>
+                            <span>{quantity}</span>
                           </>
                         )}
                         <button
                           type="button"
-                          className="demo-add"
+                          className="stepper-add-btn"
                           aria-label={`Añadir ${product.name}`}
-                          disabled={quantity >= 20}
                           onClick={() => updateQuantity(product.id, 1)}
                         >
-                          <Plus size={16} />
+                          <Plus size={14} />
                         </button>
                       </div>
                     </article>
                   );
                 })}
               </div>
-              <div className="demo-cart" aria-live="polite" aria-atomic="true">
-                <span>
-                  <ShoppingBag size={16} />
-                  {count
-                    ? `${count} ${count === 1 ? "producto" : "productos"}`
-                    : "Añade un producto para probar"}
-                </span>
+
+              {/* In-phone cart preview */}
+              <div className="phone-cart-summary">
+                <div className="phone-cart-text">
+                  <ShoppingBag size={13} />
+                  <span>
+                    {count
+                      ? `${count} ${count === 1 ? "producto" : "productos"}`
+                      : "Catálogo disponible"}
+                  </span>
+                </div>
                 <strong>{formatSoles(total)}</strong>
               </div>
-              <button
-                type="button"
-                className="demo-order-button"
-                disabled={count === 0}
-                onClick={() => changeView("order")}
-              >
-                <MessageCircle size={17} />
-                <span>Ver pedido para WhatsApp</span>
-                <ArrowRight size={17} />
-              </button>
             </div>
           </div>
-        ) : (
-          <div className="demo-order-preview">
-            <div className="demo-order-header">
+        </div>
+
+        {/* Category switcher — below phone, centered */}
+        <div className="demo-switcher-row">
+          <span className="demo-toolbar-label">Elige un rubro</span>
+          <div
+            className="demo-switcher"
+            role="group"
+            aria-label="Tipo de negocio de la demostración"
+          >
+            {demoCatalogs.map((item, index) => (
               <button
                 type="button"
-                aria-label="Volver al catálogo"
-                onClick={() => changeView("catalog")}
-              >
-                <ArrowLeft size={18} />
-              </button>
-              <div>
-                <h2 ref={orderTitle} tabIndex={-1}>
-                  Así te llegaría el pedido
-                </h2>
-                <p>Vista previa de WhatsApp</p>
-              </div>
-              <MessageCircle size={24} />
-            </div>
-            <div className="demo-chat">
-              <div className="demo-message">
-                <p>Hola, {catalog.name}. Quisiera hacer este pedido:</p>
-                <ul>
-                  {items.map((product) => (
-                    <li key={product.id}>
-                      <span>
-                        {quantities[product.id]} × {product.name}
-                      </span>
-                      <strong>
-                        {formatSoles(product.price * quantities[product.id])}
-                      </strong>
-                    </li>
-                  ))}
-                </ul>
-                <div className="demo-message-total">
-                  <span>Total de productos</span>
-                  <strong>{formatSoles(total)}</strong>
-                </div>
-                <p>
-                  ¿Me confirmas la disponibilidad y cómo coordinar la entrega y
-                  el pago?
-                </p>
-                <small>
-                  Mensaje de ejemplo <Check size={12} />
-                </small>
-              </div>
-            </div>
-            <div className="demo-order-explainer">
-              <h3>La conversación sigue contigo.</h3>
-              <p>
-                Confirmas disponibilidad, entrega y cobro con tu cliente. Puedes
-                compartir tu Yape o Plin directamente.
-              </p>
-              <span>
-                Esta demostración no envía mensajes ni realiza cobros.
-              </span>
-            </div>
-            <div className="demo-order-actions">
-              <button type="button" onClick={() => changeView("catalog")}>
-                <ArrowLeft size={15} />
-                Editar pedido
-              </button>
-              <button
-                type="button"
+                key={item.id}
+                aria-pressed={catalogIndex === index}
                 onClick={() => {
+                  setCatalogIndex(index);
                   setQuantities({});
-                  changeView("catalog");
                 }}
               >
-                <RotateCcw size={14} />
-                Empezar de nuevo
+                {item.label}
               </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* WhatsApp Live Order Card — below the phone, full width of demo area */}
+      <div className="whatsapp-floating-card">
+        <div className="wa-card-header">
+          <div className="wa-brand">
+            <div className="wa-icon-badge">
+              <MessageCircle size={15} />
+            </div>
+            <div>
+              <span className="wa-title">WhatsApp de tu negocio</span>
+              <span className="wa-status">● Pedido directo</span>
             </div>
           </div>
-        )}
-      </div>
-      <div className="demo-caption">
-        <span>
-          <ChevronRight size={14} />
-          {view === "catalog"
-            ? "Toca + y descubre el recorrido de un pedido."
-            : "Del catálogo a una conversación. Sin intermediarios."}
-        </span>
-        <span>Ejemplo ilustrativo</span>
+          <span className="wa-timestamp">Ahora</span>
+        </div>
+
+        <div className="wa-card-bubble">
+          <p className="wa-greeting">
+            ¡Hola {catalog.name}! 👋 Quiero realizar este pedido desde su web:
+          </p>
+
+          {count > 0 ? (
+            <div className="wa-order-breakdown">
+              <ul className="wa-items-list">
+                {items.map((product) => (
+                  <li key={product.id}>
+                    <span>
+                      {quantities[product.id]}× {product.name}
+                    </span>
+                    <strong>
+                      {formatSoles(product.price * quantities[product.id])}
+                    </strong>
+                  </li>
+                ))}
+              </ul>
+              <div className="wa-total-line">
+                <span>Total a pagar:</span>
+                <strong>{formatSoles(total)}</strong>
+              </div>
+              <div className="wa-payment-badge">
+                <span>Coordinar entrega y pago Yape / Plin</span>
+              </div>
+            </div>
+          ) : (
+            <div className="wa-empty-hint">
+              <span>
+                👆 Toca el botón <strong>+</strong> en el celular para armar tu pedido de prueba.
+              </span>
+            </div>
+          )}
+
+          <div className="wa-bubble-footer">
+            <span className="wa-time-sent">12:30 p. m.</span>
+            <CheckCheck size={14} className="wa-check-icon" />
+          </div>
+        </div>
+
+        <div className="wa-card-footer">
+          <span className="wa-footer-note">
+            Tus clientes eligen en la web, tú atiendes y cobras en WhatsApp.
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -1,11 +1,13 @@
+import { PageIntro } from "@/components/shared/PageIntro";
 import { Metadata } from "next";
 import Link from "next/link";
 import { getBusinesses } from "@/lib/data/businesses.repo";
 import { DirectoryView } from "@/components/directory/DirectoryView";
 import { BusinessJsonLd } from "@/components/directory/BusinessJsonLd";
-import { ArrowRight, PlusCircle, Sparkles } from "lucide-react";
+import { ArrowRight, PlusCircle } from "lucide-react";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/directorio" },
   title: "Directorio de Negocios — Vitrina Digital",
   description:
     "Explora los negocios peruanos con presencia web activa en Qatu.pe: florerías, hoteles, restaurantes y comercios locales con sus propios subdominios.",
@@ -17,23 +19,16 @@ export default async function DirectorioPage() {
   const businesses = await getBusinesses();
 
   return (
-    <div className="py-12 sm:py-16 bg-slate-50 min-h-screen">
+    <div className="site-page">
       <BusinessJsonLd businesses={businesses} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
-        <div className="max-w-3xl mb-10 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Mercado Digital Qatu</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-heading font-extrabold text-slate-900 tracking-tight">
-            Directorio de Negocios
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            Navega por la vitrina de negocios locales. Cada tarjeta te lleva directo al subdominio independiente del comercio, donde podrás ver su carta o catálogo completo y pedir por WhatsApp.
-          </p>
-        </div>
+        <PageIntro
+          eyebrow="Directorio"
+          title="Negocios de aquí. A un clic de ti."
+          description="Encuentra comercios, explora sus catálogos y conversa directamente con ellos."
+        />
 
         {/* Interactive Directory View */}
         <DirectoryView initialBusinesses={businesses} />
@@ -49,7 +44,9 @@ export default async function DirectorioPage() {
               ¿Tienes un negocio y quieres tu propio subdominio?
             </h2>
             <p className="text-sm text-slate-600 max-w-xl">
-              Diseñamos tu página web, publicamos tu catálogo en <strong className="text-slate-900">tunegocio.qatu.pe</strong> y te sumamos a este directorio con visibilidad compartida.
+              Diseñamos tu página web, publicamos tu catálogo en{" "}
+              <strong className="text-slate-900">tunegocio.qatu.pe</strong> y te
+              sumamos a este directorio con visibilidad compartida.
             </p>
           </div>
 

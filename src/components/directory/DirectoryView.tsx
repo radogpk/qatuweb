@@ -1,135 +1,140 @@
 "use client";
-
-import { useState, useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { Business } from "@/lib/types/business";
+import { normalizeSearch, pageWindow } from "@/lib/ui/listing";
+import { useListingQuery } from "@/components/shared/useListingQuery";
+import { Pagination } from "@/components/shared/Pagination";
 import { BusinessCard } from "./BusinessCard";
-import { Search, Store, Filter, X } from "lucide-react";
-
-interface DirectoryViewProps {
-  initialBusinesses: Business[];
-}
-
-const CATEGORIES = [
-  { id: "todos", label: "Todos los rubros" },
-  { id: "restaurante", label: "Restaurantes y Cafés" },
-  { id: "hotel", label: "Hoteles y Hospedaje" },
-  { id: "tienda", label: "Tiendas y Comercio" },
-  { id: "artesania", label: "Artesanía y Arte" },
-  { id: "servicios", label: "Servicios" },
+import { Search, X, Store } from "lucide-react";
+const categories = [
+  ["todos", "Todos"],
+  ["restaurante", "Restaurantes y cafés"],
+  ["hotel", "Hospedaje"],
+  ["tienda", "Tiendas"],
+  ["artesania", "Artesanía"],
+  ["servicios", "Servicios"],
 ];
-
-export function DirectoryView({ initialBusinesses }: DirectoryViewProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("todos");
-
-  const filteredBusinesses = useMemo(() => {
-    return initialBusinesses.filter((business) => {
-      const matchesCategory =
-        selectedCategory === "todos" || business.category === selectedCategory;
-
-      const q = searchTerm.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        business.name.toLowerCase().includes(q) ||
-        business.shortDescription.toLowerCase().includes(q) ||
-        business.subdomain.toLowerCase().includes(q) ||
-        business.city.toLowerCase().includes(q) ||
-        business.tags.some((tag) => tag.toLowerCase().includes(q));
-
-      return matchesCategory && matchesSearch;
-    });
-  }, [initialBusinesses, searchTerm, selectedCategory]);
-
+export function DirectoryView({
+  initialBusinesses,
+}: {
+  initialBusinesses: Business[];
+}) {
+  const { query, update } = useListingQuery();
+  const results = useRef<HTMLDivElement>(null);
+  const search = query.get("q") || "",
+    category = query.get("rubro") || "todos",
+    sort = query.get("orden") || "destacados";
+  const filtered = useMemo(
+    () =>
+      initialBusinesses
+        .filter(
+          (b) =>
+            b.active &&
+            (category === "todos" || b.category === category) &&
+            normalizeSearch(
+              [b.name, b.shortDescription, b.city, b.subdomain, ...b.tags].join(
+                " ",
+              ),
+            ).includes(normalizeSearch(search)),
+        )
+        .sort((a, b) =>
+          sort === "nombre"
+            ? a.name.localeCompare(b.name, "es")
+            : Number(b.featured) - Number(a.featured),
+        ),
+    [initialBusinesses, category, search, sort],
+  );
+  const window = pageWindow(filtered.length, Number(query.get("pagina") || 1));
+  const clear = () => update({ q: "", rubro: "", pagina: "", orden: "" });
   return (
-    <div className="space-y-8">
-      {/* Search Bar & Filters Bar */}
-      <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-card space-y-4">
-        {/* Search input */}
-        <div className="relative">
-          <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+    <div className="listing-view">
+      <div className="listing-tools">
+        <label className="listing-search">
+          <Search size={20} />
+          <span className="sr-only">Buscar negocios</span>
           <input
-            type="text"
-            placeholder="Buscar por nombre, rubro o producto (ej. flores, hotel, café)..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-10 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all placeholder:text-slate-400"
+            type="search"
+            placeholder="Nombre, producto o ciudad…"
+            value={search}
+            onChange={(e) => update({ q: e.target.value, pagina: "" })}
           />
-          {searchTerm && (
+          {search && (
             <button
-              onClick={() => setSearchTerm("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600"
+              type="button"
+              aria-label="Borrar búsqueda"
+              onClick={() => update({ q: "", pagina: "" })}
             >
-              <X className="w-4 h-4" />
+              <X size={17} />
             </button>
           )}
-        </div>
-
-        {/* Category Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 pt-1 scrollbar-none">
-          <Filter className="w-4 h-4 text-slate-400 shrink-0 ml-1 mr-1 hidden sm:inline" />
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                selectedCategory === cat.id
-                  ? "bg-brand-600 text-white shadow-xs"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Results Header / Counter */}
-      <div className="flex items-center justify-between text-xs sm:text-sm text-slate-500 px-1">
-        <span>
-          Mostrando <strong className="text-slate-900 font-bold">{filteredBusinesses.length}</strong> {filteredBusinesses.length === 1 ? "negocio activo" : "negocios activos"}
-        </span>
-        {(searchTerm || selectedCategory !== "todos") && (
-          <button
-            onClick={() => {
-              setSearchTerm("");
-              setSelectedCategory("todos");
-            }}
-            className="text-brand-600 hover:underline font-semibold"
+        </label>
+        <label className="listing-sort">
+          Ordenar
+          <select
+            value={sort}
+            onChange={(e) => update({ orden: e.target.value, pagina: "" })}
           >
+            <option value="destacados">Destacados primero</option>
+            <option value="nombre">Nombre A–Z</option>
+          </select>
+        </label>
+      </div>
+      <div
+        className="listing-categories"
+        role="group"
+        aria-label="Filtrar por rubro"
+      >
+        {categories.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={category === id}
+            onClick={() =>
+              update({ rubro: id === "todos" ? "" : id, pagina: "" })
+            }
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <div className="listing-results" ref={results} tabIndex={-1}>
+        <p role="status">
+          {filtered.length
+            ? `${window.start + 1}–${window.end} de ${filtered.length} negocios`
+            : "No hay resultados"}
+        </p>
+        {(search || category !== "todos") && (
+          <button type="button" onClick={clear}>
             Limpiar filtros
           </button>
         )}
       </div>
-
-      {/* Grid or Empty state */}
-      {filteredBusinesses.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBusinesses.map((business) => (
-            <BusinessCard key={business.id} business={business} />
+      {filtered.length ? (
+        <div className="listing-grid">
+          {filtered.slice(window.start, window.end).map((b) => (
+            <BusinessCard key={b.id} business={b} />
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 px-4 bg-white rounded-2xl border border-slate-200 space-y-4 shadow-card">
-          <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 mx-auto flex items-center justify-center">
-            <Store className="w-7 h-7" />
-          </div>
-          <h3 className="text-xl font-heading font-extrabold text-slate-900">
-            No encontramos negocios con esos criterios
-          </h3>
-          <p className="text-sm text-slate-500 max-w-md mx-auto">
-            Intenta con otro término de búsqueda o selecciona "Todos los rubros" para ver toda la vitrina de Qatu.
-          </p>
-          <button
-            onClick={() => {
-              setSearchTerm("");
-              setSelectedCategory("todos");
-            }}
-            className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors"
-          >
-            Ver todos los negocios
-          </button>
+        <div className="listing-empty">
+          <Store size={30} />
+          <h2>No encontramos ese negocio.</h2>
+          <p>Prueba otro nombre o explora todos los rubros.</p>
+          <button onClick={clear}>Ver todos los negocios</button>
         </div>
       )}
+      <Pagination
+        page={window.page}
+        pages={window.pages}
+        onChange={(page) => {
+          update({ pagina: String(page) }, true);
+          results.current?.focus();
+          results.current?.scrollIntoView({
+            block: "start",
+            behavior: "smooth",
+          });
+        }}
+      />
     </div>
   );
 }

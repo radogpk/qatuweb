@@ -35,3 +35,7 @@ yarn-error.log*
 next-env.d.ts
 
 tenants_generated/
+
+fix.js
+script.js
+supabase/.temp/

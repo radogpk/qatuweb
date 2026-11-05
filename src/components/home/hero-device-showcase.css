@@ -1,0 +1,58 @@
+/* A single product stage keeps the example distinct from the sales message. */
+.hero-devices-wrapper {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  padding: 26px 22px 20px;
+  border: 1px solid #ded8cc;
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 55% 38%, #faf7ef 0%, #eee8dd 75%);
+}
+.hero-showcase-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: #686359;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .09em;
+}
+.hero-showcase-heading > span:last-child {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.devices-stage { padding-block: 38px 26px; }
+.devices-render-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 16px 18px #40342318);
+  mask-image: linear-gradient(to bottom, #000 92%, transparent 100%);
+}
+.hero-showcase-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid #72654e26;
+  font-size: 11px;
+  color: #655e52;
+}
+.hero-showcase-caption > span,
+.hero-showcase-caption > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.hero-showcase-caption > a { min-height: 32px; color: #30332e; font-weight: 600; }
+.hero-showcase-caption > a:hover { color: var(--m-red); }
+@media (max-width: 600px) {
+  .hero-devices-wrapper { padding: 20px 16px 14px; border-radius: 14px; }
+  .hero-showcase-heading { font-size: 8px; gap: 8px; }
+  .hero-showcase-heading > span:last-child { font-size: 10px; }
+  .devices-stage { padding-block: 24px 16px; }
+  .hero-showcase-caption { align-items: flex-start; flex-direction: column; gap: 4px; padding-top: 12px; }
+}
