@@ -2,133 +2,195 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, MessageCircle, ExternalLink } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import {
+  Menu,
+  X,
+  MessageCircle,
+  ArrowUpRight,
+  Lock,
+  Phone,
+  Layers,
+} from 'lucide-react';
 import { getWhatsAppUrl } from '@/lib/config/site';
 
 export function Navbar() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Aislamiento estricto: en tiendas demo y dashboards NO se renderiza la barra de marketing
+  if (pathname?.startsWith('/demo') || pathname?.startsWith('/dashboard')) {
+    return null;
+  }
+
   const whatsappHref = getWhatsAppUrl(
-    'Hola Qatu Web, me gustaría solicitar mi página web y catálogo para mi negocio en Ayacucho.'
+    'Hola Qatu Web, deseo solicitar una página web y catálogo a medida por S/ 30 al mes para mi negocio en Ayacucho.'
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/90 shadow-2xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-        {/* Logo de la Marca */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-950 flex items-center justify-center text-white font-black text-lg tracking-tight group-hover:scale-105 transition-transform shadow-sm">
-            <span className="text-amber-400">Q</span>
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-slate-200/80 transition-all">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+        {/* Izquierda: Logo Tipográfico Sólido + Badge de Huamanga */}
+        <Link href="/" className="flex items-center gap-3 shrink-0 group">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black text-lg tracking-tight group-hover:scale-105 transition-transform shadow-xs">
+            <Layers className="w-5 h-5 text-emerald-400" />
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-black text-lg sm:text-xl tracking-tight text-stone-950">
-                QATU<span className="text-[#C83E2B]">WEB</span>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="font-black text-lg sm:text-xl tracking-tight text-slate-900">
+                QATU<span className="text-emerald-600">WEB</span>
               </span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-900 border border-amber-500/20">
-                Huamanga
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/80 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Huamanga, Ayacucho</span>
               </span>
             </div>
-            <p className="text-[10px] text-stone-700 hidden sm:block tracking-wide font-medium">
+            <span className="text-[10px] text-slate-500 hidden sm:block font-medium tracking-tight">
               Software & Páginas Web a Medida
-            </p>
+            </span>
           </div>
         </Link>
 
-        {/* 4 Enlaces Principales Limpios en Desktop */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-stone-700">
+        {/* Centro: Cápsula de Navegación Ejecutiva */}
+        <nav className="hidden lg:flex items-center gap-1 bg-slate-100/90 border border-slate-200/80 rounded-full px-2 py-1 shadow-2xs">
+          <a
+            href="/#soluciones"
+            className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
+          >
+            Soluciones
+          </a>
           <a
             href="/#demos"
-            className="hover:text-stone-950 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
           >
-            Rubros y Demos
+            <span>Demos en Vivo</span>
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-500 text-white">
+              3
+            </span>
+          </a>
+          <a
+            href="/#comparativa"
+            className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
+          >
+            Comparativa
           </a>
           <a
             href="/#precios"
-            className="hover:text-stone-950 transition-colors"
+            className="px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:bg-white transition"
           >
-            Precios
+            Precios (S/ 30)
           </a>
-          <Link
-            href="/login"
-            className="hover:text-[#C83E2B] transition-colors"
-          >
-            Acceso Clientes
-          </Link>
         </nav>
 
-        {/* Botón CTA Pedir mi Web */}
-        <div className="hidden md:flex items-center">
+        {/* Derecha: Acciones Comerciales */}
+        <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+          <a
+            href="https://wa.me/51966000111"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+            title="Soporte y Consultas en Ayacucho"
+          >
+            <Phone className="w-3.5 h-3.5 text-slate-400" />
+            <span>966 000 111</span>
+          </a>
+
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition border border-transparent hover:border-slate-200"
+          >
+            <Lock className="w-3.5 h-3.5 text-slate-500" />
+            <span>Acceso Clientes</span>
+          </Link>
+
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C83E2B] hover:bg-[#A93322] text-white text-xs sm:text-sm font-bold shadow-sm transition active:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold shadow-sm transition active:scale-95"
           >
-            <MessageCircle className="w-4 h-4" />
-            <span>Pedir mi Web</span>
+            <span>Solicitar mi Web</span>
+            <ArrowUpRight className="w-4 h-4 text-emerald-400" />
           </a>
         </div>
 
-        {/* Botón Móvil Hamburguesa */}
-        <div className="md:hidden flex items-center gap-2">
+        {/* Hamburguesa Móvil */}
+        <div className="sm:hidden flex items-center gap-2">
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#C83E2B] text-white text-xs font-bold shadow-sm active:scale-95 transition"
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-xs active:scale-95 transition"
           >
-            <MessageCircle className="w-3.5 h-3.5" />
-            <span>Pedir</span>
+            <span>Solicitar</span>
+            <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" />
           </a>
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 text-stone-700 hover:text-stone-950 rounded-lg hover:bg-stone-100 transition"
-            aria-label="Abrir menú de navegación"
+            className="p-2 text-slate-700 hover:text-slate-950 rounded-lg hover:bg-slate-100 transition"
+            aria-label="Menú principal"
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
-      {/* Menú Desplegable Móvil */}
+      {/* Menú Móvil Desplegable */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-b border-stone-200 px-4 py-5 space-y-4 animate-in slide-in-from-top-2 duration-150 shadow-lg">
-          <nav className="flex flex-col space-y-3 text-sm font-bold text-stone-800">
+        <div className="sm:hidden bg-white border-b border-slate-200 px-4 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-150">
+          <nav className="flex flex-col space-y-2 text-sm font-semibold text-slate-800">
+            <a
+              href="/#soluciones"
+              onClick={() => setMobileOpen(false)}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition"
+            >
+              Soluciones por Rubro
+            </a>
             <a
               href="/#demos"
               onClick={() => setMobileOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-stone-50 transition"
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition flex items-center justify-between"
             >
-              Rubros y Demos
+              <span>Demos Interactivas</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                3 disponibles
+              </span>
+            </a>
+            <a
+              href="/#comparativa"
+              onClick={() => setMobileOpen(false)}
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition"
+            >
+              Comparativa (Agencias vs Qatu)
             </a>
             <a
               href="/#precios"
               onClick={() => setMobileOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-stone-50 transition"
+              className="px-3 py-2 rounded-xl text-emerald-700 hover:bg-emerald-50 transition font-bold"
             >
-              Precios
+              Precios y Módulos (S/ 30)
             </a>
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="px-3 py-2 rounded-xl text-[#C83E2B] hover:bg-stone-50 transition"
+              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition flex items-center gap-2"
             >
-              Acceso Clientes (/login)
+              <Lock className="w-3.5 h-3.5 text-slate-500" />
+              <span>Acceso Clientes (/login)</span>
             </Link>
           </nav>
 
-          <div className="pt-2 border-t border-stone-100">
+          <div className="pt-2 border-t border-slate-100 space-y-2">
             <a
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileOpen(false)}
-              className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#C83E2B] text-white text-sm font-bold shadow-sm transition active:scale-95"
+              className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-sm transition active:scale-95"
             >
-              <MessageCircle className="w-4 h-4" />
-              <span>Pedir mi Web por WhatsApp</span>
+              <span>Solicitar mi Web por WhatsApp</span>
+              <ArrowUpRight className="w-4 h-4 text-emerald-400" />
             </a>
           </div>
         </div>

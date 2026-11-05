@@ -260,7 +260,7 @@ export default function ClienteDashboardPage() {
               <p className="text-xl font-bold font-mono tracking-tight text-white mt-0.5">
                 966 123 456
               </p>
-              <p className="text-[11px] text-stone-300">Titular: Luis Quispe (Qatu Web)</p>
+              <p className="text-[11px] text-stone-300">Titular: Luis Gerardo Llocclla Sauñe (Qatu Web)</p>
             </div>
             <div className="w-14 h-14 bg-white p-1 rounded-xl shadow-md shrink-0 flex items-center justify-center">
               <QrCode className="w-12 h-12 text-stone-900" />

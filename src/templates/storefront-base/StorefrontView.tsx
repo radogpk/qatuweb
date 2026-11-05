@@ -197,6 +197,28 @@ export function StorefrontView({
         </div>
       )}
 
+      {/* Barra Superior Exclusiva de Modo Demo */}
+      {isDemoMode && (
+        <div className="bg-slate-900 text-white px-4 py-2.5 flex items-center justify-between shadow-md sticky top-0 z-50">
+          <a
+            href="/#demos"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition"
+          >
+            <span>← Volver a QatuWeb</span>
+          </a>
+          <button
+            type="button"
+            onClick={() => setIsVendorModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm transition active:scale-95"
+            title="Configurar teléfono del prospecto para la demo en vivo"
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>Probar con mi WhatsApp</span>
+            {vendorWhatsapp && <span className="w-2 h-2 rounded-full bg-amber-400" />}
+          </button>
+        </div>
+      )}
+
       {/* Cabecera / Portada del Negocio */}
       <header
         className="text-white relative shadow-md"
@@ -236,14 +258,22 @@ export function StorefrontView({
         </div>
       </header>
 
-      {/* Catálogo de Productos */}
-      <main className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
+      {/* Catálogo de Productos / Servicios */}
+      <main className="max-w-4xl mx-auto px-4 py-6 sm:py-8 pb-28">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-900">
-            Productos Disponibles
+            {config.rubro === 'gym' || config.slug.includes('trankilandia')
+              ? 'Planes y Membresías'
+              : config.rubro === 'pasteleria' || config.rubro === 'restaurante' || config.rubro === 'gastronomia'
+              ? 'Carta del Día'
+              : 'Modelos Disponibles'}
           </h2>
           <span className="text-xs text-stone-500">
-            {initialProducts.length} modelos listos para entrega
+            {config.rubro === 'gym' || config.slug.includes('trankilandia')
+              ? `${initialProducts.length} opciones activas`
+              : config.rubro === 'pasteleria' || config.rubro === 'restaurante' || config.rubro === 'gastronomia'
+              ? 'Platos y postres listos para pedir'
+              : `${initialProducts.length} modelos listos para entrega`}
           </span>
         </div>
 
@@ -583,21 +613,7 @@ export function StorefrontView({
         </div>
       )}
 
-      {/* Botón Flotante Discreto: "Modo Demo Vendedor" (Tu arma de ventas en la calle) */}
-      {isDemoMode && (
-        <div className="fixed bottom-4 left-4 z-40">
-          <button
-            type="button"
-            onClick={() => setIsVendorModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-stone-900/90 text-amber-400 hover:bg-stone-900 text-xs font-semibold shadow-xl border border-amber-500/30 backdrop-blur-sm transition"
-            title="Configurar teléfono del prospecto para la demo en vivo"
-          >
-            <Smartphone className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Modo Demo</span>
-            {vendorWhatsapp && <span className="w-2 h-2 rounded-full bg-emerald-400" />}
-          </button>
-        </div>
-      )}
+
 
       {/* Modal Modo Demo Vendedor */}
       {isVendorModalOpen && (
@@ -667,10 +683,17 @@ export function StorefrontView({
         </p>
         <p className="pt-2">
           <a
-            href={`/demo/${config.slug.includes('pasteleria') ? 'pasteleria' : 'calzados'}/admin`}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-stone-400 hover:text-stone-700 bg-stone-100 hover:bg-stone-200 px-3 py-1 rounded-full transition"
+            href={`/demo/${
+              config.slug.includes('pasteleria') || config.slug.includes('lasflores')
+                ? 'pasteleria'
+                : config.slug.includes('gym') || config.slug.includes('trankilandia')
+                ? 'gym'
+                : 'calzados'
+            }/admin`}
+            className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-full transition"
           >
-            <span>⚙️ Panel de Bolsillo (Dueño)</span>
+            <Smartphone className="w-3.5 h-3.5 text-slate-500" />
+            <span>Panel de Bolsillo (Dueño)</span>
           </a>
         </p>
       </footer>

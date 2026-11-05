@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, ArrowRight, UserCheck, Lock, Mail, KeyRound, Smartphone } from 'lucide-react';
+import { ShieldCheck, ArrowRight, UserCheck, Lock, Mail, KeyRound, Smartphone, Store } from 'lucide-react';
 
 export function LoginForm() {
   const router = useRouter();
@@ -115,35 +115,35 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-stone-200/80 p-6 sm:p-8">
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200/90 p-6 sm:p-8">
       {/* Cabecera */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-amber-50 text-[#B23A2E] mb-3 border border-amber-200/60 shadow-sm">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-900 text-emerald-400 mb-3 border border-slate-800 shadow-sm">
           <ShieldCheck className="w-6 h-6" />
         </div>
-        <h1 className="text-2xl font-serif font-bold text-stone-900 tracking-tight">
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight">
           Ingresar a Qatu Web
         </h1>
-        <p className="mt-1 text-xs text-stone-500">
+        <p className="mt-1 text-xs text-slate-500 font-medium">
           Hub de gobernanza y portal para comerciantes en Ayacucho
         </p>
       </div>
 
       {error && (
-        <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl">
+        <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
           {error}
         </div>
       )}
 
       {/* Pestañas: Contraseña / Acceso Rápido */}
-      <div className="grid grid-cols-2 bg-stone-100 p-1 rounded-2xl mb-5 text-xs font-bold">
+      <div className="grid grid-cols-2 bg-slate-100 p-1 rounded-xl mb-5 text-xs font-bold">
         <button
           type="button"
           onClick={() => setActiveTab('password')}
-          className={`py-2 rounded-xl transition ${
+          className={`py-2 rounded-lg transition ${
             activeTab === 'password'
-              ? 'bg-white text-stone-900 shadow-sm'
-              : 'text-stone-500 hover:text-stone-800'
+              ? 'bg-white text-slate-900 shadow-sm'
+              : 'text-slate-500 hover:text-slate-800'
           }`}
         >
           Correo y Clave
@@ -151,13 +151,13 @@ export function LoginForm() {
         <button
           type="button"
           onClick={() => setActiveTab('quick')}
-          className={`py-2 rounded-xl transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 rounded-lg transition flex items-center justify-center gap-1.5 ${
             activeTab === 'quick'
-              ? 'bg-white text-stone-900 shadow-sm'
-              : 'text-stone-500 hover:text-stone-800'
+              ? 'bg-white text-slate-900 shadow-sm'
+              : 'text-slate-500 hover:text-slate-800'
           }`}
         >
-          <Smartphone className="w-3.5 h-3.5 text-amber-600" />
+          <Smartphone className="w-3.5 h-3.5 text-emerald-600" />
           <span>Acceso Rápido</span>
         </button>
       </div>
@@ -165,8 +165,8 @@ export function LoginForm() {
       {activeTab === 'password' ? (
         <form onSubmit={handlePasswordLogin} className="space-y-4">
           <div className="space-y-1">
-            <label className="text-xs font-bold text-stone-700 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-stone-400" /> Correo Electrónico
+            <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-slate-400" /> Correo Electrónico
             </label>
             <input
               type="email"
@@ -174,13 +174,13 @@ export function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu-correo@gmail.com o admin@qatuweb.com"
-              className="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 focus:bg-white"
+              className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 focus:bg-white text-slate-900 outline-none transition"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-stone-700 flex items-center gap-1.5">
-              <KeyRound className="w-3.5 h-3.5 text-stone-400" /> Contraseña
+            <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <KeyRound className="w-3.5 h-3.5 text-slate-400" /> Contraseña
             </label>
             <input
               type="password"
@@ -188,21 +188,21 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 focus:bg-white"
+              className="w-full text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 focus:bg-white text-slate-900 outline-none transition"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm shadow-md transition"
+            className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm shadow-md transition"
           >
             {loading ? 'Ingresando...' : 'Iniciar Sesión'}
           </button>
         </form>
       ) : (
         <div className="space-y-3">
-          <p className="text-xs text-stone-500 text-center leading-relaxed">
+          <p className="text-xs text-slate-500 text-center leading-relaxed font-medium">
             Sesión persistente de larga duración para acceder directamente desde tu celular.
           </p>
 
@@ -210,7 +210,7 @@ export function LoginForm() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2.5 py-3 px-4 bg-white hover:bg-stone-50 border border-stone-300 text-stone-800 font-bold text-xs sm:text-sm rounded-xl shadow-sm transition"
+            className="w-full flex items-center justify-center gap-2.5 py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs sm:text-sm rounded-xl shadow-sm transition"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -224,33 +224,33 @@ export function LoginForm() {
       )}
 
       {/* Atajos Rápidos de Demostración Local */}
-      <div className="mt-6 pt-5 border-t border-stone-200 space-y-2">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block text-center">
+      <div className="mt-6 pt-5 border-t border-slate-200 space-y-2">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block text-center">
           Atajos Rápidos de Demostración
         </span>
 
         <button
           type="button"
           onClick={() => handleQuickRoleSelect('super_admin')}
-          className="w-full flex items-center justify-between p-2.5 rounded-xl bg-stone-900 text-white text-xs font-semibold hover:bg-stone-800 transition text-left"
+          className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition text-left"
         >
           <div className="flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-amber-400" />
+            <Lock className="w-3.5 h-3.5 text-emerald-400" />
             <span>Super Admin (Gobernanza Qatu)</span>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-stone-400" />
+          <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
         </button>
 
         <button
           type="button"
           onClick={() => handleQuickRoleSelect('client')}
-          className="w-full flex items-center justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-200 text-stone-800 text-xs font-semibold hover:bg-stone-100 transition text-left"
+          className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs font-semibold hover:bg-slate-100 transition text-left"
         >
           <div className="flex items-center gap-2">
-            <UserCheck className="w-3.5 h-3.5 text-[#B23A2E]" />
+            <Store className="w-3.5 h-3.5 text-slate-700" />
             <span>Cliente Comerciante (Calzados Lucas)</span>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-stone-400" />
+          <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
         </button>
       </div>
     </div>

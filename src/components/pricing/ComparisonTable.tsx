@@ -102,8 +102,8 @@ export function ComparisonTable() {
   ];
 
   return (
-    <div className="interior-table-wrap">
-      <table className="interior-table">
+    <div className="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs">
+      <table className="w-full min-w-[680px] interior-table">
         <thead>
           <tr>
             <th scope="col">Característica</th>
@@ -112,8 +112,10 @@ export function ComparisonTable() {
               <small>S/ {mensual.monthlyPrice} / mes</small>
             </th>
             <th className="interior-th-featured" scope="col">
-              <span className="interior-table-badge">Recomendado</span>
-              <span>{anual.name}</span>
+              <div className="mb-1.5">
+                <span className="interior-table-badge">Recomendado</span>
+              </div>
+              <span className="block font-bold">{anual.name}</span>
               <small>S/ 300 / año (Setup Gratis)</small>
             </th>
             <th scope="col">

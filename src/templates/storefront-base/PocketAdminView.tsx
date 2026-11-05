@@ -202,35 +202,35 @@ export function PocketAdminView({
             CANDADO 3: LA TARJETA DE RETENCIÓN (ROI MENSUAL)
             Lo primero que ve el dueño sentado en su tienda
             ========================================================================= */}
-        <div className="bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-900 text-white p-5 rounded-3xl shadow-lg border border-emerald-500/30 relative overflow-hidden">
+        <div className="bg-white text-slate-900 p-5 rounded-3xl shadow-sm border border-slate-200/90 relative overflow-hidden">
           <div className="flex items-center justify-between mb-2">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400">
-              <TrendingUp className="w-4 h-4" />
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+              <TrendingUp className="w-4 h-4 text-emerald-600" />
               Resumen de este mes en tu Web
             </span>
-            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+            <span className="text-[11px] bg-emerald-100 text-emerald-800 border border-emerald-300 font-semibold px-2.5 py-0.5 rounded-full">
               Al día
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-stone-800">
+          <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-100">
             <div>
-              <p className="text-[11px] text-stone-400">Pedidos por WhatsApp</p>
-              <p className="text-2xl font-serif font-bold text-white mt-0.5">
+              <p className="text-xs text-slate-500 font-medium">Pedidos por WhatsApp</p>
+              <p className="text-slate-900 font-black text-3xl mt-0.5">
                 {monthlyOrders}
               </p>
             </div>
             <div>
-              <p className="text-[11px] text-stone-400">Total Vendido Estimado</p>
-              <p className="text-2xl font-serif font-bold text-emerald-400 mt-0.5">
+              <p className="text-xs text-slate-500 font-medium">Total Vendido Estimado</p>
+              <p className="text-emerald-700 font-black text-3xl mt-0.5">
                 {config.currency} {monthlyRevenue.toFixed(2)}
               </p>
             </div>
           </div>
 
-          <p className="text-[11px] text-stone-400 mt-3 pt-2.5 border-t border-stone-800/80 leading-snug">
-            💡 Tu cuota mensual de <strong>S/ 30</strong> mantiene tu catálogo y ventas activas en{' '}
-            <span className="text-amber-300 font-mono font-medium">{config.slug}.qatuweb.com</span>.
+          <p className="text-xs text-slate-500 mt-3 pt-2.5 border-t border-slate-100 leading-snug">
+            Tu cuota mensual de <strong className="text-slate-900">S/ 30</strong> mantiene tu catálogo y ventas activas en{' '}
+            <span className="text-slate-800 font-mono font-semibold">{config.slug}.qatuweb.com</span>.
           </p>
         </div>
 
