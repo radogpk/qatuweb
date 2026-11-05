@@ -273,7 +273,6 @@ export function MarketingHome() {
             <div className="bg-slate-950 text-white p-3.5 sm:p-4 rounded-2xl shadow-xl max-w-xl mx-auto lg:mx-0 space-y-2 border border-slate-800">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
                     Simula tu tienda en vivo
                   </span>
@@ -480,9 +479,8 @@ export function MarketingHome() {
                         <span className="text-slate-600 font-semibold truncate max-w-[220px]">
                           {`${activeData.domain || `${activeData.slug}.qatuweb.com`}`}
                         </span>
-                        <span className="text-emerald-700 font-sans font-bold flex items-center gap-1.5 shrink-0 text-xs">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                          En línea
+                        <span className="text-slate-500 font-sans font-semibold text-xs shrink-0">
+                          Tienda Oficial
                         </span>
                       </div>
 
@@ -610,10 +608,6 @@ export function MarketingHome() {
                   key={`b1-${idx}`}
                   className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-md shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    En vivo
-                  </span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
                   <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
@@ -630,10 +624,6 @@ export function MarketingHome() {
                   key={`b2-${idx}`}
                   className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-md shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    En vivo
-                  </span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
                   <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
@@ -841,8 +831,7 @@ export function MarketingHome() {
           {/* Franja de Autoridad: Marcas Oficiales con Sistemas en Producción */}
           <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/80">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold text-slate-800 bg-slate-100 border border-slate-200">
                 <span>Marcas Oficiales en Producción</span>
               </div>
               <h3 className="text-base sm:text-lg font-black text-slate-950">

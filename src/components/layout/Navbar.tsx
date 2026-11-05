@@ -40,8 +40,7 @@ export function Navbar() {
               <span className="font-black text-lg sm:text-xl tracking-tight text-slate-900">
                 QATU<span className="text-emerald-600">WEB</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/80 shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs">
                 <span>Huamanga, Ayacucho</span>
               </span>
             </div>
@@ -61,10 +60,9 @@ export function Navbar() {
           </a>
           <a
             href="/#demos"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
+            className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
           >
-            <span>Demos en Vivo</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Demos en Vivo
           </a>
           <a
             href="/#comparativa"
@@ -151,9 +149,8 @@ export function Navbar() {
               className="px-3 py-2 rounded-xl hover:bg-slate-50 transition flex items-center justify-between"
             >
               <span>Demos Interactivas</span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                En vivo
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600">
+                Interactivas
               </span>
             </a>
             <a
