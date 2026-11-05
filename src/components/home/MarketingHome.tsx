@@ -153,9 +153,27 @@ const SHOWCASES: Record<IndustryTab, IndustryShowcase> = {
 };
 
 const BRANDS_LIST = [
-  { name: 'QuinuaQ', rubro: 'Restaurante de Campo & Carta QR', loc: 'Quinua, Ayacucho' },
-  { name: 'Mama Alice ONG', rubro: 'ONG & Formación Social', loc: 'Huamanga, Ayacucho' },
-  { name: 'TrankilandiaGym', rubro: 'Fitness & Control DNI', loc: 'Av. Mariscal Cáceres' },
+  {
+    name: 'QuinuaQ',
+    rubro: 'Restaurante de Campo & Carta QR',
+    loc: 'Quinua, Ayacucho',
+    web: 'quinuaq.com',
+    url: 'https://quinuaq.com',
+  },
+  {
+    name: 'Mama Alice ONG',
+    rubro: 'ONG & Formación Social',
+    loc: 'Huamanga, Ayacucho',
+    web: 'mamaalice.org',
+    url: 'https://www.mamaalice.org',
+  },
+  {
+    name: 'TrankilandiaGym',
+    rubro: 'Fitness & Control DNI',
+    loc: 'Huamanga, Ayacucho',
+    web: 'trankilandiagym.qatuweb.com',
+    url: 'https://trankilandiagym.qatuweb.com',
+  },
 ];
 
 export function MarketingHome() {
@@ -330,6 +348,7 @@ export function MarketingHome() {
 
               const activeData = isNGO ? {
                 storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'MAMA ALICE ONG',
+                domain: 'mamaalice.org',
                 slug: cleanSlug || 'mamaalice',
                 tagline: 'ONG & IMPACTO SOCIAL • HUAMANGA, AYACUCHO',
                 p1: { name: 'Educación y Niños', img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&auto=format&fit=crop&q=80' },
@@ -342,7 +361,8 @@ export function MarketingHome() {
                 }
               } : isGym ? {
                 storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'TRANKILANDIAGYM',
-                slug: cleanSlug || 'trankilandia',
+                domain: 'trankilandiagym.qatuweb.com',
+                slug: cleanSlug || 'trankilandiagym',
                 tagline: 'FITNESS & CONTROL DE MEMBRESÍAS • AYACUCHO',
                 p1: { name: 'Whey Protein Isolate', img: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=300&auto=format&fit=crop&q=80' },
                 p2: { name: 'Creatina Monohidratada', img: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=300&auto=format&fit=crop&q=80' },
@@ -354,6 +374,7 @@ export function MarketingHome() {
                 }
               } : isOutlet ? {
                 storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'OUTLET URBANO',
+                domain: `${cleanSlug || 'outlet'}.qatuweb.com`,
                 slug: cleanSlug || 'outlet',
                 tagline: 'OUTLET DE MODA & SNEAKERS • TIENDA OFICIAL',
                 p1: { name: 'Sneakers Streetwear', img: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=300&auto=format&fit=crop&q=80' },
@@ -427,6 +448,7 @@ export function MarketingHome() {
               } : {
                 // Caso por defecto: QUINUAQ (Restaurante de Campo en Quinua, Ayacucho)
                 storeName: businessInput.trim() ? businessInput.trim().toUpperCase() : 'QUINUAQ',
+                domain: businessInput.trim() ? `${cleanSlug}.qatuweb.com` : 'quinuaq.com',
                 slug: cleanSlug || 'quinuaq',
                 tagline: businessInput.trim() ? 'CATÁLOGO DIGITAL & PEDIDOS • AYACUCHO, PERÚ' : 'RESTAURANTE DE CAMPO & CARTA DIGITAL • QUINUA, AYACUCHO',
                 p1: { name: 'Trucha Andina a la Parrilla', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=80' },
@@ -456,7 +478,7 @@ export function MarketingHome() {
                       {/* Barra de dominio superior */}
                       <div className="flex items-center justify-between text-slate-400 text-xs font-mono border-b border-slate-100 pb-2">
                         <span className="text-slate-600 font-semibold truncate max-w-[220px]">
-                          {`${activeData.slug}.qatuweb.com`}
+                          {`${activeData.domain || `${activeData.slug}.qatuweb.com`}`}
                         </span>
                         <span className="text-emerald-700 font-sans font-bold flex items-center gap-1.5 shrink-0 text-xs">
                           <span className="w-2 h-2 rounded-full bg-emerald-500" />
@@ -594,9 +616,11 @@ export function MarketingHome() {
                   </span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
+                  <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
+                  <span className="text-slate-300">•</span>
                   <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">{b.loc}</span>
+                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">{b.loc}</span>
                 </div>
               ))}
 
@@ -612,9 +636,11 @@ export function MarketingHome() {
                   </span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
+                  <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
+                  <span className="text-slate-300">•</span>
                   <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">{b.loc}</span>
+                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">{b.loc}</span>
                 </div>
               ))}
             </div>
@@ -631,53 +657,95 @@ export function MarketingHome() {
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200/80 text-slate-800 border border-slate-300/80">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Casos de Éxito en Producción</span>
+              <span>Soluciones por Rubro</span>
               <span className="text-slate-400">•</span>
-              <span>Casos 100% en Producción</span>
+              <span>Demos 100% Interactivas</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
-              Sistemas a medida para marcas reales
+              Nichos de negocio que transformamos con Qatu Web
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Descubre las soluciones creadas por Qatu Web para gastronomía, impacto social y fitness en Ayacucho. Sistemas en vivo con pedidos por WhatsApp y paneles de control inmediato.
+              Software especializado y catálogos móviles adaptados al flujo real de tu sector. Prueba las demos en vivo y comprueba la facilidad con la que tus clientes compran y tú administras pedidos desde tu celular.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" id="soluciones">
-            {/* Proyecto 1: QuinuaQ */}
-            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          {/* Grilla de los 4 Nichos de Negocio */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="soluciones">
+            {/* Nicho 1: Moda, Calzado & Boutiques */}
+            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center shadow-xs">
+                <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <ShoppingBag className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-black uppercase tracking-wider text-rose-700">
+                    Moda & Calzado
+                  </span>
+                  <h3 className="text-lg font-black text-slate-950 mt-1">
+                    Tiendas de Ropa, Calzado & Accesorios
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Catálogo visual con selector de tallas y variantes de color, zoom en fotos de producto y recepción de pedidos automáticos a WhatsApp con 0% comisiones.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-1.5">
+                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Tallas & Variantes</span>
+                  <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md">Stock en Vivo</span>
+                </div>
+              </div>
+
+              <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
+                <Link
+                  href="/demo/calzados"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition active:scale-95 shadow-xs"
+                >
+                  <span>Probar Demo Calzado & Moda</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                </Link>
+                <Link
+                  href="/demo/calzados/admin"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-100 text-slate-800 text-xs font-semibold hover:bg-slate-200 transition"
+                >
+                  <Smartphone className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Ver Panel Móvil de Stock</span>
+                </Link>
+              </div>
+            </article>
+
+            {/* Nicho 2: Restaurantes, Cafeterías & Pastelerías */}
+            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
                   <Utensils className="w-6 h-6" />
                 </div>
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-wider text-amber-700">
-                    Gastronomía de Campo & Carta QR
+                    Gastronomía & Carta QR
                   </span>
-                  <h3 className="text-xl font-black text-slate-950 mt-1">
-                    QuinuaQ Restaurante de Campo
+                  <h3 className="text-lg font-black text-slate-950 mt-1">
+                    Restaurantes, Cafés & Pastelerías
                   </h3>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Carta digital QR campestre para mesas y pedidos a domicilio en Quinua y Huamanga. Switch de platos agotados en un toque y recepción de comandas automáticas organizadas por WhatsApp sin comisiones abusivas.
+                  Carta digital QR para mesas o delivery a domicilio. Switch de platos agotados en segundos y recepción de comandas limpias y calculadas directo a WhatsApp.
                 </p>
-                <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Caso activo: <strong>quinuaq.qatuweb.com</strong></span>
+                <div className="pt-2 flex flex-wrap gap-1.5">
+                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Mesa & Delivery</span>
+                  <span className="text-[10px] font-semibold bg-amber-50 text-amber-800 px-2 py-0.5 rounded-md">Comandas WhatsApp</span>
                 </div>
               </div>
 
               <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
                 <Link
                   href="/demo/pasteleria"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition active:scale-95"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition active:scale-95 shadow-xs"
                 >
-                  <span>Probar Carta Digital QuinuaQ</span>
+                  <span>Probar Carta Gastronómica</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <Link
                   href="/demo/pasteleria/admin"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-50 text-amber-900 text-xs font-semibold hover:bg-amber-100 transition"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-amber-50 text-amber-900 text-xs font-semibold hover:bg-amber-100 transition"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-amber-700" />
                   <span>Ver Panel de Cocina / Pedidos</span>
@@ -685,89 +753,152 @@ export function MarketingHome() {
               </div>
             </article>
 
-            {/* Proyecto 2: Mama Alice ONG */}
-            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+            {/* Nicho 3: Gimnasios, Fitness & Membresías */}
+            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
-                  <ShieldCheck className="w-6 h-6 text-indigo-200" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700">
-                    ONG & Formación Social
-                  </span>
-                  <h3 className="text-xl font-black text-slate-950 mt-1">
-                    Mama Alice ONG
-                  </h3>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Plataforma para difusión de proyectos educativos y sociales, registro de voluntarios, canal de donaciones transparentes y catálogo de oficios técnicos de gastronomía y hospitalidad para jóvenes de Ayacucho.
-                </p>
-                <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Caso activo: <strong>mamaalice.qatuweb.com</strong></span>
-                </div>
-              </div>
-
-              <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
-                <Link
-                  href="/portal"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition active:scale-95"
-                >
-                  <span>Ver Portal Solidario</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
-                <a
-                  href="https://www.mamaalice.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-50 text-indigo-900 text-xs font-semibold hover:bg-indigo-100 transition"
-                >
-                  <Globe2 className="w-3.5 h-3.5 text-indigo-700" />
-                  <span>Conocer Proyecto Oficial Mama Alice</span>
-                </a>
-              </div>
-            </article>
-
-            {/* Proyecto 3: Trankilandia Gym */}
-            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
                   <Dumbbell className="w-6 h-6" />
                 </div>
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700">
-                    Fitness & Control DNI
+                    Fitness & Membresías
                   </span>
-                  <h3 className="text-xl font-black text-slate-950 mt-1">
-                    Trankilandia Gym
+                  <h3 className="text-lg font-black text-slate-950 mt-1">
+                    Gimnasios, Boxes & Centros Fitness
                   </h3>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Control de membresías activas vs vencidas, check-in express escaneando el código de barras del DNI, venta de suplementos deportivos y arqueo de caja diario para counter en Huamanga.
+                  Cobro de suscripciones mensuales, venta de suplementos deportivos y control de estado de clientes escaneando o ingresando el DNI en counter.
                 </p>
-                <div className="pt-2 text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Caso activo: <strong>trankilandia.qatuweb.com</strong></span>
+                <div className="pt-2 flex flex-wrap gap-1.5">
+                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Control DNI</span>
+                  <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md">Suplementación</span>
                 </div>
               </div>
 
               <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
                 <Link
                   href="/demo/gym"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition active:scale-95"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition active:scale-95 shadow-xs"
                 >
-                  <span>Probar Portal Gym</span>
+                  <span>Probar Portal Fitness & Gym</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <Link
                   href="/demo/gym/admin"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold hover:bg-emerald-100 transition"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold hover:bg-emerald-100 transition"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Ver Panel de Turnos / Counter</span>
+                  <span>Ver Panel de Counter y Caja</span>
                 </Link>
               </div>
             </article>
+
+            {/* Nicho 4: Minimarkets, Ferreterías & Comercio Local */}
+            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                  <Store className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-black uppercase tracking-wider text-blue-700">
+                    Retail & Comercio Local
+                  </span>
+                  <h3 className="text-lg font-black text-slate-950 mt-1">
+                    Minimarkets, Ferreterías & Bodegas
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Catálogo para negocios con amplio inventario. Buscador rápido por producto o marca, canasta de compras express y pedidos directos a WhatsApp para despacho o retiro.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-1.5">
+                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Buscador Rápido</span>
+                  <span className="text-[10px] font-semibold bg-blue-50 text-blue-800 px-2 py-0.5 rounded-md">Canasta Express</span>
+                </div>
+              </div>
+
+              <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
+                <a
+                  href={getWhatsAppUrl('Hola Qatu Web, me gustaría solicitar una demostración o información para un Minimarket / Ferretería / Comercio local.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition active:scale-95 shadow-xs"
+                >
+                  <span>Pedir Demo para mi Comercio</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-blue-200" />
+                </a>
+                <Link
+                  href="/directorio"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-blue-50 text-blue-900 text-xs font-semibold hover:bg-blue-100 transition"
+                >
+                  <Globe2 className="w-3.5 h-3.5 text-blue-700" />
+                  <span>Explorar Comercios Activos</span>
+                </Link>
+              </div>
+            </article>
+          </div>
+
+          {/* Franja de Autoridad: Marcas Oficiales con Sistemas en Producción */}
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-1 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/80">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Marcas Oficiales en Producción</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-black text-slate-950">
+                Marcas y proyectos reales que operan con sistemas Qatu Web
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600">
+                Sistemas en vivo conectados con dominios propios y alta disponibilidad en el Perú.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="https://quinuaq.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
+                title="Visitar quinuaq.com"
+              >
+                <Utensils className="w-4 h-4 text-amber-600" />
+                <span>QuinuaQ</span>
+                <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
+                  quinuaq.com
+                </span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition" />
+              </a>
+
+              <a
+                href="https://www.mamaalice.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
+                title="Visitar mamaalice.org"
+              >
+                <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                <span>Mama Alice ONG</span>
+                <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
+                  mamaalice.org
+                </span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition" />
+              </a>
+
+              <a
+                href="https://trankilandiagym.qatuweb.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
+                title="Visitar trankilandiagym.qatuweb.com"
+              >
+                <Dumbbell className="w-4 h-4 text-emerald-600" />
+                <span>TrankilandiaGym</span>
+                <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
+                  trankilandiagym.qatuweb.com
+                </span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
