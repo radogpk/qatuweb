@@ -64,9 +64,7 @@ export function Navbar() {
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-white transition"
           >
             <span>Demos en Vivo</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-500 text-white">
-              3
-            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </a>
           <a
             href="/#comparativa"
@@ -153,8 +151,9 @@ export function Navbar() {
               className="px-3 py-2 rounded-xl hover:bg-slate-50 transition flex items-center justify-between"
             >
               <span>Demos Interactivas</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                3 disponibles
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                En vivo
               </span>
             </a>
             <a
