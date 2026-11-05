@@ -572,7 +572,7 @@ export function MarketingHome() {
         {/* ── BARRA DESLIZANTE INFINITA: Marquee de Nuestros 3 Proyectos Reales ── */}
         <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-200/80">
           <p className="text-center text-[11px] sm:text-xs uppercase font-bold tracking-widest text-slate-500 mb-2.5">
-            Nuestros 3 proyectos y marcas activas en producción con Qatu Web
+            Marcas y proyectos activos que confían en Qatu Web
           </p>
 
           {/* Carril de Marquesina Continua */}
@@ -588,7 +588,10 @@ export function MarketingHome() {
                   key={`b1-${idx}`}
                   className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
-                  <span className="text-[10px] text-emerald-600 font-mono font-bold">#{((idx) % 3) + 1}</span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-md shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    En vivo
+                  </span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
                   <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
@@ -603,7 +606,10 @@ export function MarketingHome() {
                   key={`b2-${idx}`}
                   className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
-                  <span className="text-[10px] text-emerald-600 font-mono font-bold">#{((idx) % 3) + 1}</span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-md shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    En vivo
+                  </span>
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
                   <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
@@ -618,14 +624,14 @@ export function MarketingHome() {
       </section>
 
       {/* ============================================================== */}
-      {/* 2. BENTO GRID DE LOS 3 PROYECTOS REALES EN AYACUCHO           */}
+      {/* 2. BENTO GRID DE CASOS DE ÉXITO EN PRODUCCIÓN           */}
       {/* ============================================================== */}
       <section className="py-20 sm:py-24 bg-slate-50 border-y border-slate-200/80" id="demos">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200/80 text-slate-800 border border-slate-300/80">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Nuestros 3 Proyectos Reales en Ayacucho</span>
+              <span>Casos de Éxito en Producción</span>
               <span className="text-slate-400">•</span>
               <span>Casos 100% en Producción</span>
             </div>
