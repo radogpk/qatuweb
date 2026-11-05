@@ -11,7 +11,8 @@ export default {
     const subdomain = hostname.replace(".qatuweb.com", "").toLowerCase();
 
     // 2. Consultar estado en el Edge Cache o en el Hub Central (/api/domain-status)
-    const statusApiUrl = `https://qatuweb.com/api/domain-status?subdomain=${encodeURIComponent(subdomain)}`;
+    const apiBase = env?.CENTRAL_API_BASE || "https://qatuweb.com";
+    const statusApiUrl = `${apiBase}/api/domain-status?subdomain=${encodeURIComponent(subdomain)}`;
     const cache = caches.default;
     let statusResponse = await cache.match(statusApiUrl);
 

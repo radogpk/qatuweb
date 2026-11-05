@@ -39,3 +39,4 @@ tenants_generated/
 fix.js
 script.js
 supabase/.temp/
+.env*
