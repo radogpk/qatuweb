@@ -1,9 +1,9 @@
 import { siteConfig } from "@/lib/config/site";
 
 export const homeTitle =
-  "Diseño web y tiendas online con WhatsApp en Perú | Qatu";
+  "Software y Páginas Web a Medida por S/ 30 al mes en Ayacucho | Qatu Web";
 export const homeDescription =
-  "Creamos tu página web y catálogo con pedidos por WhatsApp. Diseño, alojamiento y soporte para negocios en Perú. Desde Ayacucho, sin comisión de Qatu por venta.";
+  "El primer SaaS no tradicional en Ayacucho: software a medida, páginas web y catálogos móviles con pedidos a WhatsApp por S/ 30 al mes. Sin comisiones por venta y con base de datos propia.";
 
 const organizationId = `${siteConfig.url}/#organization`;
 const websiteId = `${siteConfig.url}/#website`;

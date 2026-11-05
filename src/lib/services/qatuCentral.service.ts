@@ -6,7 +6,7 @@ import {
   DomainStatusResponse,
 } from '@/types/qatu';
 
-// Datos semilla de demostración realistas para Huamanga, Ayacucho
+// Datos semilla oficiales de producción para Huamanga, Ayacucho (3 Casos Insignia)
 const INITIAL_TENANTS: Tenant[] = [
   {
     id: 't-1',
@@ -56,38 +56,6 @@ const INITIAL_TENANTS: Tenant[] = [
     killswitch_override: false,
     created_at: '2026-10-15T09:00:00Z',
   },
-  {
-    id: 't-4',
-    owner_id: 'u-4',
-    owner_name: 'María Quispe',
-    owner_email: 'maria.pasteleria@gmail.com',
-    owner_phone: '+51 966 444 333',
-    business_name: 'Pastelería & Café Huamanga',
-    subdomain: 'pasteleriahuamanga',
-    rubro: 'restaurante',
-    plan_type: 'anual_300',
-    status: 'active',
-    next_billing_date: '2027-09-15',
-    vercel_target_url: 'https://pasteleria-huamanga.vercel.app',
-    killswitch_override: false,
-    created_at: '2026-09-15T09:30:00Z',
-  },
-  {
-    id: 't-5',
-    owner_id: 'u-5',
-    owner_name: 'Carlos Palomino',
-    owner_email: 'carlos.plaza@gmail.com',
-    owner_phone: '+51 966 999 111',
-    business_name: 'Hotel Plaza Ayacucho',
-    subdomain: 'hotelplaza',
-    rubro: 'hospedaje',
-    plan_type: 'mensual_30',
-    status: 'suspended', // Killswitch activo
-    next_billing_date: '2026-10-01', // Vencido
-    vercel_target_url: 'https://hotel-plaza-ayacucho.vercel.app',
-    killswitch_override: true,
-    created_at: '2026-08-20T11:00:00Z',
-  },
 ];
 
 const INITIAL_VAULTS: Record<string, TenantVault> = {
@@ -127,43 +95,19 @@ const INITIAL_VAULTS: Record<string, TenantVault> = {
     last_ping_at: '2026-11-04T08:00:00Z',
     last_ping_status: 'ok',
   },
-  't-4': {
-    id: 'v-4',
-    tenant_id: 't-4',
-    client_email_account: 'pasteleriahuamanga.qatu@gmail.com',
-    client_supabase_url: 'https://xyz-pasteleriahuamanga.supabase.co',
-    client_supabase_anon_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.pasteleria_anon_key_demo',
-    client_supabase_service_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.pasteleria_service_key_demo',
-    client_vercel_project_id: 'prj_pasteleria_123',
-    github_repo_url: 'https://github.com/qatu-clients/pasteleria-huamanga',
-    last_ping_at: '2026-11-04T08:00:00Z',
-    last_ping_status: 'ok',
-  },
-  't-5': {
-    id: 'v-5',
-    tenant_id: 't-5',
-    client_email_account: 'hotelplaza.aya@gmail.com',
-    client_supabase_url: 'https://xyz-hotelplaza.supabase.co',
-    client_supabase_anon_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.hotelplaza_anon_key_demo',
-    client_supabase_service_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.hotelplaza_service_key_demo',
-    client_vercel_project_id: 'prj_hotelplaza_123',
-    github_repo_url: 'https://github.com/qatu-clients/hotel-plaza',
-    last_ping_at: '2026-10-28T09:00:00Z',
-    last_ping_status: 'error',
-  },
 };
 
 const INITIAL_PAYMENTS: Payment[] = [
   {
     id: 'pay-1',
-    tenant_id: 't-4',
-    tenant_name: 'Titans Gym Huamanga',
-    subdomain: 'titansgym',
-    amount: 30.0,
-    concept: 'mensualidad',
+    tenant_id: 't-3',
+    tenant_name: 'Trankilandia Gym',
+    subdomain: 'trankilandia',
+    amount: 300.0,
+    concept: 'anualidad',
     payment_method: 'Yape',
     voucher_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80',
-    status: 'pending', // Pendiente de aprobación
+    status: 'pending', // Pendiente de aprobación en dashboard admin
     created_at: '2026-11-04T15:20:00Z',
   },
   {
@@ -183,15 +127,15 @@ const INITIAL_PAYMENTS: Payment[] = [
   {
     id: 'pay-3',
     tenant_id: 't-2',
-    tenant_name: 'Pastelería & Café Huamanga',
-    subdomain: 'pasteleriahuamanga',
-    amount: 300.0,
-    concept: 'anualidad',
-    payment_method: 'Transferencia',
+    tenant_name: 'Restaurante Las Flores',
+    subdomain: 'lasflores',
+    amount: 30.0,
+    concept: 'mensualidad',
+    payment_method: 'Plin',
     status: 'approved',
-    period_covered_start: '2026-09-15',
-    period_covered_end: '2027-09-15',
-    created_at: '2026-09-15T10:00:00Z',
+    period_covered_start: '2026-11-04',
+    period_covered_end: '2026-12-04',
+    created_at: '2026-11-04T10:00:00Z',
   },
 ];
 

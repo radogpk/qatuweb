@@ -129,24 +129,26 @@ export const MOCK_PRODUCTS_CALZADOS: StoreProduct[] = [
 ];
 
 export const PRESET_PASTELERIA: TenantConfig = {
-  slug: 'pasteleria-huamanga',
-  businessName: 'Pastelería & Café Huamanga',
-  tagline: 'Tortas personalizadas, postres finos y café de altura',
-  rubro: 'pasteleria',
-  whatsappNumber: '51966444333',
+  slug: 'lasflores',
+  businessName: 'Restaurante & Pastelería Las Flores',
+  tagline: 'Carta digital, desayunos tradicionales, tortas finas y café de altura',
+  rubro: 'restaurante',
+  whatsappNumber: '51966000111',
   currency: 'S/',
   location: 'Jr. Bellido 180, frente al templo San Francisco, Huamanga',
-  paymentMethods: ['Yape', 'Plin', 'Efectivo en tienda'],
+  paymentMethods: ['Yape', 'Plin', 'Efectivo contraentrega'],
   theme: {
     primaryColor: '#854D0E', // Café cálido
     accentColor: '#D97706', // Ámbar miel
   },
   features: {
     enableVariants: true,
-    variantLabel: 'Porción / Tamaño',
+    variantLabel: 'Porción / Presentación',
     requireCustomerAddress: true,
   },
 };
+
+export const PRESET_LASFLORES = PRESET_PASTELERIA;
 
 export const MOCK_PRODUCTS_PASTELERIA: StoreProduct[] = [
   {
@@ -162,6 +164,17 @@ export const MOCK_PRODUCTS_PASTELERIA: StoreProduct[] = [
   },
   {
     id: 'past-2',
+    nombre: 'Desayuno Tradicional Huamanguino',
+    descripcion: 'Tamal ayacuchano artesanal, pan chapla caliente, chicharrón y café pasado.',
+    precio: 25.0,
+    precio_oferta: 22.0,
+    imagen_url: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&auto=format&fit=crop&q=80',
+    variantes: ['Con Café Americano', 'Con Café Pasado'],
+    disponible: true,
+    destacado: true,
+  },
+  {
+    id: 'past-3',
     nombre: 'Tres Leches de Lúcuma Tradicional',
     descripcion: 'Suave bizcochuelo bañado en salsa de tres leches con lúcuma de valle.',
     precio: 48.0,
@@ -171,12 +184,76 @@ export const MOCK_PRODUCTS_PASTELERIA: StoreProduct[] = [
     destacado: true,
   },
   {
-    id: 'past-3',
+    id: 'past-4',
     nombre: 'Caja x6 Alfajores de Maicena y Manjar Blanco',
     descripcion: 'Masa suave que se deshace en la boca, relleno abundante de manjar artesanal.',
     precio: 18.0,
     imagen_url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80',
     variantes: ['Caja 6 un.', 'Caja 12 un.'],
+    disponible: true,
+  },
+];
+
+export const PRESET_TRANKILANDIA: TenantConfig = {
+  slug: 'trankilandia',
+  businessName: 'Trankilandia Gym & Fitness',
+  tagline: 'Fuerza, rendimiento y nutrición deportiva en el centro de Huamanga',
+  rubro: 'gym',
+  whatsappNumber: '51966000222',
+  currency: 'S/',
+  location: 'Av. Mariscal Cáceres 540, Huamanga, Ayacucho',
+  paymentMethods: ['Yape', 'Plin', 'Efectivo en counter'],
+  theme: {
+    primaryColor: '#059669', // Verde Esmeralda Operacional
+    accentColor: '#10B981',
+  },
+  features: {
+    enableVariants: true,
+    variantLabel: 'Modalidad',
+    requireCustomerAddress: false,
+  },
+};
+
+export const MOCK_PRODUCTS_TRANKILANDIA: StoreProduct[] = [
+  {
+    id: 'gym-1',
+    nombre: 'Membresía Mensual Pase Libre',
+    descripcion: 'Acceso total a sala de musculación, zona cardiovascular y casillero personal.',
+    precio: 80.0,
+    precio_oferta: 75.0,
+    imagen_url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&auto=format&fit=crop&q=80',
+    variantes: ['Turno Mañana (06:00 - 12:00)', 'Turno Libre Completo'],
+    disponible: true,
+    destacado: true,
+  },
+  {
+    id: 'gym-2',
+    nombre: 'Plan Trimestral Disciplina Total',
+    descripcion: '3 meses de entrenamiento ilimitado con rutina personalizada y evaluación mensual.',
+    precio: 210.0,
+    precio_oferta: 195.0,
+    imagen_url: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&auto=format&fit=crop&q=80',
+    variantes: ['Pase Individual', 'Promo Pareja (x2)'],
+    disponible: true,
+    destacado: true,
+  },
+  {
+    id: 'gym-3',
+    nombre: 'Proteína Whey Isolate 2 lbs (Suplemento)',
+    descripcion: '25g de proteína pura por porción, rápida absorción para recuperación muscular.',
+    precio: 140.0,
+    precio_oferta: 130.0,
+    imagen_url: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=600&auto=format&fit=crop&q=80',
+    variantes: ['Sabor Chocolate Suizo', 'Sabor Vainilla Francesa'],
+    disponible: true,
+  },
+  {
+    id: 'gym-4',
+    nombre: 'Pase Diario de Entrenamiento',
+    descripcion: 'Uso de máquinas y duchas durante 1 sesión completa para visitantes.',
+    precio: 10.0,
+    imagen_url: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&auto=format&fit=crop&q=80',
+    variantes: ['Día Completo'],
     disponible: true,
   },
 ];

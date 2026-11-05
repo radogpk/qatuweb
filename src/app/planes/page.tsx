@@ -63,8 +63,15 @@ export default function PlanesPage() {
               href="/demo/pasteleria"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold hover:bg-amber-200 transition"
             >
-              <span>🍰 Demo Pastelería & Café</span>
+              <span>🍰 Demo Pastelería & Carta</span>
               <ExternalLink className="w-3 h-3 text-amber-800" />
+            </Link>
+            <Link
+              href="/demo/gym"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold hover:bg-emerald-200 transition"
+            >
+              <span>🏋️ Demo Gym & DNI</span>
+              <ExternalLink className="w-3 h-3 text-emerald-800" />
             </Link>
           </div>
         </div>
