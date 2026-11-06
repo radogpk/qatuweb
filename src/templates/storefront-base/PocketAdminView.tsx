@@ -223,7 +223,7 @@ export function PocketAdminView({
             <div>
               <p className="text-xs text-slate-500 font-medium">Total Vendido Estimado</p>
               <p className="text-emerald-700 font-black text-3xl mt-0.5">
-                {config.currency} {monthlyRevenue.toFixed(2)}
+                {config.currency} {Number(monthlyRevenue || 0).toFixed(2)}
               </p>
             </div>
           </div>
@@ -351,7 +351,7 @@ export function PocketAdminView({
                         title="Toca para cambiar precio"
                       >
                         <span>
-                          {config.currency} {p.precio.toFixed(2)}
+                          {config.currency} {Number(p.precio || 0).toFixed(2)}
                         </span>
                         <Edit2 className="w-2.5 h-2.5 text-stone-400" />
                       </button>

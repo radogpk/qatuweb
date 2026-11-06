@@ -106,5 +106,5 @@ export const demoCatalogs: DemoCatalog[] = [
 ];
 
 export function formatSoles(value: number): string {
-  return `S/ ${value.toFixed(2)}`;
+  return `S/ ${Number(value || 0).toFixed(2)}`;
 }

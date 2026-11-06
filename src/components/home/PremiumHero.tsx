@@ -134,8 +134,8 @@ export function PremiumHero() {
                 </div>
               </div>
               <div className="p-shop-bottom">
-                <span>{catalog.products[0].name}</span>
-                <strong>S/ {catalog.products[0].price.toFixed(2)}</strong>
+                <span>{catalog.products[0]?.name || ''}</span>
+                <strong>S/ {Number(catalog.products[0]?.price || 0).toFixed(2)}</strong>
               </div>
             </CatalogDemoLink>
           ))}

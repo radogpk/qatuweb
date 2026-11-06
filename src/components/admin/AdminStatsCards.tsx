@@ -79,7 +79,7 @@ export function AdminStatsCards({ businesses }: AdminStatsCardsProps) {
             Ingreso Mensual
           </p>
           <p className="text-2xl sm:text-3xl font-bold font-serif text-amber-800 mt-1">
-            S/. {monthlyRevenue.toFixed(0)}
+            S/. {Number(monthlyRevenue || 0).toFixed(0)}
           </p>
           <p className="text-xs text-amber-700/80 mt-1">Base recurrente estimada</p>
         </div>

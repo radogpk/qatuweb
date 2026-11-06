@@ -29,7 +29,7 @@ export function buildWhatsAppUrl(
         config.features.enableVariants && item.variante
           ? ` (${config.features.variantLabel}: ${item.variante})`
           : '';
-      const subtotal = (item.precio * item.cantidad).toFixed(2);
+      const subtotal = Number((item.precio || 0) * (item.cantidad || 1)).toFixed(2);
       return `• ${item.cantidad}x ${item.nombre}${varianteTag} — ${config.currency} ${subtotal}`;
     })
     .join('\n');
@@ -44,7 +44,7 @@ export function buildWhatsAppUrl(
     `*DETALLE DEL PEDIDO:*`,
     lineasProductos,
     `──────────────────────────────`,
-    `💰 *TOTAL A PAGAR: ${config.currency} ${customer.cartTotal.toFixed(2)}*`,
+    `💰 *TOTAL A PAGAR: ${config.currency} ${Number(customer.cartTotal || 0).toFixed(2)}*`,
     ``,
     `🌐 _Pedido generado desde ${config.slug}.qatuweb.com_`,
     `⚡ _Tecnología por QatuWeb.com_`,

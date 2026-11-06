@@ -124,7 +124,7 @@ export default function ClienteDashboardPage() {
       // Si no tiene o es modo visitante/demo, mostrar Calzados Lucas como comercio insigne
       if (userTenants.length === 0) {
         userTenants = allTenants.filter(
-          (t) => t.subdomain === 'calzadoslucas' || t.owner_name?.includes('Lucas')
+          (t) => t.subdomain === 'calzadoslucas' || (t.owner_name?.includes('Lucas') ?? false)
         );
         if (userTenants.length === 0 && allTenants.length > 0) {
           userTenants = [allTenants[0]];
@@ -688,7 +688,7 @@ export default function ClienteDashboardPage() {
                         {p.payment_method}
                       </td>
                       <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
-                        S/ {Number(p.amount).toFixed(2)}
+                        S/ {Number(p.amount || 0).toFixed(2)}
                       </td>
                       <td className="py-3.5 px-4 text-slate-500 font-mono text-xs">
                         {p.period_covered_start && p.period_covered_end

@@ -404,11 +404,11 @@ export default function SuperAdminDashboardPage() {
       const q = searchTerm.toLowerCase().trim();
       const matchesSearch =
         !q ||
-        t.business_name.toLowerCase().includes(q) ||
-        t.subdomain.toLowerCase().includes(q) ||
-        (t.owner_name && t.owner_name.toLowerCase().includes(q)) ||
-        (t.owner_phone && t.owner_phone.includes(q)) ||
-        (t.owner_email && t.owner_email.toLowerCase().includes(q));
+        (t.business_name?.toLowerCase() || '').includes(q) ||
+        (t.subdomain?.toLowerCase() || '').includes(q) ||
+        (t.owner_name?.toLowerCase() || '').includes(q) ||
+        (t.owner_phone || '').includes(q) ||
+        (t.owner_email?.toLowerCase() || '').includes(q);
 
       const matchesRubro = rubroFilter === 'all' || t.rubro === rubroFilter;
 
@@ -946,7 +946,7 @@ export default function SuperAdminDashboardPage() {
                           {p.tenant_name || p.subdomain || 'Negocio'}
                         </td>
                         <td className="py-4 px-4">
-                          <p className="font-mono font-bold text-white">S/ {p.amount.toFixed(2)}</p>
+                          <p className="font-mono font-bold text-white">S/ {Number(p.amount || 0).toFixed(2)}</p>
                           <p className="text-[11px] text-slate-400 uppercase">{p.concept}</p>
                         </td>
                         <td className="py-4 px-4 font-semibold text-slate-300">
@@ -1397,7 +1397,7 @@ export default function SuperAdminDashboardPage() {
                   Comprobante: {selectedVoucherPayment.tenant_name || selectedVoucherPayment.subdomain}
                 </span>
                 <span className="text-xs text-slate-400">
-                  {selectedVoucherPayment.payment_method} • S/ {selectedVoucherPayment.amount.toFixed(2)}
+                  {selectedVoucherPayment.payment_method} • S/ {Number(selectedVoucherPayment.amount || 0).toFixed(2)}
                 </span>
               </div>
               <button
@@ -1425,7 +1425,7 @@ export default function SuperAdminDashboardPage() {
               <div>
                 <span className="text-slate-500 block text-[10px] uppercase font-bold">Monto</span>
                 <span className="font-bold text-emerald-400 font-mono">
-                  S/ {selectedVoucherPayment.amount.toFixed(2)}
+                  S/ {Number(selectedVoucherPayment.amount || 0).toFixed(2)}
                 </span>
               </div>
               <div>

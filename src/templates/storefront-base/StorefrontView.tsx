@@ -356,15 +356,15 @@ export function StorefrontView({
                     {hasOffer ? (
                       <div className="flex items-baseline gap-1.5">
                         <span className="text-lg font-bold font-serif text-[#B23A2E]">
-                          {config.currency} {product.precio_oferta?.toFixed(2)}
+                          {config.currency} {Number(product.precio_oferta || 0).toFixed(2)}
                         </span>
                         <span className="text-xs text-stone-400 line-through">
-                          {config.currency} {product.precio.toFixed(2)}
+                          {config.currency} {Number(product.precio || 0).toFixed(2)}
                         </span>
                       </div>
                     ) : (
                       <span className="text-lg font-bold font-serif text-stone-900">
-                        {config.currency} {product.precio.toFixed(2)}
+                        {config.currency} {Number(product.precio || 0).toFixed(2)}
                       </span>
                     )}
                   </div>
@@ -400,7 +400,7 @@ export function StorefrontView({
             </div>
             <div className="flex items-center gap-2">
               <span className="font-bold font-serif text-amber-300">
-                {config.currency} {cartTotal.toFixed(2)}
+                {config.currency} {Number(cartTotal || 0).toFixed(2)}
               </span>
               <ArrowRight className="w-4 h-4" />
             </div>
@@ -457,7 +457,7 @@ export function StorefrontView({
                         </p>
                       )}
                       <p className="text-xs font-bold text-stone-800">
-                        {config.currency} {(item.precio * item.cantidad).toFixed(2)}
+                        {config.currency} {Number((item.precio || 0) * (item.cantidad || 1)).toFixed(2)}
                       </p>
                     </div>
 
@@ -580,7 +580,7 @@ export function StorefrontView({
                 <div className="flex items-center justify-between">
                   <span className="text-xs sm:text-sm text-stone-600">Total a pagar:</span>
                   <span className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
-                    {config.currency} {cartTotal.toFixed(2)}
+                    {config.currency} {Number(cartTotal || 0).toFixed(2)}
                   </span>
                 </div>
 
