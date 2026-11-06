@@ -44,7 +44,7 @@ export default {
 
     const modifiedHeaders = new Headers(request.headers);
     modifiedHeaders.set("Host", targetOrigin.hostname);
-    modifiedHeaders.set("x-qatu-proxy-secret", env.QATU_PROXY_SECRET || "qatu-edge-verified");
+    modifiedHeaders.set("x-qatu-proxy-secret", env?.QATU_PROXY_SECRET || "qatu-edge-verified");
     modifiedHeaders.set("x-forwarded-host", hostname);
 
     const proxyRequest = new Request(proxyUrl.toString(), {
