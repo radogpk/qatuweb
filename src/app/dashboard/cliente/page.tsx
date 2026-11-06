@@ -346,7 +346,7 @@ export default function ClienteDashboardPage() {
                 />
               ) : (
                 <div className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-[10px] shrink-0">
-                  {userName?.charAt(0).toUpperCase() || 'C'}
+                  {(userName || 'C').charAt(0).toUpperCase()}
                 </div>
               )}
               <div className="hidden sm:flex flex-col text-left">

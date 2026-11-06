@@ -75,7 +75,10 @@ export default function SuperAdminDashboardPage() {
     name: string;
     email: string;
     avatarUrl?: string;
-  } | null>(null);
+  }>({
+    name: 'Luis Gerardo Llocclla',
+    email: 'luisgerardolloccllasaune@gmail.com',
+  });
 
   // Formulario Wizard Nuevo Tenant
   const [wizardName, setWizardName] = useState('');
@@ -453,21 +456,21 @@ export default function SuperAdminDashboardPage() {
           <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Perfil Oficial Google Super Admin */}
             <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 shadow-xs">
-              {adminUser?.avatarUrl ? (
+              {adminUser.avatarUrl ? (
                 <img
                   src={adminUser.avatarUrl}
-                  alt={adminUser.name}
+                  alt={adminUser.name || 'Admin'}
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-emerald-400/60 object-cover shrink-0"
                   referrerPolicy="no-referrer"
                 />
               ) : (
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xs shrink-0">
-                  {adminUser?.name?.charAt(0).toUpperCase() || 'L'}
+                  {(adminUser.name || 'L').charAt(0).toUpperCase()}
                 </div>
               )}
               <div className="hidden md:flex flex-col text-left">
                 <span className="text-xs font-bold text-white tracking-tight line-clamp-1 max-w-[140px]">
-                  {adminUser?.name || 'Luis Gerardo Llocclla'}
+                  {adminUser.name || 'Luis Gerardo Llocclla'}
                 </span>
                 <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>

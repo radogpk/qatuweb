@@ -150,7 +150,7 @@ export function Navbar() {
                 />
               ) : (
                 <div className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-[10px] shrink-0">
-                  {authUser.name.charAt(0).toUpperCase()}
+                  {(authUser.name || 'U').charAt(0).toUpperCase()}
                 </div>
               )}
               <span className="max-w-[120px] truncate">{authUser.name}</span>
@@ -236,7 +236,7 @@ export function Navbar() {
                   />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
-                    {authUser.name.charAt(0).toUpperCase()}
+                    {(authUser.name || 'U').charAt(0).toUpperCase()}
                   </div>
                 )}
                 <div className="flex flex-col">
