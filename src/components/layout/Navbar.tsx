@@ -27,16 +27,15 @@ export function Navbar() {
     isSuperAdmin: boolean;
   } | null>(null);
 
-  // Aislamiento estricto: en tiendas demo, dashboards y login NO se renderiza la barra de marketing
-  if (
+  const isIsolatedRoute =
     pathname?.startsWith('/demo') ||
     pathname?.startsWith('/dashboard') ||
-    pathname === '/login'
-  ) {
-    return null;
-  }
+    pathname === '/login';
 
   useEffect(() => {
+    // Si la ruta no necesita navbar, no consultar sesión
+    if (isIsolatedRoute) return;
+
     const checkAuth = async () => {
       try {
         const supabase = createClient();
@@ -66,7 +65,13 @@ export function Navbar() {
       }
     };
     checkAuth();
-  }, []);
+  }, [isIsolatedRoute]);
+
+  // Aislamiento estricto: en tiendas demo, dashboards y login NO se renderiza la barra de marketing
+  // NOTA: Esta condición debe ir SIEMPRE DESPUÉS de todos los hooks de React para evitar el error #300
+  if (isIsolatedRoute) {
+    return null;
+  }
 
   const whatsappHref = getWhatsAppUrl(
     'Hola Qatu Web, deseo solicitar una página web y catálogo a medida por S/ 30 al mes para mi negocio en Ayacucho.'
