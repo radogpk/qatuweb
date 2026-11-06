@@ -7,54 +7,8 @@ import {
 } from '@/types/qatu';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// Fallback en memoria si la red falla
-const INITIAL_TENANTS: Tenant[] = [
-  {
-    id: 'c97148ae-508b-4173-816d-eeb266500432',
-    owner_name: 'Lucas Mendoza',
-    owner_email: 'lucas.ayacucho@gmail.com',
-    owner_phone: '+51 941 663 265',
-    business_name: 'Calzados Lucas Huamanga',
-    subdomain: 'calzadoslucas',
-    rubro: 'comercio',
-    plan_type: 'mensual_30',
-    status: 'active',
-    next_billing_date: '2026-12-15',
-    vercel_target_url: 'https://calzados-lucas-qatu.vercel.app',
-    killswitch_override: false,
-    created_at: '2026-09-10T12:00:00Z',
-  },
-  {
-    id: 't-2',
-    owner_name: 'Florinda Quispe',
-    owner_email: 'lasflores.aya@gmail.com',
-    owner_phone: '+51 941 663 265',
-    business_name: 'Restaurante Las Flores',
-    subdomain: 'lasflores',
-    rubro: 'restaurante',
-    plan_type: 'mensual_30',
-    status: 'active',
-    next_billing_date: '2026-12-04',
-    vercel_target_url: 'https://lasflores-qatu.vercel.app',
-    killswitch_override: false,
-    created_at: '2026-10-01T10:00:00Z',
-  },
-  {
-    id: 't-3',
-    owner_name: 'Edwin Alarcón',
-    owner_email: 'trankilandia.gym@gmail.com',
-    owner_phone: '+51 941 663 265',
-    business_name: 'Trankilandia Gym',
-    subdomain: 'trankilandia',
-    rubro: 'gym',
-    plan_type: 'anual_300',
-    status: 'active',
-    next_billing_date: '2027-10-15',
-    vercel_target_url: 'https://trankilandia-gym.vercel.app',
-    killswitch_override: false,
-    created_at: '2026-10-15T09:00:00Z',
-  },
-];
+// Base de datos limpia de producción
+const INITIAL_TENANTS: Tenant[] = [];
 
 declare global {
   // eslint-disable-next-line no-var
@@ -111,7 +65,7 @@ class QatuCentralService {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!error && data && data.length > 0) {
+        if (!error && data) {
           // Sincronizar store en memoria
           this.tenants = data as Tenant[];
           return data as Tenant[];
@@ -137,6 +91,9 @@ class QatuCentralService {
         if (!error && data) {
           return data as Tenant;
         }
+        if (!error && !data) {
+          return null;
+        }
       } catch (err) {
         console.warn('Fallo al buscar tenant por subdominio en Supabase:', err);
       }
@@ -157,6 +114,9 @@ class QatuCentralService {
 
         if (!error && data) {
           return data as Tenant;
+        }
+        if (!error && !data) {
+          return null;
         }
       } catch (err) {
         // Fallback
