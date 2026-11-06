@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { LoginForm } from '@/components/auth/LoginForm';
 
 export const metadata = {
-  title: 'Ingresar | Qatu',
+  title: 'Ingresar | Qatu Web',
   description: 'Inicia sesión en Qatu para gestionar tus negocios y suscripciones.',
 };
 
@@ -25,9 +25,18 @@ export default function LoginPage() {
         </span>
       </header>
 
-      {/* Contenido centrado con LoginForm */}
+      {/* Contenido centrado con LoginForm envuelto en Suspense */}
       <main className="flex items-center justify-center py-10">
-        <LoginForm />
+        <Suspense
+          fallback={
+            <div className="w-full max-w-md bg-white rounded-3xl p-10 text-center border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-3">
+              <Loader2 className="w-6 h-6 animate-spin text-slate-600" />
+              <p className="text-xs text-slate-500 font-medium">Cargando acceso seguro...</p>
+            </div>
+          }
+        >
+          <LoginForm />
+        </Suspense>
       </main>
 
       {/* Pie de página */}
