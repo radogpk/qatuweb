@@ -536,7 +536,7 @@ export default function ClienteDashboardPage() {
                 <span>¿Deseas impresión de tickets o lector de códigos?</span>
               </div>
               <a
-                href="https://wa.me/51966000111?text=Hola%20Qatu%20Web,%20deseo%20consultar%20por%20m%C3%B3dulos%20a%20medida"
+                href="https://wa.me/51941663265?text=Hola%20Qatu%20Web,%20deseo%20consultar%20por%20m%C3%B3dulos%20a%20medida"
                 target="_blank"
                 rel="noreferrer"
                 className="font-bold text-slate-900 hover:underline shrink-0 ml-2"

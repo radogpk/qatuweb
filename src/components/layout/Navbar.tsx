@@ -81,14 +81,14 @@ export function Navbar() {
         {/* Derecha: Acciones Comerciales */}
         <div className="hidden sm:flex items-center gap-2.5 shrink-0">
           <a
-            href="https://wa.me/51966000111"
+            href="https://wa.me/51941663265"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
             title="Soporte y Consultas en Ayacucho"
           >
             <Phone className="w-3.5 h-3.5 text-slate-400" />
-            <span>966 000 111</span>
+            <span>941 663 265</span>
           </a>
 
           <Link

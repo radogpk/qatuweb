@@ -4,8 +4,8 @@ export const siteConfig = {
   description: "Creamos la web y el catálogo de tu negocio con pedidos directos a WhatsApp. Diseño acompañado, precios claros y sin comisión de Qatu por venta.",
   url: "https://qatu.pe",
   ogImage: "https://qatu.pe/og-qatu.jpg",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "51966123456", // Número oficial WhatsApp Business de Qatu
-  yapeNumber: process.env.NEXT_PUBLIC_YAPE_PHONE || "966 888 777",
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "51941663265", // Número oficial WhatsApp Business de Qatu
+  yapeNumber: process.env.NEXT_PUBLIC_YAPE_PHONE || "941 663 265",
   yapeTitular: "Luis Gerardo Llocclla Sauñe (Qatu Web)",
   email: "hola@qatu.pe",
   location: "Ayacucho, Perú",

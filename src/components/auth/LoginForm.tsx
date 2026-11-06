@@ -212,7 +212,7 @@ export function LoginForm() {
                 <span>Contraseña</span>
               </label>
               <a
-                href="https://wa.me/51966000111?text=Hola%20Qatu%20Web,%20necesito%20asistencia%20para%20recuperar%20el%20acceso%20a%20mi%20cuenta"
+                href="https://wa.me/51941663265?text=Hola%20Qatu%20Web,%20necesito%20asistencia%20para%20recuperar%20el%20acceso%20a%20mi%20cuenta"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 transition"
@@ -264,7 +264,7 @@ export function LoginForm() {
       <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500">
         ¿Eres un comerciante nuevo en Huamanga?{' '}
         <a
-          href="https://wa.me/51966000111?text=Hola%20Qatu%20Web,%20quiero%20crear%20mi%20p%C3%A1gina%20web"
+          href="https://wa.me/51941663265?text=Hola%20Qatu%20Web,%20quiero%20crear%20mi%20p%C3%A1gina%20web"
           target="_blank"
           rel="noreferrer"
           className="font-bold text-slate-900 hover:underline inline-flex items-center gap-1"
