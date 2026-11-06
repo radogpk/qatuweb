@@ -246,7 +246,18 @@ export default function SuperAdminDashboardPage() {
 
   // Rechazar Pago
   const handleRejectPayment = async (paymentId: string) => {
-    await qatuCentralService.rejectPayment(paymentId);
+    try {
+      const res = await fetch('/api/tenants', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reject_payment', paymentId }),
+      });
+      if (!res.ok) {
+        await qatuCentralService.rejectPayment(paymentId);
+      }
+    } catch {
+      await qatuCentralService.rejectPayment(paymentId);
+    }
     showToast('❌ Comprobante marcado como observado/rechazado.');
     await loadData();
     setSelectedVoucherPayment(null);

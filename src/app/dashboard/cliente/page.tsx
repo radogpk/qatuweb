@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Tenant, Payment } from '@/types/qatu';
+import { Tenant, Payment, PaymentConcept } from '@/types/qatu';
 import { qatuCentralService } from '@/lib/services/qatuCentral.service';
 import { compressImageToWebP } from '@/templates/storefront-base/imageCompressor';
 import { createClient } from '@/lib/supabase/client';
@@ -86,8 +86,23 @@ export default function ClienteDashboardPage() {
       setUserEmail(clientEmail);
       setUserName(clientName);
 
-      // Obtener todos los tenants
-      const allTenants = await qatuCentralService.getTenants();
+      // Obtener todos los tenants (Intentar API con credenciales service-role primero)
+      let allTenants: Tenant[] = [];
+      try {
+        const res = await fetch('/api/tenants');
+        if (res.ok) {
+          const apiData = await res.json();
+          if (Array.isArray(apiData.tenants) && apiData.tenants.length > 0) {
+            allTenants = apiData.tenants;
+          }
+        }
+      } catch {
+        // Fallback local
+      }
+
+      if (allTenants.length === 0) {
+        allTenants = await qatuCentralService.getTenants();
+      }
 
       // Si hay usuario autenticado, buscar sus tenants asignados
       let userTenants: Tenant[] = [];
@@ -114,8 +129,21 @@ export default function ClienteDashboardPage() {
       // Cargar pagos asociados
       const activeTenant = userTenants[0];
       if (activeTenant) {
-        const tenantPayments = await qatuCentralService.getPaymentsByTenant(activeTenant.id);
-        setPayments(tenantPayments);
+        try {
+          const res = await fetch(`/api/tenants?tenantId=${encodeURIComponent(activeTenant.id)}`);
+          if (res.ok) {
+            const apiData = await res.json();
+            if (Array.isArray(apiData.payments)) {
+              setPayments(apiData.payments);
+            }
+          } else {
+            const tenantPayments = await qatuCentralService.getPaymentsByTenant(activeTenant.id);
+            setPayments(tenantPayments);
+          }
+        } catch {
+          const tenantPayments = await qatuCentralService.getPaymentsByTenant(activeTenant.id);
+          setPayments(tenantPayments);
+        }
         setVoucherAmount(activeTenant.plan_type === 'anual_300' ? '300.00' : '30.00');
       }
     } catch {
@@ -201,21 +229,44 @@ export default function ClienteDashboardPage() {
 
     setUploadingVoucher(true);
     try {
-      const newPayment = await qatuCentralService.createPaymentVoucher({
+      const payload = {
         tenant_id: tenant.id,
         tenant_name: tenant.business_name,
         subdomain: tenant.subdomain,
         amount: parseFloat(voucherAmount),
-        concept: tenant.plan_type === 'anual_300' ? 'anualidad' : 'mensualidad',
+        concept: (tenant.plan_type === 'anual_300' ? 'anualidad' : 'mensualidad') as PaymentConcept,
         payment_method: voucherMethod,
         voucher_url: voucherDataUrl,
-      });
+      };
+
+      let newPayment: Payment | null = null;
+      try {
+        const res = await fetch('/api/tenants', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'upload_voucher',
+            paymentData: payload,
+          }),
+        });
+        if (res.ok) {
+          newPayment = (await res.json()) as Payment;
+        }
+      } catch {
+        // Fallback local
+      }
+
+      if (!newPayment) {
+        newPayment = await qatuCentralService.createPaymentVoucher(payload);
+      }
 
       // Refrescar pagos locales
-      setPayments((prev) => [newPayment, ...prev]);
+      setPayments((prev) => [newPayment!, ...prev]);
       showToast('🎉 ¡Comprobante enviado con éxito! El equipo de Qatu lo validará en breve.');
       setIsVoucherModalOpen(false);
       setVoucherDataUrl(null);
+    } catch {
+      alert('Error al registrar el comprobante. Por favor intenta de nuevo.');
     } finally {
       setUploadingVoucher(false);
     }

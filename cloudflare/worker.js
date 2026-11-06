@@ -89,7 +89,7 @@ function renderSuspendedPage(subdomain, data) {
     <h1>${businessName}</h1>
     <p>Este catálogo o sistema web se encuentra temporalmente en pausa. Si eres el propietario del negocio, reactívalo al instante con Yape o Plin (S/ ${amount}.00).</p>
     <a class="btn btn-primary" href="https://qatuweb.com/dashboard/cliente">Subir Comprobante Yape / Plin</a>
-    <a class="btn btn-secondary" href="https://wa.me/51966123456?text=${whatsappMsg}">Contactar Soporte por WhatsApp</a>
+    <a class="btn btn-secondary" href="https://wa.me/51941663265?text=${whatsappMsg}">Contactar Soporte por WhatsApp</a>
     <div class="footer">Infraestructura administrada por <strong>QatuWeb.com</strong> • Ayacucho</div>
   </div>
 </body>
