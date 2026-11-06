@@ -27,8 +27,12 @@ export function Navbar() {
     isSuperAdmin: boolean;
   } | null>(null);
 
-  // Aislamiento estricto: en tiendas demo y dashboards NO se renderiza la barra de marketing
-  if (pathname?.startsWith('/demo') || pathname?.startsWith('/dashboard')) {
+  // Aislamiento estricto: en tiendas demo, dashboards y login NO se renderiza la barra de marketing
+  if (
+    pathname?.startsWith('/demo') ||
+    pathname?.startsWith('/dashboard') ||
+    pathname === '/login'
+  ) {
     return null;
   }
 

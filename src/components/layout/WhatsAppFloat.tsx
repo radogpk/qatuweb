@@ -6,7 +6,13 @@ import { getWhatsAppUrl } from "@/lib/config/site";
 
 export function WhatsAppFloat() {
   const pathname = usePathname();
-  if (pathname === "/" || pathname?.startsWith("/demo") || pathname?.startsWith("/dashboard")) return null;
+  if (
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname?.startsWith("/demo") ||
+    pathname?.startsWith("/dashboard")
+  )
+    return null;
 
   return (
     <a

@@ -9,8 +9,12 @@ import { getWhatsAppUrl } from '@/lib/config/site';
 export function Footer() {
   const pathname = usePathname();
 
-  // Aislamiento: en demos y dashboards no se muestra el footer global de marketing
-  if (pathname?.startsWith('/demo') || pathname?.startsWith('/dashboard')) {
+  // Aislamiento: en demos, dashboards y login no se muestra el footer global de marketing
+  if (
+    pathname?.startsWith('/demo') ||
+    pathname?.startsWith('/dashboard') ||
+    pathname === '/login'
+  ) {
     return null;
   }
 

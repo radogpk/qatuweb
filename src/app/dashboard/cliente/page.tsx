@@ -212,8 +212,16 @@ export default function ClienteDashboardPage() {
     } catch {
       // Ignorar
     }
-    document.cookie = 'qatu_role=; path=/; max-age=0';
-    router.push('/login');
+    document.cookie = 'qatu_role=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    if (typeof document !== 'undefined') {
+      document.cookie.split(';').forEach((cookie) => {
+        const name = cookie.split('=')[0].trim();
+        if (name.startsWith('sb-')) {
+          document.cookie = `${name}=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+        }
+      });
+    }
+    window.location.href = '/login?logged_out=true';
   };
 
   // Subida de captura de Yape comprimida en WebP

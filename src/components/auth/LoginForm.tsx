@@ -29,10 +29,20 @@ export function LoginForm() {
   useEffect(() => {
     const errorParam = searchParams.get('error');
     if (errorParam) {
-      setError(decodeURIComponent(errorParam));
+      try {
+        setError(decodeURIComponent(errorParam));
+      } catch {
+        setError(errorParam);
+      }
     }
 
-    // Si ya existe sesión activa de Google/Supabase, redirigir directamente al dashboard
+    const isLoggedOut = searchParams.get('logged_out') === 'true';
+    if (isLoggedOut) {
+      setSuccessMessage('Has cerrado sesión correctamente. Puedes volver a ingresar cuando gustes.');
+      return;
+    }
+
+    // Si ya existe sesión activa de Google/Supabase y no viene de cerrar sesión, redirigir
     const checkActiveSession = async () => {
       try {
         const supabase = createClient();
