@@ -1,31 +1,74 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Menu,
   X,
-  MessageCircle,
   ArrowUpRight,
   Lock,
   Phone,
   Layers,
+  ShieldCheck,
+  User,
+  LayoutDashboard,
 } from 'lucide-react';
 import { getWhatsAppUrl } from '@/lib/config/site';
+import { createClient } from '@/lib/supabase/client';
 
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [authUser, setAuthUser] = useState<{
+    name: string;
+    email: string;
+    avatarUrl?: string;
+    isSuperAdmin: boolean;
+  } | null>(null);
 
   // Aislamiento estricto: en tiendas demo y dashboards NO se renderiza la barra de marketing
   if (pathname?.startsWith('/demo') || pathname?.startsWith('/dashboard')) {
     return null;
   }
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user?.email) {
+          const cleanEmail = user.email.toLowerCase().trim();
+          const isSuperAdmin =
+            cleanEmail === 'luisgerardolloccllasaune@gmail.com' ||
+            cleanEmail.includes('luis.llocclla') ||
+            cleanEmail.endsWith('@unsch.edu.pe');
+
+          setAuthUser({
+            name:
+              user.user_metadata?.full_name ||
+              user.user_metadata?.name ||
+              (user.email ? user.email.split('@')[0] : 'Mi Cuenta'),
+            email: user.email,
+            avatarUrl: user.user_metadata?.avatar_url || user.user_metadata?.picture,
+            isSuperAdmin,
+          });
+        }
+      } catch {
+        // Modo anónimo sin sesión
+      }
+    };
+    checkAuth();
+  }, []);
+
   const whatsappHref = getWhatsAppUrl(
     'Hola Qatu Web, deseo solicitar una página web y catálogo a medida por S/ 30 al mes para mi negocio en Ayacucho.'
   );
+
+  const dashboardHref = authUser?.isSuperAdmin ? '/dashboard/admin' : '/dashboard/cliente';
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-slate-200/80 transition-all">
@@ -78,7 +121,7 @@ export function Navbar() {
           </a>
         </nav>
 
-        {/* Derecha: Acciones Comerciales */}
+        {/* Derecha: Acciones Comerciales y Perfil de Usuario */}
         <div className="hidden sm:flex items-center gap-2.5 shrink-0">
           <a
             href="https://wa.me/51941663265"
@@ -91,13 +134,40 @@ export function Navbar() {
             <span>941 663 265</span>
           </a>
 
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition border border-transparent hover:border-slate-200"
-          >
-            <Lock className="w-3.5 h-3.5 text-slate-500" />
-            <span>Acceso Clientes</span>
-          </Link>
+          {authUser ? (
+            /* Usuario con Sesión Activa (Google o Email) */
+            <Link
+              href={dashboardHref}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition text-xs font-bold shadow-xs border border-emerald-500/40 group"
+              title={`Sesión iniciada como ${authUser.email}`}
+            >
+              {authUser.avatarUrl ? (
+                <img
+                  src={authUser.avatarUrl}
+                  alt={authUser.name}
+                  className="w-5 h-5 rounded-full object-cover border border-emerald-400 shrink-0"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-[10px] shrink-0">
+                  {authUser.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="max-w-[120px] truncate">{authUser.name}</span>
+              <span className="text-[10px] text-emerald-300 font-bold px-1.5 py-0.5 rounded-md bg-emerald-950/70 border border-emerald-500/30">
+                {authUser.isSuperAdmin ? 'Admin' : 'Mi Panel'}
+              </span>
+            </Link>
+          ) : (
+            /* Usuario Anónimo: Acceso a Login */
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition border border-transparent hover:border-slate-200"
+            >
+              <Lock className="w-3.5 h-3.5 text-slate-500" />
+              <span>Acceso Clientes</span>
+            </Link>
+          )}
 
           <a
             href={whatsappHref}
@@ -112,15 +182,34 @@ export function Navbar() {
 
         {/* Hamburguesa Móvil */}
         <div className="sm:hidden flex items-center gap-2">
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-xs active:scale-95 transition"
-          >
-            <span>Solicitar</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" />
-          </a>
+          {authUser ? (
+            <Link
+              href={dashboardHref}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold border border-emerald-500/40"
+            >
+              {authUser.avatarUrl ? (
+                <img
+                  src={authUser.avatarUrl}
+                  alt={authUser.name}
+                  className="w-4 h-4 rounded-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <LayoutDashboard className="w-3.5 h-3.5 text-emerald-400" />
+              )}
+              <span>Panel</span>
+            </Link>
+          ) : (
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-xs active:scale-95 transition"
+            >
+              <span>Solicitar</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" />
+            </a>
+          )}
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -135,6 +224,40 @@ export function Navbar() {
       {/* Menú Móvil Desplegable */}
       {mobileOpen && (
         <div className="sm:hidden bg-white border-b border-slate-200 px-4 py-5 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-150">
+          {authUser && (
+            <div className="p-3 bg-emerald-50/80 rounded-2xl border border-emerald-200 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                {authUser.avatarUrl ? (
+                  <img
+                    src={authUser.avatarUrl}
+                    alt={authUser.name}
+                    className="w-8 h-8 rounded-full border border-emerald-500 object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
+                    {authUser.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-900 line-clamp-1">
+                    {authUser.name}
+                  </span>
+                  <span className="text-[10px] text-emerald-700 font-semibold">
+                    {authUser.isSuperAdmin ? 'Super Administrador' : 'Cliente Qatu'}
+                  </span>
+                </div>
+              </div>
+              <Link
+                href={dashboardHref}
+                onClick={() => setMobileOpen(false)}
+                className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-xs"
+              >
+                Ir al Panel
+              </Link>
+            </div>
+          )}
+
           <nav className="flex flex-col space-y-2 text-sm font-semibold text-slate-800">
             <a
               href="/#soluciones"
@@ -167,14 +290,16 @@ export function Navbar() {
             >
               Planes y Precios
             </a>
-            <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className="px-3 py-2 rounded-xl hover:bg-slate-50 transition flex items-center gap-2"
-            >
-              <Lock className="w-3.5 h-3.5 text-slate-500" />
-              <span>Acceso Clientes (/login)</span>
-            </Link>
+            {!authUser && (
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="px-3 py-2 rounded-xl hover:bg-slate-50 transition flex items-center gap-2"
+              >
+                <Lock className="w-3.5 h-3.5 text-slate-500" />
+                <span>Acceso Clientes (/login)</span>
+              </Link>
+            )}
           </nav>
 
           <div className="pt-2 border-t border-slate-100 space-y-2">

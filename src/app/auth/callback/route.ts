@@ -21,19 +21,23 @@ export async function GET(request: Request) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
 
+    // Colección de cookies de sesión emitidas por Supabase
+    const cookiesToApply: { name: string; value: string; options: any }[] = [];
+
     const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         getAll() {
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // Ignorar si se ejecuta en un contexto de solo lectura
-          }
+          cookiesToSet.forEach((c) => {
+            cookiesToApply.push(c);
+            try {
+              cookieStore.set(c.name, c.value, c.options);
+            } catch {
+              // Ignorar contexto de solo lectura
+            }
+          });
         },
       },
     });
@@ -41,6 +45,7 @@ export async function GET(request: Request) {
     const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
     if (exchangeError) {
+      console.error('Error al intercambiar código PKCE por sesión:', exchangeError);
       const redirectUrl = new URL('/login', requestUrl.origin);
       redirectUrl.searchParams.set('error', exchangeError.message);
       return NextResponse.redirect(redirectUrl);
@@ -61,20 +66,35 @@ export async function GET(request: Request) {
         cleanEmail.includes('lloccllasaune') ||
         cleanEmail.includes('luis.llocclla') ||
         cleanEmail.includes('luisllocclla') ||
-        cleanEmail.includes('radogpk');
+        cleanEmail.includes('radogpk') ||
+        cleanEmail.endsWith('@unsch.edu.pe');
 
       const targetRole = isSuperAdmin ? 'super_admin' : 'client';
+      const destination = isSuperAdmin ? '/dashboard/admin' : '/dashboard/cliente';
+
+      // Crear respuesta de redirección explícita
+      const response = NextResponse.redirect(new URL(destination, requestUrl.origin));
+
+      // Adjuntar explícitamente TODAS las cookies de sesión de Supabase al objeto de respuesta
+      cookiesToApply.forEach(({ name, value, options }) => {
+        response.cookies.set(name, value, {
+          ...options,
+          path: '/',
+          sameSite: 'lax',
+          maxAge: options?.maxAge ?? 60 * 60 * 24 * 30, // 30 días
+          secure: process.env.NODE_ENV === 'production',
+        });
+      });
 
       // Sincronizar cookie de sesión de rol
-      cookieStore.set('qatu_role', targetRole, {
+      response.cookies.set('qatu_role', targetRole, {
         path: '/',
         maxAge: 60 * 60 * 24 * 30, // 30 días
         sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
       });
 
-      // Redirigir al panel correspondiente
-      const destination = isSuperAdmin ? '/dashboard/admin' : '/dashboard/cliente';
-      return NextResponse.redirect(new URL(destination, requestUrl.origin));
+      return response;
     }
   }
 

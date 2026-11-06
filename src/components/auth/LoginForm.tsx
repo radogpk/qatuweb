@@ -31,7 +31,31 @@ export function LoginForm() {
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
     }
-  }, [searchParams]);
+
+    // Si ya existe sesión activa de Google/Supabase, redirigir directamente al dashboard
+    const checkActiveSession = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user?.email) {
+          const cleanEmail = user.email.toLowerCase().trim();
+          const isSuperAdmin =
+            cleanEmail === 'luisgerardolloccllasaune@gmail.com' ||
+            cleanEmail.includes('luis.llocclla') ||
+            cleanEmail.endsWith('@unsch.edu.pe');
+
+          document.cookie = `qatu_role=${isSuperAdmin ? 'super_admin' : 'client'}; path=/; max-age=2592000; SameSite=Lax`;
+          router.replace(isSuperAdmin ? '/dashboard/admin' : '/dashboard/cliente');
+        }
+      } catch {
+        // Ignorar
+      }
+    };
+    checkActiveSession();
+  }, [searchParams, router]);
 
   // Manejo de inicio de sesión con correo y contraseña
   const handlePasswordLogin = async (e: React.FormEvent) => {

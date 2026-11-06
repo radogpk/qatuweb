@@ -71,6 +71,11 @@ export default function SuperAdminDashboardPage() {
   // Estados de proceso
   const [pingLoading, setPingLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [adminUser, setAdminUser] = useState<{
+    name: string;
+    email: string;
+    avatarUrl?: string;
+  } | null>(null);
 
   // Formulario Wizard Nuevo Tenant
   const [wizardName, setWizardName] = useState('');
@@ -122,6 +127,38 @@ export default function SuperAdminDashboardPage() {
 
   useEffect(() => {
     loadData();
+
+    const fetchAdminUser = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          const name =
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            (user.email ? user.email.split('@')[0] : 'Luis Gerardo Llocclla');
+          const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+          setAdminUser({
+            name,
+            email: user.email || 'luisgerardolloccllasaune@gmail.com',
+            avatarUrl: avatar,
+          });
+        } else {
+          setAdminUser({
+            name: 'Luis Gerardo Llocclla',
+            email: 'luisgerardolloccllasaune@gmail.com',
+          });
+        }
+      } catch {
+        setAdminUser({
+          name: 'Luis Gerardo Llocclla',
+          email: 'luisgerardolloccllasaune@gmail.com',
+        });
+      }
+    };
+    fetchAdminUser();
   }, []);
 
   // Manejo de Logout real
@@ -414,6 +451,31 @@ export default function SuperAdminDashboardPage() {
           </div>
 
           <div className="flex items-center gap-2.5 sm:gap-3">
+            {/* Perfil Oficial Google Super Admin */}
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 shadow-xs">
+              {adminUser?.avatarUrl ? (
+                <img
+                  src={adminUser.avatarUrl}
+                  alt={adminUser.name}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-emerald-400/60 object-cover shrink-0"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xs shrink-0">
+                  {adminUser?.name?.charAt(0).toUpperCase() || 'L'}
+                </div>
+              )}
+              <div className="hidden md:flex flex-col text-left">
+                <span className="text-xs font-bold text-white tracking-tight line-clamp-1 max-w-[140px]">
+                  {adminUser?.name || 'Luis Gerardo Llocclla'}
+                </span>
+                <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Super Admin
+                </span>
+              </div>
+            </div>
+
             {/* Botón Ping Anti-Pausa */}
             <button
               type="button"
@@ -423,7 +485,7 @@ export default function SuperAdminDashboardPage() {
               title="Ping preventivo para evitar suspensión de proyectos Supabase Free a los 7 días"
             >
               <Activity className={`w-3.5 h-3.5 ${pingLoading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Ping Anti-Pausa</span>
+              <span className="hidden lg:inline">Ping Anti-Pausa</span>
             </button>
 
             <Link

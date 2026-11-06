@@ -43,6 +43,7 @@ export default function ClienteDashboardPage() {
   const yapeTitular = siteConfig.yapeTitular || 'Luis Gerardo Llocclla Sauñe (Qatu Web)';
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [selectedTenantIndex, setSelectedTenantIndex] = useState(0);
@@ -83,8 +84,14 @@ export default function ClienteDashboardPage() {
         user?.user_metadata?.name ||
         (user?.email ? user.email.split('@')[0] : null);
 
+      let clientAvatar =
+        user?.user_metadata?.avatar_url ||
+        user?.user_metadata?.picture ||
+        null;
+
       setUserEmail(clientEmail);
       setUserName(clientName);
+      setUserAvatar(clientAvatar);
 
       // Obtener todos los tenants (Intentar API con credenciales service-role primero)
       let allTenants: Tenant[] = [];
@@ -327,6 +334,30 @@ export default function ClienteDashboardPage() {
                 ))}
               </select>
             )}
+
+            {/* Perfil Oficial Google */}
+            <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200">
+              {userAvatar ? (
+                <img
+                  src={userAvatar}
+                  alt={userName || 'Cliente'}
+                  className="w-6 h-6 rounded-full object-cover border border-emerald-500 shrink-0"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                  {userName?.charAt(0).toUpperCase() || 'C'}
+                </div>
+              )}
+              <div className="hidden sm:flex flex-col text-left">
+                <span className="text-xs font-bold text-slate-900 max-w-[120px] truncate leading-tight">
+                  {userName || 'Mi Negocio'}
+                </span>
+                <span className="text-[10px] text-slate-500 font-medium leading-tight">
+                  Comerciante
+                </span>
+              </div>
+            </div>
 
             <button
               type="button"
