@@ -50,17 +50,18 @@ export async function GET(request: Request) {
     if (user?.email) {
       const cleanEmail = user.email.toLowerCase().trim();
 
-      // Criterio de Super Admin: Correo institucional UNSSCH, correos personales Google y dominio qatuweb.com
+      // Criterio de Super Admin: Correo personal Google oficial y dominios administrativos
       const isSuperAdmin =
-        cleanEmail === 'luis.llocclla.27@unsch.edu.pe' ||
-        cleanEmail === 'radogpk@gmail.com' ||
-        cleanEmail === 'luisllocclla27@gmail.com' ||
+        cleanEmail === 'luisgerardolloccllasaune@gmail.com' ||
         cleanEmail === 'admin@qatuweb.com' ||
         cleanEmail === 'luis@qatuweb.com' ||
-        cleanEmail.includes('radogpk') ||
+        cleanEmail === 'radogpk@gmail.com' ||
+        cleanEmail === 'luisllocclla27@gmail.com' ||
+        cleanEmail.includes('luisgerardo') ||
+        cleanEmail.includes('lloccllasaune') ||
         cleanEmail.includes('luis.llocclla') ||
         cleanEmail.includes('luisllocclla') ||
-        cleanEmail.includes('unsch.edu.pe');
+        cleanEmail.includes('radogpk');
 
       const targetRole = isSuperAdmin ? 'super_admin' : 'client';
 

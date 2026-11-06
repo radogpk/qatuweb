@@ -53,15 +53,16 @@ export function LoginForm() {
 
       const cleanEmail = (data.user?.email || email).toLowerCase().trim();
       const isSuperAdmin =
-        cleanEmail === 'luis.llocclla.27@unsch.edu.pe' ||
-        cleanEmail === 'radogpk@gmail.com' ||
-        cleanEmail === 'luisllocclla27@gmail.com' ||
+        cleanEmail === 'luisgerardolloccllasaune@gmail.com' ||
         cleanEmail === 'admin@qatuweb.com' ||
         cleanEmail === 'luis@qatuweb.com' ||
-        cleanEmail.includes('radogpk') ||
+        cleanEmail === 'radogpk@gmail.com' ||
+        cleanEmail === 'luisllocclla27@gmail.com' ||
+        cleanEmail.includes('luisgerardo') ||
+        cleanEmail.includes('lloccllasaune') ||
         cleanEmail.includes('luis.llocclla') ||
         cleanEmail.includes('luisllocclla') ||
-        cleanEmail.includes('unsch.edu.pe');
+        cleanEmail.includes('radogpk');
 
       // Asignar cookie de rol para el middleware de navegación
       document.cookie = `qatu_role=${isSuperAdmin ? 'super_admin' : 'client'}; path=/; max-age=2592000; SameSite=Lax`;

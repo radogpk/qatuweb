@@ -99,12 +99,12 @@ begin
     -- Correo maestro de Super Admin:
     case
       when lower(new.email) in (
-        'luis.llocclla.27@unsch.edu.pe',
+        'luisgerardolloccllasaune@gmail.com',
         'radogpk@gmail.com',
         'luisllocclla27@gmail.com',
         'admin@qatuweb.com',
         'luis@qatuweb.com'
-      ) or lower(new.email) like '%radogpk%' or lower(new.email) like '%luis.llocclla%' or lower(new.email) like '%luisllocclla%' then 'super_admin'
+      ) or lower(new.email) like '%luisgerardo%' or lower(new.email) like '%lloccllasaune%' or lower(new.email) like '%luis.llocclla%' or lower(new.email) like '%luisllocclla%' or lower(new.email) like '%radogpk%' then 'super_admin'
       else coalesce(new.raw_user_meta_data->>'role', 'client')
     end,
     coalesce(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
@@ -113,12 +113,12 @@ begin
   on conflict (id) do update set
     role = case
       when lower(new.email) in (
-        'luis.llocclla.27@unsch.edu.pe',
+        'luisgerardolloccllasaune@gmail.com',
         'radogpk@gmail.com',
         'luisllocclla27@gmail.com',
         'admin@qatuweb.com',
         'luis@qatuweb.com'
-      ) or lower(new.email) like '%radogpk%' or lower(new.email) like '%luis.llocclla%' or lower(new.email) like '%luisllocclla%' then 'super_admin'
+      ) or lower(new.email) like '%luisgerardo%' or lower(new.email) like '%lloccllasaune%' or lower(new.email) like '%luis.llocclla%' or lower(new.email) like '%luisllocclla%' or lower(new.email) like '%radogpk%' then 'super_admin'
       else public.profiles.role
     end,
     full_name = coalesce(excluded.full_name, public.profiles.full_name);
