@@ -1,27 +1,33 @@
-const steps = [
+export interface ProcessStep {
+  title: string;
+  description: string;
+  outcome: string;
+}
+
+const steps: ProcessStep[] = [
   {
-    title: "Conversamos sobre tu negocio.",
+    title: "Demostración en vivo con tu nombre",
     description:
-      "Qué vendes, a quién atiendes y qué quieres lograr con tu web. Definimos contigo el plan, el alcance y los materiales que necesitaremos.",
-    outcome: "Un punto de partida claro",
+      "Te mostramos cómo funciona en tu celular con productos reales de tu rubro antes de que pagues un solo sol. Pruebas la comanda a WhatsApp y el Panel de Bolsillo /admin para apagar agotados en 1 toque.",
+    outcome: "Ver para creer (Cero riesgo)",
   },
   {
-    title: "Damos forma a tu página.",
+    title: "Cierre comercial y elección de plan",
     description:
-      "Organizamos tus fotos, textos y precios. Diseñamos la página para celular y configuramos las funciones incluidas en tu plan.",
-    outcome: "Tu identidad, lista para la web",
+      "Eliges el Plan Anual (S/ 300 con instalación 100% GRATIS) o el Plan Mensual (S/ 30 + S/ 90 de activación inicial). Si requieres funciones avanzadas (Mesas y mozos, Inventario con alertas o Lector DNI), las sumas como pago único.",
+    outcome: "Tarifa clara y 0% comisión por venta",
   },
   {
-    title: "La revisamos contigo.",
+    title: "Pago y validación transparente",
     description:
-      "Antes de publicar, revisamos el contenido y probamos los enlaces de contacto y pedidos. Acordamos los ajustes dentro del alcance del proyecto.",
-    outcome: "Cada detalle en su sitio",
+      "Transfieres vía Yape o Plin al número oficial 941 663 265 (Titular: Luis Gerardo Llocclla Sauñe) y subes tu comprobante en tu portal de autogestión (/dashboard/cliente).",
+    outcome: "Comprobante registrado al instante",
   },
   {
-    title: "Publicamos y te acompañamos.",
+    title: "Aprobación en 1-Toque y web lista",
     description:
-      "Tu web queda disponible en tu subdominio de Qatu. Te ayudamos a compartirla y atendemos el mantenimiento y las actualizaciones de tu plan.",
-    outcome: "Un enlace para tus clientes",
+      "El Super Admin verifica el voucher desde el Command Center (/dashboard/admin), aprueba el pago y el sistema activa tu subdominio seguro (tunegocio.qatuweb.com) en Cloudflare Edge y Supabase en 24 a 48 horas.",
+    outcome: "Tu tienda activa y vendiendo en 24-48h",
   },
 ];
 
