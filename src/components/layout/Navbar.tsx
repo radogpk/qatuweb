@@ -82,21 +82,18 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-slate-200/80 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
-        {/* Izquierda: Logo Tipográfico Sólido + Badge de Huamanga */}
-        <Link href="/" className="flex items-center gap-3 shrink-0 group">
+        {/* Izquierda: Logo Tipográfico Sólido */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
           <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black text-lg tracking-tight group-hover:scale-105 transition-transform shadow-xs">
             <Layers className="w-5 h-5 text-emerald-400" />
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="font-black text-lg sm:text-xl tracking-tight text-slate-900">
+            <div className="flex items-center">
+              <span className="font-black text-xl sm:text-2xl tracking-tight text-slate-900 leading-none">
                 QATU<span className="text-emerald-600">WEB</span>
               </span>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs">
-                <span>Huamanga, Ayacucho</span>
-              </span>
             </div>
-            <span className="text-[10px] text-slate-500 hidden sm:block font-medium tracking-tight">
+            <span className="text-[10px] text-slate-500 hidden sm:block font-medium tracking-tight mt-0.5">
               Software & Páginas Web a Medida
             </span>
           </div>
@@ -189,12 +186,12 @@ export function Navbar() {
           </a>
         </div>
 
-        {/* Hamburguesa Móvil */}
+        {/* Acciones Móviles */}
         <div className="sm:hidden flex items-center gap-2">
-          {authUser ? (
+          {authUser && (
             <Link
               href={dashboardHref}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold border border-emerald-500/40"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold border border-emerald-500/40 shadow-xs"
             >
               {authUser.avatarUrl ? (
                 <img
@@ -208,24 +205,14 @@ export function Navbar() {
               )}
               <span>Panel</span>
             </Link>
-          ) : (
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-xs active:scale-95 transition"
-            >
-              <span>Solicitar</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" />
-            </a>
           )}
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 text-slate-700 hover:text-slate-950 rounded-lg hover:bg-slate-100 transition"
-            aria-label="Menú principal"
+            className="w-10 h-10 flex items-center justify-center text-slate-800 hover:text-slate-950 rounded-xl hover:bg-slate-100 transition active:scale-95"
+            aria-label={mobileOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>

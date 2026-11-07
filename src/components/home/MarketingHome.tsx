@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -254,10 +254,10 @@ export function MarketingHome() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
 
           {/* ── COLUMNA IZQUIERDA: Titular SEO/GEO Imponente + Formulario Ejecutivo (Span 7) ── */}
-          <div className="lg:col-span-7 space-y-3 sm:space-y-4 text-center lg:text-left">
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
 
-            {/* Titular Principal H1 — Tamaño Gigante, Rítmico, SEO & GEO de Alta Conversión */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[54px] xl:text-[62px] font-black text-slate-950 tracking-tight leading-[1.06]">
+            {/* Titular Principal H1 — Proporcional y legible en cualquier pantalla */}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[54px] xl:text-[60px] font-black text-slate-950 tracking-tight leading-[1.12] sm:leading-[1.06]">
               Crea tu tienda virtual y vende a todo el{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700">
                 Perú por WhatsApp.
@@ -270,36 +270,34 @@ export function MarketingHome() {
             </p>
 
             {/* Tarjeta de Captura Interactiva Estilo Shopify (Simulador en Vivo) */}
-            <div className="bg-slate-950 text-white p-3.5 sm:p-4 rounded-2xl shadow-xl max-w-xl mx-auto lg:mx-0 space-y-2 border border-slate-800">
+            <div className="bg-slate-950 text-white p-3.5 sm:p-5 rounded-2xl shadow-xl max-w-xl mx-auto lg:mx-0 space-y-2.5 border border-slate-800">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
-                    Simula tu tienda en vivo
-                  </span>
-                </div>
+                <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
+                  Simula tu tienda en vivo
+                </span>
                 <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
                   0% comisiones
                 </span>
               </div>
 
-              <p className="text-xs text-slate-400 font-normal">
+              <p className="text-xs text-slate-400 font-normal text-left">
                 Escribe tu negocio (ej. QuinuaQ, TrankilandiaGym, Mama Alice, Outlet...) para ver la vista previa:
               </p>
 
               <form onSubmit={handleQuickLead} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl p-1.5 focus-within:ring-2 focus-within:ring-emerald-500 transition shadow-inner">
-                <div className="flex items-center flex-1 min-w-0 px-2">
+                <div className="flex items-center flex-1 min-w-0 px-2.5 py-1 sm:py-0">
                   <Store className="w-4 h-4 text-emerald-400 shrink-0 mr-2" />
                   <input
                     type="text"
                     value={businessInput}
                     onChange={(e) => setBusinessInput(e.target.value)}
-                    placeholder="Tu negocio (ej. QuinuaQ, TrankilandiaGym, Mama Alice, Outlet...)"
+                    placeholder="Tu negocio (ej. QuinuaQ, TrankilandiaGym...)"
                     className="w-full bg-transparent py-1.5 sm:py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none font-medium"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="h-9 sm:h-10 px-4 rounded-lg bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition flex items-center justify-center gap-2 shrink-0 font-bold text-xs sm:text-sm active:scale-95 shadow-md"
+                  className="h-10 px-5 rounded-lg bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition flex items-center justify-center gap-2 shrink-0 font-bold text-xs sm:text-sm active:scale-95 shadow-md cursor-pointer"
                   title="Crear mi tienda en WhatsApp"
                 >
                   <span>Crear Mi Tienda</span>
@@ -309,7 +307,7 @@ export function MarketingHome() {
             </div>
 
             {/* Micro-Garantías de Confianza */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-1 pt-0.5 text-xs sm:text-sm text-slate-600 font-medium">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 pt-1 text-xs sm:text-sm text-slate-600 font-medium">
               <span className="inline-flex items-center gap-1.5 text-slate-800 font-semibold">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 0% Comisiones por venta
@@ -461,7 +459,7 @@ export function MarketingHome() {
               };
 
               return (
-                <div className="relative w-full max-w-[480px] lg:max-w-[500px] aspect-[16/12] rounded-3xl bg-gradient-to-br from-slate-100 via-stone-50 to-slate-200/90 border border-slate-200/90 shadow-2xl p-4 sm:p-5 flex items-center justify-center">
+                <div className="relative w-full max-w-[480px] lg:max-w-[500px] aspect-[4/3] sm:aspect-[16/12] rounded-3xl bg-gradient-to-br from-slate-100 via-stone-50 to-slate-200/90 border border-slate-200/90 shadow-2xl p-3.5 sm:p-5 flex items-center justify-center">
 
                   {/* Grilla Sutil del Canvas de Edición */}
                   <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px] opacity-25 pointer-events-none rounded-3xl" />
@@ -473,10 +471,10 @@ export function MarketingHome() {
                     <div className="h-2 w-full bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500" />
 
                     {/* Vista Previa de la Tienda de Marca */}
-                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                    <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between">
                       {/* Barra de dominio superior */}
                       <div className="flex items-center justify-between text-slate-400 text-xs font-mono border-b border-slate-100 pb-2">
-                        <span className="text-slate-600 font-semibold truncate max-w-[220px]">
+                        <span className="text-slate-600 font-semibold truncate max-w-[200px] sm:max-w-[220px]">
                           {`${activeData.domain || `${activeData.slug}.qatuweb.com`}`}
                         </span>
                         <span className="text-slate-500 font-sans font-semibold text-xs shrink-0">
@@ -485,11 +483,11 @@ export function MarketingHome() {
                       </div>
 
                       {/* Letras de Marca Grandes e Impactantes — Totalmente Visibles sin obstrucción */}
-                      <div className="py-2.5 text-center transition-all duration-200">
+                      <div className="py-2 sm:py-2.5 text-center transition-all duration-200">
                         <span className={`font-black tracking-tighter text-slate-900 uppercase block select-none px-2 leading-none ${
                           activeData.storeName.length > 12
                             ? 'text-xl sm:text-2xl lg:text-3xl'
-                            : 'text-3xl sm:text-4xl lg:text-5xl'
+                            : 'text-2xl sm:text-4xl lg:text-5xl'
                         }`}>
                           {activeData.storeName}
                         </span>
@@ -526,8 +524,8 @@ export function MarketingHome() {
 
                   </div>
 
-                  {/* ── ELEMENTO FLOTANTE 1: Barra de Herramientas de Edición (Shopify Style) ── */}
-                  <div className="absolute top-2 sm:top-3 left-3 sm:left-5 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/90 px-3 py-1 flex items-center gap-2 text-slate-700 text-xs font-bold">
+                  {/* ── ELEMENTO FLOTANTE 1: Barra de Herramientas de Edición (Shopify Style) - Oculto en móvil para evitar tapar el título ── */}
+                  <div className="hidden sm:flex absolute top-2 sm:top-3 left-3 sm:left-5 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/90 px-3 py-1 items-center gap-2 text-slate-700 text-xs font-bold">
                     <span className="text-emerald-600 font-black">✦</span>
                     <span>Aa</span>
                     <span className="font-black">B</span>
@@ -537,8 +535,8 @@ export function MarketingHome() {
                     <span>≡</span>
                   </div>
 
-                  {/* ── ELEMENTO FLOTANTE 2: Selector de Paleta de Colores de Marca ── */}
-                  <div className="absolute bottom-2 sm:bottom-3 left-3 sm:left-5 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/90 p-1.5 sm:p-2 flex items-center gap-1.5">
+                  {/* ── ELEMENTO FLOTANTE 2: Selector de Paleta de Colores de Marca - Oculto en móvil ── */}
+                  <div className="hidden sm:flex absolute bottom-2 sm:bottom-3 left-3 sm:left-5 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/90 p-1.5 sm:p-2 items-center gap-1.5">
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-rose-600 ring-2 ring-rose-400/40 cursor-pointer" />
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-600 cursor-pointer" />
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-emerald-600 cursor-pointer" />
@@ -546,8 +544,8 @@ export function MarketingHome() {
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-100 border border-slate-300 cursor-pointer" />
                   </div>
 
-                  {/* ── ELEMENTO FLOTANTE 3: Tarjeta de Producto con Carrito (Shopify Style - Coherente con Rubro) ── */}
-                  <div className="absolute -bottom-3 sm:-bottom-4 -right-2 sm:-right-4 z-20 bg-white rounded-2xl shadow-xl border border-slate-200/90 p-2.5 sm:p-3 w-38 sm:w-42 space-y-1.5">
+                  {/* ── ELEMENTO FLOTANTE 3: Tarjeta de Producto con Carrito - En desktop como elemento 3D superpuesto ── */}
+                  <div className="hidden sm:block absolute -bottom-3 sm:-bottom-4 -right-2 sm:-right-4 z-20 bg-white rounded-2xl shadow-xl border border-slate-200/90 p-2.5 sm:p-3 w-38 sm:w-42 space-y-1.5">
                     <div className="relative h-20 sm:h-22 rounded-xl overflow-hidden bg-slate-100 shadow-inner">
                       <img
                         src={activeData.card.img}
@@ -601,20 +599,20 @@ export function MarketingHome() {
             <div className="absolute left-0 inset-y-0 w-16 sm:w-28 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />
             <div className="absolute right-0 inset-y-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
 
-            <div className="animate-marquee flex items-center gap-4 sm:gap-6">
+            <div className="animate-marquee flex items-center gap-3 sm:gap-6">
               {/* Primer bloque de marcas (los 3 proyectos reales repetidos para continuidad de loop) */}
               {[...BRANDS_LIST, ...BRANDS_LIST].map((b, idx) => (
                 <div
                   key={`b1-${idx}`}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
+                  className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
                   <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">{b.loc}</span>
+                  <span className="text-slate-300 hidden sm:inline">•</span>
+                  <span className="text-[11px] font-medium text-slate-500 hidden sm:inline">{b.rubro}</span>
+                  <span className="text-slate-300 hidden md:inline">•</span>
+                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full hidden md:inline">{b.loc}</span>
                 </div>
               ))}
 
@@ -622,15 +620,15 @@ export function MarketingHome() {
               {[...BRANDS_LIST, ...BRANDS_LIST].map((b, idx) => (
                 <div
                   key={`b2-${idx}`}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
+                  className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
                   <span className="text-slate-900 font-black">{b.name}</span>
                   <span className="text-slate-300">•</span>
                   <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-[11px] font-medium text-slate-500">{b.rubro}</span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">{b.loc}</span>
+                  <span className="text-slate-300 hidden sm:inline">•</span>
+                  <span className="text-[11px] font-medium text-slate-500 hidden sm:inline">{b.rubro}</span>
+                  <span className="text-slate-300 hidden md:inline">•</span>
+                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full hidden md:inline">{b.loc}</span>
                 </div>
               ))}
             </div>
@@ -842,50 +840,62 @@ export function MarketingHome() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 w-full md:w-auto">
               <a
                 href="https://quinuaq.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
+                className="inline-flex items-center justify-between sm:justify-start gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
                 title="Visitar quinuaq.com"
               >
-                <Utensils className="w-4 h-4 text-amber-600" />
-                <span>QuinuaQ</span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
-                  quinuaq.com
-                </span>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition" />
+                <div className="flex items-center gap-2">
+                  <Utensils className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>QuinuaQ</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
+                    quinuaq.com
+                  </span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition shrink-0" />
+                </div>
               </a>
 
               <a
                 href="https://www.mamaalice.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
+                className="inline-flex items-center justify-between sm:justify-start gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
                 title="Visitar mamaalice.org"
               >
-                <ShieldCheck className="w-4 h-4 text-indigo-600" />
-                <span>Mama Alice ONG</span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
-                  mamaalice.org
-                </span>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition" />
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-indigo-600 shrink-0" />
+                  <span>Mama Alice ONG</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
+                    mamaalice.org
+                  </span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition shrink-0" />
+                </div>
               </a>
 
               <a
                 href="https://trankilandiagym.qatuweb.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
+                className="inline-flex items-center justify-between sm:justify-start gap-2.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition group shadow-2xs"
                 title="Visitar trankilandiagym.qatuweb.com"
               >
-                <Dumbbell className="w-4 h-4 text-emerald-600" />
-                <span>TrankilandiaGym</span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
-                  trankilandiagym.qatuweb.com
-                </span>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition" />
+                <div className="flex items-center gap-2">
+                  <Dumbbell className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>TrankilandiaGym</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 font-bold">
+                    trankilandiagym.qatuweb.com
+                  </span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition shrink-0" />
+                </div>
               </a>
             </div>
           </div>
@@ -1068,7 +1078,7 @@ export function MarketingHome() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Plan Mensual */}
-            <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+            <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -1120,8 +1130,8 @@ export function MarketingHome() {
             </div>
 
             {/* Plan Anual (Recomendado) */}
-            <div className="bg-slate-950 text-white rounded-3xl p-7 sm:p-8 border-2 border-emerald-500/80 shadow-2xl flex flex-col justify-between space-y-6 relative">
-              <div className="absolute -top-3.5 right-6 bg-emerald-500 text-slate-950 text-[11px] font-black uppercase px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
+            <div className="bg-slate-950 text-white rounded-3xl p-5 sm:p-8 border-2 border-emerald-500/80 shadow-2xl flex flex-col justify-between space-y-6 relative">
+              <div className="absolute -top-3.5 right-4 sm:right-6 bg-emerald-500 text-slate-950 text-[10px] sm:text-[11px] font-black uppercase px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-md flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5" />
                 <span>Recomendado • Ahorras S/ 150</span>
               </div>
