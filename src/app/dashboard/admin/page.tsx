@@ -210,37 +210,46 @@ export default function SuperAdminDashboardPage() {
         }),
       });
 
-      if (res.ok) {
-        const updated = await res.json();
-        setTenants((prev) => prev.map((t) => (t.id === tenant.id ? updated : t)));
-        showToast(
-          nextStatus === 'active'
-            ? `✅ "${tenant.business_name}" ACTIVADO con éxito en Cloudflare Edge.`
-            : `⚠️ "${tenant.business_name}" SUSPENDIDO. Kill-switch activo en Cloudflare.`
-        );
-        setKillSwitchConfirmTenant(null);
-        return;
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || `HTTP ${res.status}`);
       }
-    } catch {
-      // Fallback
-    }
 
-    const updated = await qatuCentralService.updateTenantStatus(
-      tenant.id,
-      nextStatus,
-      nextOverride
-    );
-
-    if (updated) {
+      const updated = await res.json();
       setTenants((prev) => prev.map((t) => (t.id === tenant.id ? updated : t)));
       showToast(
         nextStatus === 'active'
-          ? `✅ "${tenant.business_name}" ACTIVADO con éxito.`
-          : `⚠️ "${tenant.business_name}" SUSPENDIDO por Kill-Switch.`
+          ? `✅ "${tenant.business_name}" ACTIVADO con éxito en Cloudflare Edge.`
+          : `⚠️ "${tenant.business_name}" SUSPENDIDO. Kill-switch activo en Cloudflare.`
       );
+      setKillSwitchConfirmTenant(null);
+    } catch (err: unknown) {
+      console.error('Error al actualizar estado:', err);
+      try {
+        const updated = await qatuCentralService.updateTenantStatus(
+          tenant.id,
+          nextStatus,
+          nextOverride
+        );
+        if (updated) {
+          setTenants((prev) => prev.map((t) => (t.id === tenant.id ? updated : t)));
+          showToast(
+            nextStatus === 'active'
+              ? `✅ "${tenant.business_name}" ACTIVADO con éxito.`
+              : `⚠️ "${tenant.business_name}" SUSPENDIDO por Kill-Switch.`
+          );
+          setKillSwitchConfirmTenant(null);
+          return;
+        }
+      } catch (fallbackErr) {
+        console.error('Fallback falló:', fallbackErr);
+      }
+      showToast(
+        `❌ Error: ${err instanceof Error ? err.message : 'No se pudo actualizar el estado'}`
+      );
+    } finally {
+      setKillSwitchProcessing(false);
     }
-    setKillSwitchConfirmTenant(null);
-    setKillSwitchProcessing(false);
   };
 
   // 2. Ejecutar Ping Global Anti-Pausa
