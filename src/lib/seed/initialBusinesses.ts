@@ -156,6 +156,7 @@ export const initialPricingPlans: PricingPlan[] = [
       "Panel de Bolsillo (/admin) en tu celular para apagar agotados",
       "Compresión WebP automática para fotos de cámara (<80 KB)",
       "Servidor en la nube 24/7 con certificado SSL incluido",
+      "Carga inicial de tus primeros 25 productos incluida",
       "Soporte local en Huamanga ante dudas o consultas",
     ],
     ctaText: "Elegir Plan Mensual (S/ 30)",
