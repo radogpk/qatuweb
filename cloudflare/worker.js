@@ -10,30 +10,41 @@ export default {
 
     const subdomain = hostname.replace(".qatuweb.com", "").toLowerCase();
 
-    // 2. Consultar estado en el Edge Cache o en el Hub Central (/api/domain-status)
-    const apiBase = env?.CENTRAL_API_BASE || "https://qatupe.vercel.app";
-    const statusApiUrl = `${apiBase}/api/domain-status?subdomain=${encodeURIComponent(subdomain)}`;
-    const cache = caches.default;
-    let statusResponse = await cache.match(statusApiUrl);
-
-    if (!statusResponse) {
-      statusResponse = await fetch(statusApiUrl, {
-        headers: { "User-Agent": "Qatu-Cloudflare-Edge-Worker" },
-      });
-      if (statusResponse.ok) {
-        ctx.waitUntil(cache.put(statusApiUrl, statusResponse.clone()));
-      }
+    // 2. Consultar estado en tiempo real en el Hub Central (/api/domain-status)
+    // Se normaliza apiBase: si tiene qatuweb.com sin www, se usa www.qatuweb.com para evitar saltos 308
+    let apiBase = env?.CENTRAL_API_BASE || "https://www.qatuweb.com";
+    if (apiBase === "https://qatuweb.com") {
+      apiBase = "https://www.qatuweb.com";
     }
+
+    // Consulta en tiempo real (Zero-Cache) para que el Kill-Switch responda instantáneamente
+    const statusApiUrl = `${apiBase}/api/domain-status?subdomain=${encodeURIComponent(subdomain)}&_t=${Date.now()}`;
+    
+    let statusResponse = await fetch(statusApiUrl, {
+      headers: { 
+        "User-Agent": "Qatu-Cloudflare-Edge-Worker",
+        "Cache-Control": "no-cache, no-store",
+        "Pragma": "no-cache",
+      },
+      cf: {
+        cacheTtl: 0,
+        cacheEverything: false,
+      },
+      redirect: "follow",
+    });
 
     const statusData = await statusResponse.json().catch(() => ({ active: false }));
 
-    // 3. KILL-SWITCH ACTIVO: Mostrar pantalla de Renovación Yape / Plin
+    // 3. KILL-SWITCH ACTIVO O MORA: Mostrar pantalla de Renovación Yape / Plin al instante
     if (!statusData.active || !statusData.targetUrl) {
       return new Response(renderSuspendedPage(subdomain, statusData), {
         status: 503,
         headers: {
           "Content-Type": "text/html;charset=UTF-8",
-          "Cache-Control": "no-store",
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+          "Pragma": "no-cache",
+          "x-qatu-killswitch": "active",
+          "x-qatu-tenant": subdomain,
         },
       });
     }
@@ -54,7 +65,11 @@ export default {
       redirect: "manual",
     });
 
-    return fetch(proxyRequest);
+    const originResponse = await fetch(proxyRequest);
+    const clientResponse = new Response(originResponse.body, originResponse);
+    clientResponse.headers.set("x-qatu-edge-routed", "true");
+    clientResponse.headers.set("x-qatu-tenant", subdomain);
+    return clientResponse;
   },
 };
 
