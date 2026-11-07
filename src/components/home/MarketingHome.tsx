@@ -21,136 +21,24 @@ import {
   MapPin,
   ShoppingBag,
   TrendingUp,
-  SlidersHorizontal,
   Lock,
-  Plus,
+  Flame,
+  Sparkles,
+  Package,
+  ScanLine,
+  CreditCard,
+  QrCode,
+  ToggleLeft,
+  ToggleRight,
+  AlertCircle,
 } from 'lucide-react';
-import { getWhatsAppUrl } from '@/lib/config/site';
-
-type IndustryTab = 'zapateria' | 'restaurante' | 'gimnasio';
-
-interface ShowcaseProduct {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  imageUrl: string;
-  variantLabel: string;
-  variants: string[];
-}
-
-interface IndustryShowcase {
-  businessName: string;
-  category: string;
-  location: string;
-  products: [ShowcaseProduct, ShowcaseProduct];
-  whatsappOrder: {
-    number: string;
-    text: string;
-    paymentNote: string;
-  };
-  demoUrl: string;
-  demoAdminUrl: string;
-}
-
-const SHOWCASES: Record<IndustryTab, IndustryShowcase> = {
-  zapateria: {
-    businessName: 'Calzados Lucas Huamanga',
-    category: 'Comercio & Calzado',
-    location: 'Jr. Asamblea 245, Huamanga',
-    products: [
-      {
-        id: 'p1',
-        name: 'Botín de Cuero Caña Alta',
-        price: 120,
-        originalPrice: 135,
-        imageUrl: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=600&auto=format&fit=crop&q=80',
-        variantLabel: 'Talla',
-        variants: ['37', '38', '39'],
-      },
-      {
-        id: 'p2',
-        name: 'Zapatilla Urbana Classic',
-        price: 85,
-        originalPrice: 95,
-        imageUrl: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&auto=format&fit=crop&q=80',
-        variantLabel: 'Talla',
-        variants: ['36', '37', '38'],
-      },
-    ],
-    whatsappOrder: {
-      number: '#042',
-      text: '1x Botín de Cuero Caña Alta (Talla 38) - S/ 120.00',
-      paymentNote: 'Pagado con Yape • Entrega Jr. 28 de Julio',
-    },
-    demoUrl: '/demo/calzados',
-    demoAdminUrl: '/demo/calzados/admin',
-  },
-  restaurante: {
-    businessName: 'Restaurante Las Flores',
-    category: 'Gastronomía & Postres',
-    location: 'Jr. Bellido 180, Huamanga',
-    products: [
-      {
-        id: 'p1',
-        name: 'Torta Selva Negra Fina',
-        price: 55,
-        originalPrice: 65,
-        imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80',
-        variantLabel: 'Porción',
-        variants: ['Personal', 'Mediana', 'Familiar'],
-      },
-      {
-        id: 'p2',
-        name: 'Desayuno Criollo Huamanga',
-        price: 22,
-        originalPrice: 25,
-        imageUrl: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&auto=format&fit=crop&q=80',
-        variantLabel: 'Bebida',
-        variants: ['Café Pasado', 'Jugo Natural'],
-      },
-    ],
-    whatsappOrder: {
-      number: '#018',
-      text: '1x Torta Selva Negra Mediana - S/ 55.00',
-      paymentNote: 'Para Mesa 4 • Pagado con Plin',
-    },
-    demoUrl: '/demo/pasteleria',
-    demoAdminUrl: '/demo/pasteleria/admin',
-  },
-  gimnasio: {
-    businessName: 'Trankilandia Gym',
-    category: 'Fitness & Control DNI',
-    location: 'Av. Mariscal Cáceres 540, Huamanga',
-    products: [
-      {
-        id: 'p1',
-        name: 'Membresía Mensual Libre',
-        price: 80,
-        originalPrice: 90,
-        imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&auto=format&fit=crop&q=80',
-        variantLabel: 'Turno',
-        variants: ['Mañana', 'Turno Libre'],
-      },
-      {
-        id: 'p2',
-        name: 'Proteína Whey Isolate 2 lbs',
-        price: 130,
-        originalPrice: 145,
-        imageUrl: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=600&auto=format&fit=crop&q=80',
-        variantLabel: 'Sabor',
-        variants: ['Chocolate', 'Vainilla'],
-      },
-    ],
-    whatsappOrder: {
-      number: '#009',
-      text: '1x Membresía Mensual Turno Libre - S/ 80.00',
-      paymentNote: 'DNI: 72849102 • Pagado por Yape',
-    },
-    demoUrl: '/demo/gym',
-    demoAdminUrl: '/demo/gym/admin',
-  },
-};
+import { siteConfig, getWhatsAppUrl } from '@/lib/config/site';
+import { InteractivePricingCalculator } from '@/components/pricing/InteractivePricingCalculator';
+import {
+  OFFICIAL_VERTICALS,
+  OFFICIAL_ADDONS,
+  LAUNCH_PROMO_CONFIG,
+} from '@/lib/config/pricing';
 
 const BRANDS_LIST = [
   {
@@ -177,55 +65,48 @@ const BRANDS_LIST = [
 ];
 
 export function MarketingHome() {
-  const [activeTab, setActiveTab] = useState<IndustryTab>('zapateria');
-  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({
-    'zapateria-p1': '38',
-    'zapateria-p2': '37',
-    'restaurante-p1': 'Mediana',
-    'restaurante-p2': 'Café Pasado',
-    'gimnasio-p1': 'Turno Libre',
-    'gimnasio-p2': 'Chocolate',
-  });
   const [inStockStatus, setInStockStatus] = useState<boolean>(true);
   const [stockToast, setStockToast] = useState<string | null>(null);
   const [businessInput, setBusinessInput] = useState('');
-
-  const showcase = SHOWCASES[activeTab];
 
   const handleToggleStock = () => {
     const next = !inStockStatus;
     setInStockStatus(next);
     setStockToast(
       next
-        ? 'Stock activo en tu catálogo en vivo'
-        : 'Producto apagado como Agotado'
+        ? '✓ Botín de Cuero Talla 38: marcado como DISPONIBLE en el catálogo web'
+        : '⚠️ Botín de Cuero Talla 38: marcado como AGOTADO (botón de compra apagado en tiempo real)'
     );
-    setTimeout(() => setStockToast(null), 2500);
+    setTimeout(() => setStockToast(null), 3000);
   };
 
   const faqs = [
     {
-      q: '¿Cómo pago la suscripción de S/ 30 al mes?',
-      a: 'Abonas mensualmente por Yape, Plin o transferencia bancaria el día de corte. Desde tu panel de cliente subes la constancia en un toque y tu servicio continúa 100% activo sin trámites engorrosos.',
+      q: '¿Cuáles son los métodos oficiales de pago y a nombre de quién se abona?',
+      a: `Aceptamos Yape y Plin directamente al número oficial ${siteConfig.yapeNumber} a nombre del titular ${siteConfig.yapeTitular}. También aceptamos transferencias bancarias BCP, BBVA e Interbank en soles. Cero comisiones de intermediarios y sin necesidad de tarjeta de crédito.`,
     },
     {
-      q: '¿Necesito una computadora para administrar mis productos?',
-      a: 'No. El Panel de Bolsillo de Qatu Web está diseñado para operarse desde tu celular. Tomas fotos con tu cámara, cambias precios y activas o apagas stock en menos de 5 segundos.',
+      q: '¿Cómo funciona la activación inmediata en 1 toque tras realizar el pago?',
+      a: 'Una vez realizado tu pago con Yape o Plin, ingresas a tu portal en /dashboard/cliente (o nos escribes al WhatsApp oficial), adjuntas la captura del comprobante y nuestro sistema o equipo valida tu cuenta en un toque. Tu subdominio y Panel de Bolsillo quedan listos de inmediato.',
     },
     {
-      q: '¿Qatu Web cobra comisiones por las ventas que haga?',
-      a: 'Cero comisiones (S/ 0). A diferencia de plataformas como Shopify o apps de delivery que descuentan entre el 2% y el 25% de cada venta, en Qatu Web el 100% de tu dinero va directo a tu cuenta bancaria o billetera digital.',
+      q: '¿Qatu Web cobra comisiones por las ventas que haga en mi negocio?',
+      a: 'Cero comisiones (0%). A diferencia de plataformas como Shopify o apps de pedidos que descuentan entre el 2% y el 25% de cada venta, en Qatu Web pagas una tarifa plana fija (S/ 1 al día con el Plan Anual de S/ 300 o S/ 30 al mes). Todo el dinero de tus clientes va 100% íntegro a tu cuenta o billetera digital.',
+    },
+    {
+      q: '¿En cuánto tiempo entregan el sistema y catálogo funcionando?',
+      a: 'En un plazo de 24 a 48 horas hábiles. Una vez que nos envías tu logotipo, número de WhatsApp y tu lista inicial de productos con fotos y precios, nuestro equipo en Huamanga configura tu servidor en el Edge, carga tus primeros 25 productos y te entrega tu web lista para vender.',
+    },
+    {
+      q: '¿Necesito una computadora para administrar mis productos y precios?',
+      a: 'No. El Panel de Bolsillo de Qatu Web (/admin) está 100% diseñado para operarse desde tu celular. Tomas fotos con tu cámara, cambias precios y activas o apagas productos agotados en menos de 5 segundos con 1 toque.',
     },
     {
       q: '¿Puedo usar mi propio dominio como .com o .pe?',
-      a: 'Sí. Tu plan incluye gratis el subdominio seguro tunegocio.qatuweb.com con certificado SSL. Si deseas conectar tu propio dominio (ej: quinuaq.com o trankilandia.pe), lo vinculamos sin costo técnico adicional.',
+      a: 'Sí. Tu plan incluye gratis el subdominio seguro tunegocio.qatuweb.com con certificado SSL y compresión WebP. Si deseas conectar tu propio dominio (ej: quinuaq.com o trankilandia.pe), lo vinculamos sin costo técnico adicional.',
     },
     {
-      q: '¿En cuánto tiempo entregan el sistema funcionando?',
-      a: 'En 24 a 48 horas hábiles. Una vez que nos envías tu logotipo, número de WhatsApp y tu lista inicial de fotos y precios, nuestro equipo en Huamanga configura tu servidor y te entrega tu web lista para vender.',
-    },
-    {
-      q: '¿Quién es dueño de la información y la base de datos?',
+      q: '¿Quién es dueño de la información y la base de datos de mi negocio?',
       a: 'Tú eres el único dueño. Cada cliente de Qatu Web cuenta con su propio entorno y base de datos Supabase aislada. Si algún día decides migrar o crecer a un desarrollo corporativo, te entregamos tu código y datos sin trabas ni penalidades.',
     },
   ];
@@ -233,8 +114,8 @@ export function MarketingHome() {
   const handleQuickLead = (e: React.FormEvent) => {
     e.preventDefault();
     const query = businessInput.trim()
-      ? `Hola Qatu Web, quiero crear la tienda web para mi negocio: ${businessInput} en el Perú.`
-      : 'Hola Qatu Web, quiero solicitar información para digitalizar mi negocio con tienda virtual.';
+      ? `Hola Qatu Web, quiero crear la tienda web para mi negocio: ${businessInput} en Ayacucho.`
+      : 'Hola Qatu Web, quiero solicitar información para digitalizar mi negocio con tienda virtual por S/ 1 al día.';
     window.open(getWhatsAppUrl(query), '_blank', 'noopener,noreferrer');
   };
 
@@ -244,7 +125,7 @@ export function MarketingHome() {
       {/* ============================================================== */}
       {/* 1. HERO EJECUTIVO — ESTILO SHOPIFY (TODO EN PANTALLA & SEO/GEO) */}
       {/* ============================================================== */}
-      <section className="relative pt-2 sm:pt-4 pb-3 sm:pb-5 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+      <section className="relative pt-3 sm:pt-6 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
         {/* Grilla arquitectónica de fondo */}
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
 
@@ -256,23 +137,33 @@ export function MarketingHome() {
           {/* ── COLUMNA IZQUIERDA: Titular SEO/GEO Imponente + Formulario Ejecutivo (Span 7) ── */}
           <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
 
-            {/* Titular Principal H1 — Proporcional y legible en cualquier pantalla */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[54px] xl:text-[60px] font-black text-slate-950 tracking-tight leading-[1.12] sm:leading-[1.06]">
-              Crea tu tienda virtual y vende a todo el{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700">
-                Perú por WhatsApp.
+            {/* Cintillo de Lanzamiento con Urgencia Real */}
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold bg-amber-500/15 text-amber-950 border border-amber-500/35 shadow-xs mx-auto lg:mx-0">
+              <Flame className="w-4 h-4 text-amber-600 animate-pulse shrink-0" />
+              <span>
+                <strong>Cupos de Lanzamiento:</strong> Los primeros 30 negocios de Ayacucho congelan el precio de S/ 300 al año para siempre (9 de 30 reservados)
               </span>
+            </div>
+
+            {/* Titular Principal H1 Oficial */}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[50px] xl:text-[56px] font-black text-slate-950 tracking-tight leading-[1.12] sm:leading-[1.08]">
+              Tu tienda virtual o carta digital por{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700">
+                S/ 1 al día.
+              </span>{' '}
+              Sin comisiones. Lista en 48 horas.
             </h1>
 
-            {/* Subtítulo con Densidad Semántica de Negocio */}
+            {/* Subtítulo Oficial con Densidad Semántica de Negocio */}
             <p className="text-sm sm:text-base lg:text-[17px] text-slate-600 leading-relaxed max-w-xl font-normal mx-auto lg:mx-0">
-              La plataforma todo en uno para digitalizar tu negocio: catálogo web ultrarrápido, pedidos directos y organizados a tu WhatsApp y cobros por Yape o Plin con <strong>0% comisiones por venta</strong>. Creado para marcas y proyectos en Ayacucho y todo el país.
+              Olvídate de agencias que cobran S/ 2,500 y demoran semanas o plataformas que te cobran comisiones por cada venta. En Qatu Web tu catálogo corre en tu propio subdominio en el Edge y los pedidos te llegan ordenados directamente a tu WhatsApp.
             </p>
 
             {/* Tarjeta de Captura Interactiva Estilo Shopify (Simulador en Vivo) */}
             <div className="bg-slate-950 text-white p-3.5 sm:p-5 rounded-2xl shadow-xl max-w-xl mx-auto lg:mx-0 space-y-2.5 border border-slate-800">
               <div className="flex items-center justify-between">
-                <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
+                <span className="text-xs sm:text-sm font-bold text-white tracking-tight flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-400" />
                   Simula tu tienda en vivo
                 </span>
                 <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
@@ -281,7 +172,7 @@ export function MarketingHome() {
               </div>
 
               <p className="text-xs text-slate-400 font-normal text-left">
-                Escribe tu negocio (ej. QuinuaQ, TrankilandiaGym, Mama Alice, Outlet...) para ver la vista previa:
+                Escribe tu negocio (ej. QuinuaQ, TrankilandiaGym, Calzados Lucas...) para ver la vista previa:
               </p>
 
               <form onSubmit={handleQuickLead} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl p-1.5 focus-within:ring-2 focus-within:ring-emerald-500 transition shadow-inner">
@@ -291,7 +182,7 @@ export function MarketingHome() {
                     type="text"
                     value={businessInput}
                     onChange={(e) => setBusinessInput(e.target.value)}
-                    placeholder="Tu negocio (ej. QuinuaQ, TrankilandiaGym...)"
+                    placeholder="Tu negocio (ej. QuinuaQ, Calzados Lucas...)"
                     className="w-full bg-transparent py-1.5 sm:py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none font-medium"
                   />
                 </div>
@@ -306,20 +197,37 @@ export function MarketingHome() {
               </form>
             </div>
 
-            {/* Micro-Garantías de Confianza */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 pt-1 text-xs sm:text-sm text-slate-600 font-medium">
-              <span className="inline-flex items-center gap-1.5 text-slate-800 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                0% Comisiones por venta
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-slate-800 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                Panel táctil en tu celular
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-slate-800 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                Envíos y cobros en todo el Perú
-              </span>
+            {/* ── 3 GANCHOS COMERCIALES CLAVE DESTACADOS ── */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-left max-w-xl mx-auto lg:mx-0">
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/90 space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>0% comisiones</span>
+                </div>
+                <p className="text-[11px] text-slate-600 leading-snug">
+                  No pagas por cada venta: pagas lo mismo venda poco o mucho (0% comisiones).
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/90 space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Pruébalo antes</span>
+                </div>
+                <p className="text-[11px] text-slate-600 leading-snug">
+                  Mira cómo quedaría tu negocio antes de pagar con el simulador y demos en vivo.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/90 space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Comandas ordenadas</span>
+                </div>
+                <p className="text-[11px] text-slate-600 leading-snug">
+                  El pedido te llega ordenado al WhatsApp con talla, porción o color.
+                </p>
+              </div>
             </div>
 
           </div>
@@ -482,7 +390,7 @@ export function MarketingHome() {
                         </span>
                       </div>
 
-                      {/* Letras de Marca Grandes e Impactantes — Totalmente Visibles sin obstrucción */}
+                      {/* Letras de Marca Grandes e Impactantes */}
                       <div className="py-2 sm:py-2.5 text-center transition-all duration-200">
                         <span className={`font-black tracking-tighter text-slate-900 uppercase block select-none px-2 leading-none ${
                           activeData.storeName.length > 12
@@ -524,7 +432,7 @@ export function MarketingHome() {
 
                   </div>
 
-                  {/* ── ELEMENTO FLOTANTE 1: Barra de Herramientas de Edición (Shopify Style) - Oculto en móvil para evitar tapar el título ── */}
+                  {/* ── ELEMENTO FLOTANTE 1: Herramientas de Edición ── */}
                   <div className="hidden sm:flex absolute top-2 sm:top-3 left-3 sm:left-5 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/90 px-3 py-1 items-center gap-2 text-slate-700 text-xs font-bold">
                     <span className="text-emerald-600 font-black">✦</span>
                     <span>Aa</span>
@@ -535,7 +443,7 @@ export function MarketingHome() {
                     <span>≡</span>
                   </div>
 
-                  {/* ── ELEMENTO FLOTANTE 2: Selector de Paleta de Colores de Marca - Oculto en móvil ── */}
+                  {/* ── ELEMENTO FLOTANTE 2: Selector de Paleta ── */}
                   <div className="hidden sm:flex absolute bottom-2 sm:bottom-3 left-3 sm:left-5 z-20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/90 p-1.5 sm:p-2 items-center gap-1.5">
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-rose-600 ring-2 ring-rose-400/40 cursor-pointer" />
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-600 cursor-pointer" />
@@ -544,7 +452,7 @@ export function MarketingHome() {
                     <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-100 border border-slate-300 cursor-pointer" />
                   </div>
 
-                  {/* ── ELEMENTO FLOTANTE 3: Tarjeta de Producto con Carrito - En desktop como elemento 3D superpuesto ── */}
+                  {/* ── ELEMENTO FLOTANTE 3: Tarjeta de Producto ── */}
                   <div className="hidden sm:block absolute -bottom-3 sm:-bottom-4 -right-2 sm:-right-4 z-20 bg-white rounded-2xl shadow-xl border border-slate-200/90 p-2.5 sm:p-3 w-38 sm:w-42 space-y-1.5">
                     <div className="relative h-20 sm:h-22 rounded-xl overflow-hidden bg-slate-100 shadow-inner">
                       <img
@@ -561,7 +469,6 @@ export function MarketingHome() {
                       <span className="text-[11px] font-bold text-slate-900 block truncate leading-tight">
                         {activeData.card.title}
                       </span>
-                      {/* Selector de Cantidad & Carrito */}
                       <div className="flex items-center gap-1.5 pt-0.5">
                         <div className="flex-1 flex items-center justify-between bg-slate-100 rounded-lg px-2 py-0.5 text-[9px] font-bold text-slate-700">
                           <span>-</span>
@@ -587,39 +494,20 @@ export function MarketingHome() {
 
         </div>
 
-        {/* ── BARRA DESLIZANTE INFINITA: Marquee de Nuestros 3 Proyectos Reales ── */}
-        <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-200/80">
+        {/* ── BARRA DESLIZANTE INFINITA: Marquee de Proyectos Reales ── */}
+        <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-slate-200/80">
           <p className="text-center text-[11px] sm:text-xs uppercase font-bold tracking-widest text-slate-500 mb-2.5">
             Marcas y proyectos activos que confían en Qatu Web
           </p>
 
-          {/* Carril de Marquesina Continua */}
           <div className="relative w-full overflow-hidden py-0.5">
-            {/* Máscaras de Gradiente en los extremos para desvanecimiento elegante */}
             <div className="absolute left-0 inset-y-0 w-16 sm:w-28 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />
             <div className="absolute right-0 inset-y-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
 
             <div className="animate-marquee flex items-center gap-3 sm:gap-6">
-              {/* Primer bloque de marcas (los 3 proyectos reales repetidos para continuidad de loop) */}
               {[...BRANDS_LIST, ...BRANDS_LIST].map((b, idx) => (
                 <div
                   key={`b1-${idx}`}
-                  className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
-                >
-                  <span className="text-slate-900 font-black">{b.name}</span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-[10px] font-mono text-emerald-700 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200/90">{b.web}</span>
-                  <span className="text-slate-300 hidden sm:inline">•</span>
-                  <span className="text-[11px] font-medium text-slate-500 hidden sm:inline">{b.rubro}</span>
-                  <span className="text-slate-300 hidden md:inline">•</span>
-                  <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full hidden md:inline">{b.loc}</span>
-                </div>
-              ))}
-
-              {/* Segundo bloque idéntico para continuidad infinita */}
-              {[...BRANDS_LIST, ...BRANDS_LIST].map((b, idx) => (
-                <div
-                  key={`b2-${idx}`}
                   className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-800 text-xs font-bold shadow-2xs shrink-0 hover:border-slate-400 hover:bg-white transition"
                 >
                   <span className="text-slate-900 font-black">{b.name}</span>
@@ -638,56 +526,149 @@ export function MarketingHome() {
       </section>
 
       {/* ============================================================== */}
-      {/* 2. BENTO GRID DE CASOS DE ÉXITO EN PRODUCCIÓN           */}
+      {/* 2. DEMOS OFICIALES Y PANEL DE BOLSILLO EN 1 TOQUE             */}
       {/* ============================================================== */}
       <section className="py-20 sm:py-24 bg-slate-50 border-y border-slate-200/80" id="demos">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+
+          {/* Encabezado de la sección */}
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200/80 text-slate-800 border border-slate-300/80">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Soluciones por Rubro</span>
+              <span>3 Verticales Oficiales</span>
               <span className="text-slate-400">•</span>
-              <span>Demos 100% Interactivas</span>
+              <span>Demos y Panel de Bolsillo en Vivo</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
-              Nichos de negocio que transformamos con Qatu Web
+              Pruébalo antes de pagar con demos reales adaptadas a tu rubro
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Software especializado y catálogos móviles adaptados al flujo real de tu sector. Prueba las demos en vivo y comprueba la facilidad con la que tus clientes compran y tú administras pedidos desde tu celular.
+              Explora la experiencia de compra de tus clientes y prueba el Panel de Bolsillo móvil (/admin) para apagar agotados o cambiar precios en 1 toque desde tu celular.
             </p>
           </div>
 
-          {/* Grilla de los 4 Nichos de Negocio */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="soluciones">
-            {/* Nicho 1: Moda, Calzado & Boutiques */}
-            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <ShoppingBag className="w-6 h-6" />
+          {/* ── SIMULADOR INTERACTIVO DEL PANEL DE BOLSILLO (1 TOQUE) ── */}
+          <div className="bg-gradient-to-r from-stone-900 to-slate-950 text-white rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="space-y-2 max-w-lg">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <Smartphone className="w-3.5 h-3.5" />
+                  <span>Simulador de Panel de Bolsillo</span>
                 </div>
+                <h3 className="text-xl sm:text-2xl font-bold font-serif text-white">
+                  ¿Se agotó un plato o una talla? Apágalo en 1 toque
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  Sin llamar al programador ni esperar horas. Toca el botón para ver cómo reacciona tu catálogo en tiempo real ante tus clientes:
+                </p>
+              </div>
+
+              {/* Botón táctil interactivo */}
+              <div className="w-full md:w-auto bg-slate-900/90 rounded-2xl p-4 border border-slate-700 text-center space-y-3 shrink-0">
+                <div className="flex items-center justify-between gap-4 text-xs">
+                  <span className="font-semibold text-slate-300">Botín de Cuero (Talla 38)</span>
+                  <span
+                    className={`font-black px-2.5 py-0.5 rounded-full text-[11px] ${
+                      inStockStatus
+                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                        : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                    }`}
+                  >
+                    {inStockStatus ? '● DISPONIBLE' : '✕ AGOTADO'}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleToggleStock}
+                  className={`w-full py-3 px-5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-md cursor-pointer ${
+                    inStockStatus
+                      ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                      : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                  }`}
+                >
+                  {inStockStatus ? (
+                    <>
+                      <ToggleRight className="w-5 h-5 text-rose-200" />
+                      <span>Apagar Producto (Marcar Agotado)</span>
+                    </>
+                  ) : (
+                    <>
+                      <ToggleLeft className="w-5 h-5 text-emerald-200" />
+                      <span>Reactivar Producto (Disponible)</span>
+                    </>
+                  )}
+                </button>
+
+                {stockToast && (
+                  <p className="text-[11px] text-amber-300 font-medium animate-fadeIn">
+                    {stockToast}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ── GRID DE LAS 3 VERTICALES OFICIALES CON RUTAS, PANEL Y UPSELLS ── */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="soluciones">
+
+            {/* VERTICAL 1: CALZADOS & BOUTIQUES */}
+            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    <ShoppingBag className="w-6 h-6" />
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-semibold">
+                    Jr. Asamblea 245
+                  </span>
+                </div>
+
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-wider text-rose-700">
-                    Moda & Calzado
+                    Vertical Oficial • Calzado & Moda
                   </span>
-                  <h3 className="text-lg font-black text-slate-950 mt-1">
-                    Tiendas de Ropa, Calzado & Accesorios
+                  <h3 className="text-xl font-black text-slate-950 mt-1">
+                    Calzados Lucas Huamanga
                   </h3>
                 </div>
+
+                {/* Dolor del comerciante */}
+                <div className="p-3 bg-rose-50/60 rounded-xl border border-rose-100 text-xs text-rose-950 space-y-1">
+                  <span className="font-bold block text-rose-800">Dolor común en Ayacucho:</span>
+                  <p className="italic text-slate-700">
+                    &quot;Responder &apos;¿tienes en talla 38?&apos; mandando 20 fotos sueltas que saturan el chat.&quot;
+                  </p>
+                </div>
+
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Catálogo visual con selector de tallas y variantes de color, zoom en fotos de producto y recepción de pedidos automáticos a WhatsApp con 0% comisiones.
+                  Catálogo con selector de tallas y variantes de color, compresión WebP rápida para fotos de celular y comanda ordenada directa al WhatsApp con 0% comisiones.
                 </p>
-                <div className="pt-2 flex flex-wrap gap-1.5">
-                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Tallas & Variantes</span>
-                  <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md">Stock en Vivo</span>
+
+                {/* UPSELL NATURAL OFICIAL */}
+                <div className="pt-2 p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 space-y-1 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-stone-900 flex items-center gap-1.5">
+                      <Package className="w-3.5 h-3.5 text-emerald-600" />
+                      Módulo Upsell Natural:
+                    </span>
+                    <span className="font-black text-[#B23A2E] bg-rose-50 px-2 py-0.5 rounded border border-rose-200 text-[10px]">
+                      +S/ 90 pago único
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-stone-600">
+                    <strong>Control de Inventario con Alertas WhatsApp:</strong> Te avisa a tu celular cuando te queden 2 pares de una talla para no perder ventas.
+                  </p>
                 </div>
               </div>
 
+              {/* Botones de acción: Demo y Panel de Bolsillo */}
               <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
                 <Link
                   href="/demo/calzados"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition active:scale-95 shadow-xs"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition active:scale-95 shadow-xs"
                 >
-                  <span>Probar Demo Calzado & Moda</span>
+                  <span>Ver Tienda en Vivo (/demo/calzados)</span>
                   <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
                 </Link>
                 <Link
@@ -695,40 +676,68 @@ export function MarketingHome() {
                   className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-100 text-slate-800 text-xs font-semibold hover:bg-slate-200 transition"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-slate-600" />
-                  <span>Ver Panel Móvil de Stock</span>
+                  <span>Probar Panel de Bolsillo (/admin)</span>
                 </Link>
               </div>
             </article>
 
-            {/* Nicho 2: Restaurantes, Cafeterías & Pastelerías */}
-            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+            {/* VERTICAL 2: RESTAURANTES & PASTELERÍAS */}
+            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <Utensils className="w-6 h-6" />
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    <Utensils className="w-6 h-6" />
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-semibold">
+                    Jr. Bellido 180
+                  </span>
                 </div>
+
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-wider text-amber-700">
-                    Gastronomía & Carta QR
+                    Vertical Oficial • Gastronomía & Carta QR
                   </span>
-                  <h3 className="text-lg font-black text-slate-950 mt-1">
-                    Restaurantes, Cafés & Pastelerías
+                  <h3 className="text-xl font-black text-slate-950 mt-1">
+                    Restaurante Las Flores
                   </h3>
                 </div>
+
+                {/* Dolor del comerciante */}
+                <div className="p-3 bg-amber-50/60 rounded-xl border border-amber-100 text-xs text-amber-950 space-y-1">
+                  <span className="font-bold block text-amber-800">Dolor común en Ayacucho:</span>
+                  <p className="italic text-slate-700">
+                    &quot;Cartas en PDF pesadas que los clientes no descargan y platos agotados a mediodía.&quot;
+                  </p>
+                </div>
+
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Carta digital QR para mesas o delivery a domicilio. Switch de platos agotados en segundos y recepción de comandas limpias y calculadas directo a WhatsApp.
+                  Carta digital interactiva QR para salón y delivery con apagado de productos agotados en tiempo real y recepción de pedidos calculados por WhatsApp.
                 </p>
-                <div className="pt-2 flex flex-wrap gap-1.5">
-                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Mesa & Delivery</span>
-                  <span className="text-[10px] font-semibold bg-amber-50 text-amber-800 px-2 py-0.5 rounded-md">Comandas WhatsApp</span>
+
+                {/* UPSELL NATURAL OFICIAL */}
+                <div className="pt-2 p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 space-y-1 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-stone-900 flex items-center gap-1.5">
+                      <QrCode className="w-3.5 h-3.5 text-amber-600" />
+                      Módulo Upsell Natural:
+                    </span>
+                    <span className="font-black text-[#B23A2E] bg-rose-50 px-2 py-0.5 rounded border border-rose-200 text-[10px]">
+                      +S/ 70 pago único
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-stone-600">
+                    <strong>Carta QR con Mesas y Mozos:</strong> El cliente selecciona su número de mesa y mozo en su celular y la comanda llega lista a cocina.
+                  </p>
                 </div>
               </div>
 
+              {/* Botones de acción: Demo y Panel de Bolsillo */}
               <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
                 <Link
                   href="/demo/pasteleria"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition active:scale-95 shadow-xs"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition active:scale-95 shadow-xs"
                 >
-                  <span>Probar Carta Gastronómica</span>
+                  <span>Ver Carta en Vivo (/demo/pasteleria)</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <Link
@@ -736,40 +745,68 @@ export function MarketingHome() {
                   className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-amber-50 text-amber-900 text-xs font-semibold hover:bg-amber-100 transition"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Ver Panel de Cocina / Pedidos</span>
+                  <span>Probar Panel de Bolsillo (/admin)</span>
                 </Link>
               </div>
             </article>
 
-            {/* Nicho 3: Gimnasios, Fitness & Membresías */}
-            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+            {/* VERTICAL 3: GIMNASIOS & CONTROL DNI */}
+            <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <Dumbbell className="w-6 h-6" />
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    <Dumbbell className="w-6 h-6" />
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-semibold">
+                    Av. Mariscal Cáceres 540
+                  </span>
                 </div>
+
                 <div>
                   <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700">
-                    Fitness & Membresías
+                    Vertical Oficial • Fitness & Membresías
                   </span>
-                  <h3 className="text-lg font-black text-slate-950 mt-1">
-                    Gimnasios, Boxes & Centros Fitness
+                  <h3 className="text-xl font-black text-slate-950 mt-1">
+                    Trankilandia Gym & Fitness
                   </h3>
                 </div>
+
+                {/* Dolor del comerciante */}
+                <div className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 text-xs text-emerald-950 space-y-1">
+                  <span className="font-bold block text-emerald-800">Dolor común en Ayacucho:</span>
+                  <p className="italic text-slate-700">
+                    &quot;Llevar cuadernos a mano para saber quién tiene la mensualidad vencida al entrar.&quot;
+                  </p>
+                </div>
+
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Cobro de suscripciones mensuales, venta de suplementos deportivos y control de estado de clientes escaneando o ingresando el DNI en counter.
+                  Venta de pases online por WhatsApp, catálogo de suplementos, arqueo diario de caja y control rápido de clientes por DNI.
                 </p>
-                <div className="pt-2 flex flex-wrap gap-1.5">
-                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Control DNI</span>
-                  <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md">Suplementación</span>
+
+                {/* UPSELL NATURAL OFICIAL */}
+                <div className="pt-2 p-3 bg-stone-50 rounded-xl border border-dashed border-stone-300 space-y-1 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-stone-900 flex items-center gap-1.5">
+                      <ScanLine className="w-3.5 h-3.5 text-blue-600" />
+                      Módulo Upsell Natural:
+                    </span>
+                    <span className="font-black text-[#B23A2E] bg-rose-50 px-2 py-0.5 rounded border border-rose-200 text-[10px]">
+                      +S/ 150 pago único
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-stone-600">
+                    <strong>Lector DNI / Códigos de Barras:</strong> Escanea el documento en counter con la cámara del celular o lector USB para dar pase en 2 segundos.
+                  </p>
                 </div>
               </div>
 
+              {/* Botones de acción: Demo y Panel de Bolsillo */}
               <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
                 <Link
                   href="/demo/gym"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition active:scale-95 shadow-xs"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition active:scale-95 shadow-xs"
                 >
-                  <span>Probar Portal Fitness & Gym</span>
+                  <span>Ver Portal en Vivo (/demo/gym)</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
                 <Link
@@ -777,53 +814,11 @@ export function MarketingHome() {
                   className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold hover:bg-emerald-100 transition"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Ver Panel de Counter y Caja</span>
+                  <span>Probar Panel de Bolsillo (/admin)</span>
                 </Link>
               </div>
             </article>
 
-            {/* Nicho 4: Minimarkets, Ferreterías & Comercio Local */}
-            <article className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                  <Store className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-black uppercase tracking-wider text-blue-700">
-                    Retail & Comercio Local
-                  </span>
-                  <h3 className="text-lg font-black text-slate-950 mt-1">
-                    Minimarkets, Ferreterías & Bodegas
-                  </h3>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Catálogo para negocios con amplio inventario. Buscador rápido por producto o marca, canasta de compras express y pedidos directos a WhatsApp para despacho o retiro.
-                </p>
-                <div className="pt-2 flex flex-wrap gap-1.5">
-                  <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Buscador Rápido</span>
-                  <span className="text-[10px] font-semibold bg-blue-50 text-blue-800 px-2 py-0.5 rounded-md">Canasta Express</span>
-                </div>
-              </div>
-
-              <div className="pt-6 space-y-2 border-t border-slate-100 mt-6">
-                <a
-                  href={getWhatsAppUrl('Hola Qatu Web, me gustaría solicitar una demostración o información para un Minimarket / Ferretería / Comercio local.')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition active:scale-95 shadow-xs"
-                >
-                  <span>Pedir Demo para mi Comercio</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-blue-200" />
-                </a>
-                <Link
-                  href="/directorio"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-blue-50 text-blue-900 text-xs font-semibold hover:bg-blue-100 transition"
-                >
-                  <Globe2 className="w-3.5 h-3.5 text-blue-700" />
-                  <span>Explorar Comercios Activos</span>
-                </Link>
-              </div>
-            </article>
           </div>
 
           {/* Franja de Autoridad: Marcas Oficiales con Sistemas en Producción */}
@@ -836,7 +831,7 @@ export function MarketingHome() {
                 Marcas y proyectos reales que operan con sistemas Qatu Web
               </h3>
               <p className="text-xs sm:text-sm text-slate-600">
-                Sistemas en vivo conectados con dominios propios y alta disponibilidad en el Perú.
+                Sistemas en vivo conectados con dominios propios y alta disponibilidad en Ayacucho y todo el Perú.
               </p>
             </div>
 
@@ -899,6 +894,7 @@ export function MarketingHome() {
               </a>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -915,7 +911,7 @@ export function MarketingHome() {
               ¿Por qué Qatu Web rompe el mercado tradicional?
             </h2>
             <p className="text-sm text-slate-600">
-              Compara lo que te cobra una agencia convencional o una plataforma internacional frente a nuestra solución a medida.
+              Compara lo que te cobra una agencia convencional o una plataforma internacional frente a nuestra tarifa de S/ 1 al día.
             </p>
           </div>
 
@@ -1015,7 +1011,7 @@ export function MarketingHome() {
                   La forma Qatu Web
                 </span>
                 <h3 className="text-xl font-black text-white mt-1">
-                  Qatu Web (Huamanga)
+                  Qatu Web (Ayacucho)
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">
                   Ingeniería moderna con costo accesible para ti.
@@ -1026,31 +1022,31 @@ export function MarketingHome() {
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Solo S/ 30 al mes</strong> (o S/ 300 al año con instalación <strong>GRATIS</strong>).
+                    <strong>Solo S/ 1 al día</strong> (S/ 300 al año con instalación <strong>GRATIS</strong> o S/ 30 al mes).
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Tu web lista en 24 a 48 horas</strong> con fotos y catálogo cargados.
+                    <strong>Tu web lista en 24 a 48 horas</strong> con fotos y catálogo inicial cargado.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>0% de comisiones:</strong> El 100% del dinero de tus ventas es tuyo.
+                    <strong>0% de comisiones:</strong> El 100% del dinero de tus ventas va a tu bolsillo.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Panel de Bolsillo en tu celular:</strong> Cambia precios y fotos tú mismo en 5 segundos.
+                    <strong>Panel de Bolsillo en tu celular:</strong> Cambia precios y apaga agotados en 5 segundos.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Soporte local en Huamanga:</strong> Ingenieros disponibles por WhatsApp directo.
+                    <strong>Soporte local en Huamanga:</strong> Trato directo por WhatsApp en español.
                   </span>
                 </li>
               </ul>
@@ -1060,216 +1056,117 @@ export function MarketingHome() {
       </section>
 
       {/* ============================================================== */}
-      {/* 4. SECCIÓN DE PRECIOS Y MÓDULOS A MEDIDA                       */}
+      {/* 4. SECCIÓN DE PRECIOS CON CALCULADORA INTERACTIVA             */}
       {/* ============================================================== */}
-      <section className="py-20 sm:py-24 bg-slate-50 border-t border-slate-200/80" id="precios">
+      <section className="py-20 sm:py-24 bg-stone-50 border-t border-stone-200/80" id="precios">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-              Tarifas Claras
+            <span className="text-xs font-bold uppercase tracking-wider text-[#B23A2E]">
+              Tarifas Claras y Transparentes
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-serif font-black text-stone-900 tracking-tight">
               Precios pensados para la realidad de Ayacucho
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Elige el plan que mejor se adapte a tu momento comercial. Sin contratos forzosos ni cobros sorpresa.
+            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+              Selecciona tu plan, combina los módulos especializados para tu rubro y obtén tu cotización en vivo con botón directo a WhatsApp. 0% comisiones por venta.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Plan Mensual */}
-            <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Plan Flexible
-                  </span>
-                  <span className="text-xs font-mono bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-semibold">
-                    Mes a mes
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl sm:text-5xl font-black text-slate-950">S/ 30</span>
-                  <span className="text-sm font-semibold text-slate-500">/ al mes</span>
-                </div>
-                <p className="text-xs text-slate-600">
-                  Activación inicial única de S/ 90 (incluye configuración de dominio y carga de tus primeros 30 productos).
-                </p>
-
-                <ul className="space-y-3 text-xs text-slate-700 pt-3 border-t border-slate-100">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Catálogo móvil táctil adaptado a tu rubro</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Subdominio seguro tunegocio.qatuweb.com</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Panel de Bolsillo para celular (/admin)</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Pedidos ilimitados directos a WhatsApp</span>
-                  </li>
-                </ul>
-              </div>
-
-              <a
-                href={getWhatsAppUrl(
-                  'Hola Qatu Web, me interesa comenzar con el Plan Mensual de S/ 30 para mi negocio.'
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs sm:text-sm transition active:scale-95"
-              >
-                <span>Solicitar Plan Mensual</span>
-                <ArrowRight className="w-4 h-4 text-slate-600" />
-              </a>
-            </div>
-
-            {/* Plan Anual (Recomendado) */}
-            <div className="bg-slate-950 text-white rounded-3xl p-5 sm:p-8 border-2 border-emerald-500/80 shadow-2xl flex flex-col justify-between space-y-6 relative">
-              <div className="absolute -top-3.5 right-4 sm:right-6 bg-emerald-500 text-slate-950 text-[10px] sm:text-[11px] font-black uppercase px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-md flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5" />
-                <span>Recomendado • Ahorras S/ 150</span>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                    Plan Anual Inteligente
-                  </span>
-                  <span className="text-xs font-mono bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full font-semibold border border-emerald-500/30">
-                    Instalación GRATIS
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl sm:text-5xl font-black text-white">S/ 300</span>
-                  <span className="text-sm font-semibold text-slate-400">/ al año</span>
-                </div>
-                <p className="text-xs text-slate-300">
-                  <strong>Instalación y carga inicial 100% GRATIS</strong> (ahorras los S/ 90 de setup) y recibes 2 meses libres de suscripción.
-                </p>
-
-                <ul className="space-y-3 text-xs text-slate-200 pt-3 border-t border-slate-800">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span><strong>Todo lo del Plan Mensual</strong></span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span><strong>Activación y carga de 30 productos GRATIS</strong></span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Soporte prioritario por WhatsApp directo</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Opción de conectar tu dominio propio .com</span>
-                  </li>
-                </ul>
-              </div>
-
-              <a
-                href={getWhatsAppUrl(
-                  'Hola Qatu Web, quiero aprovechar la promoción del Plan Anual de S/ 300 con instalación GRATIS.'
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm shadow-md transition active:scale-95"
-              >
-                <span>Activar Plan Anual con Instalación Gratis</span>
-                <ArrowRight className="w-4 h-4 text-slate-950" />
-              </a>
-            </div>
-          </div>
-
-          {/* Módulos Adicionales a Medida */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 max-w-4xl mx-auto space-y-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <div>
-                <h3 className="text-lg font-black text-slate-950">
-                  Módulos a Medida para Escalar tu Negocio
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Pagos únicos de activación: tu mensualidad se mantiene fija en S/ 30.
-                </p>
-              </div>
-              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 w-fit">
-                Sin aumentar tu mensualidad
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
-                <div className="flex justify-between items-start">
-                  <span className="text-xs font-bold text-slate-900">Control de Inventario</span>
-                  <span className="font-mono text-xs font-bold text-slate-900">S/ 90</span>
-                </div>
-                <p className="text-[11px] text-slate-600">
-                  Alertas automáticas a WhatsApp cuando un producto tenga poco stock.
-                </p>
-              </div>
-
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
-                <div className="flex justify-between items-start">
-                  <span className="text-xs font-bold text-slate-900">Lector DNI / Barras</span>
-                  <span className="font-mono text-xs font-bold text-slate-900">S/ 150</span>
-                </div>
-                <p className="text-[11px] text-slate-600">
-                  Check-in rápido escaneando el DNI con la cámara del celular.
-                </p>
-              </div>
-
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
-                <div className="flex justify-between items-start">
-                  <span className="text-xs font-bold text-slate-900">Carta QR de Mesas</span>
-                  <span className="font-mono text-xs font-bold text-slate-900">S/ 70</span>
-                </div>
-                <p className="text-[11px] text-slate-600">
-                  Selector de número de mesa y mozo con envío directo a WhatsApp.
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* CALCULADORA INTERACTIVA DE PRECIOS */}
+          <InteractivePricingCalculator
+            defaultPlanId="anual"
+            showDetails={true}
+            showPromoBanner={true}
+          />
         </div>
       </section>
 
       {/* ============================================================== */}
-      {/* 5. PREGUNTAS FRECUENTES (FAQ)                                 */}
+      {/* 5. PREGUNTAS FRECUENTES (FAQ) Y MÉTODOS DE PAGO OFICIALES      */}
       {/* ============================================================== */}
-      <section className="py-20 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" id="faq">
-        <div className="space-y-8">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-              Conversémoslo Claro
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
-              Preguntas Frecuentes
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Respuestas directas sin términos técnicos confusos.
-            </p>
+      <section className="py-20 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10" id="faq">
+        <div className="text-center space-y-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+            Conversémoslo Claro
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
+            Preguntas Frecuentes
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600">
+            Respuestas directas sin letras chicas ni términos confusos.
+          </p>
+        </div>
+
+        {/* Acordeón de FAQs */}
+        <div className="space-y-3">
+          {faqs.map((faq, idx) => (
+            <details
+              key={idx}
+              className="group bg-white rounded-2xl border border-slate-200 p-5 open:shadow-xs transition"
+            >
+              <summary className="flex items-center justify-between cursor-pointer font-bold text-sm sm:text-base text-slate-900 group-open:text-emerald-700">
+                <span>{faq.q}</span>
+                <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
+              </summary>
+              <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                {faq.a}
+              </p>
+            </details>
+          ))}
+        </div>
+
+        {/* ── CUADRO DE CONFIANZA Y DATOS OFICIALES DE PAGO ── */}
+        <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/40 shadow-sm space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
+              <CreditCard className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-950 text-base">
+                Datos Oficiales de Pago & Activación Inmediata
+              </h3>
+              <p className="text-xs text-slate-500">
+                Transparencia total para comerciantes de Huamanga y el Perú
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            {faqs.map((faq, idx) => (
-              <details
-                key={idx}
-                className="group bg-white rounded-2xl border border-slate-200 p-5 open:shadow-xs transition"
-              >
-                <summary className="flex items-center justify-between cursor-pointer font-bold text-sm sm:text-base text-slate-900 group-open:text-emerald-700">
-                  <span>{faq.q}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
-                </summary>
-                <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                  {faq.a}
-                </p>
-              </details>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs">
+            <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-purple-700 block">
+                Billeteras Digitales
+              </span>
+              <p className="font-mono font-black text-sm text-slate-900">
+                {siteConfig.yapeNumber}
+              </p>
+              <p className="text-[11px] text-slate-500">
+                Yape y Plin autorizados
+              </p>
+            </div>
+
+            <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                Titular Registrado
+              </span>
+              <p className="font-bold text-xs sm:text-sm text-slate-900">
+                {siteConfig.yapeTitular}
+              </p>
+              <p className="text-[11px] text-slate-500">
+                Emisión de comprobante legal
+              </p>
+            </div>
+
+            <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">
+                Activación en 1 Toque
+              </span>
+              <p className="font-bold text-xs sm:text-sm text-emerald-800">
+                Portal /dashboard/cliente
+              </p>
+              <p className="text-[11px] text-slate-500">
+                Subes la constancia y tu web queda activa
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -1285,17 +1182,17 @@ export function MarketingHome() {
               <span>Empecemos hoy mismo</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
-              Dale a tu negocio la presencia digital que merece
+              Dale a tu negocio la presencia digital que merece por S/ 1 al día
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Únete a los comerciantes de Huamanga que ya reciben pedidos directos a su WhatsApp con un sistema rápido, profesional y sin pagar comisiones abusivas.
+              Únete a los comerciantes de Huamanga que ya reciben pedidos directos a su WhatsApp con un sistema rápido, profesional y con 0% de comisiones por venta.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href={getWhatsAppUrl(
-                'Hola Qatu Web, estoy listo para iniciar mi web y catálogo por S/ 30 al mes en Ayacucho.'
+                'Hola Qatu Web, estoy listo para iniciar mi tienda virtual o carta digital por S/ 1 al día (Plan Anual S/ 300) en Ayacucho.'
               )}
               target="_blank"
               rel="noopener noreferrer"
@@ -1305,11 +1202,11 @@ export function MarketingHome() {
               <span>Iniciar mi Web por WhatsApp</span>
             </a>
             <Link
-              href="/login"
+              href="/dashboard/cliente"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm border border-slate-700 transition"
             >
               <Lock className="w-4 h-4 text-slate-400" />
-              <span>Acceso de Clientes (/login)</span>
+              <span>Portal de Clientes (/dashboard/cliente)</span>
             </Link>
           </div>
         </div>
@@ -1317,3 +1214,5 @@ export function MarketingHome() {
     </div>
   );
 }
+
+export default MarketingHome;
