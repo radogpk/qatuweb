@@ -1,32 +1,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { initialPricingPlans } from "@/lib/seed/initialBusinesses";
 import { ComparisonTable } from "@/components/pricing/ComparisonTable";
+import { InteractivePricingCalculator } from "@/components/pricing/InteractivePricingCalculator";
 import { PageIntro, PageInvite } from "@/components/shared/PageIntro";
-import { getWhatsAppUrl } from "@/lib/config/site";
+import {
+  OFFICIAL_PRICING_PLANS,
+  OFFICIAL_ADDONS,
+  LAUNCH_PROMO_CONFIG,
+  buildPricingWhatsAppUrl,
+} from "@/lib/config/pricing";
 import {
   Check,
   X,
   ArrowUpRight,
   ExternalLink,
   Sparkles,
-  Smartphone,
   ShieldCheck,
   Zap,
   Store,
   Utensils,
   Dumbbell,
   MapPin,
+  Flame,
+  Package,
+  ScanLine,
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Planes y Precios Oficiales | Qatu Web Ayacucho",
+  title: "Planes y Tarifas Oficiales | Qatu Web Ayacucho",
   description:
     "Tu propia página web o sistema a medida por S/ 30 al mes o S/ 300 al año. Con catálogo móvil, pedidos directos a WhatsApp y panel de administración en Huamanga, Ayacucho.",
   alternates: { canonical: "/planes" },
 };
 
 export default function PlanesPage() {
+  const mensualPlan = OFFICIAL_PRICING_PLANS.find((p) => p.id === "mensual")!;
+  const anualPlan = OFFICIAL_PRICING_PLANS.find((p) => p.id === "anual")!;
+
+  const spotsLeft = LAUNCH_PROMO_CONFIG.totalSpots - LAUNCH_PROMO_CONFIG.claimedSpots;
+  const claimedPercentage = Math.round(
+    (LAUNCH_PROMO_CONFIG.claimedSpots / LAUNCH_PROMO_CONFIG.totalSpots) * 100
+  );
+
   return (
     <div className="site-page">
       <div className="interior-shell space-y-12">
@@ -81,94 +96,236 @@ export default function PlanesPage() {
           </div>
         </div>
 
-        {/* Las 3 Tarjetas de Planes */}
-        <div className="interior-plans">
-          {initialPricingPlans.map((plan) => {
-            const isAnual = plan.id === "anual";
-            const isMedida = plan.id === "medida";
+        {/* Banner de Cupos de Lanzamiento */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/15 via-rose-500/10 to-amber-500/15 border-2 border-amber-500/30 p-6 sm:p-7 shadow-sm">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-950 border border-amber-500/40">
+                <Flame className="w-4 h-4 text-amber-600" />
+                <span>{LAUNCH_PROMO_CONFIG.badgeText}</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 tracking-tight">
+                🔥 Cupos de Lanzamiento: Los primeros 30 negocios de Ayacucho congelan el precio de S/ 300 al año para siempre ({LAUNCH_PROMO_CONFIG.claimedSpots} de {LAUNCH_PROMO_CONFIG.totalSpots} reservados)
+              </h3>
+              <p className="text-stone-700 text-xs sm:text-sm leading-relaxed">
+                {LAUNCH_PROMO_CONFIG.subtext} Sin sorpresas ni cobros ocultos posteriores. Tu inversión anual queda blindada.
+              </p>
+            </div>
 
-            return (
-              <article
-                className={`interior-plan ${isAnual ? "interior-plan-featured" : ""}`}
-                key={plan.id}
-              >
-                <p className="interior-plan-kicker">
-                  {isAnual
-                    ? "MÁXIMO AHORRO · SETUP GRATIS"
-                    : isMedida
-                      ? "LÓGICA OPERATIVA A MEDIDA"
-                      : "PASO A PASO MES A MES"}
-                </p>
-                <h2>{plan.name}</h2>
-                <p className="interior-plan-desc">{plan.tagline}</p>
-
-                {isAnual ? (
-                  <div>
-                    <p className="interior-price">
-                      <span>S/</span>
-                      300
-                      <small>/ año</small>
-                    </p>
-                    <p className="text-xs font-bold text-emerald-700 mt-1 flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                      Activación y subida inicial: S/ 0 (GRATIS)
-                    </p>
-                  </div>
-                ) : isMedida ? (
-                  <div>
-                    <p className="interior-price">
-                      <span>S/</span>
-                      {plan.setupPrice}
-                      <small> cotización base</small>
-                    </p>
-                    <p className="interior-setup">
-                      + S/ {plan.monthlyPrice} / mes de infraestructura aislada
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <p className="interior-price">
-                      <span>S/</span>
-                      {plan.monthlyPrice}
-                      <small>/ mes</small>
-                    </p>
-                    <p className="interior-setup">
-                      + S/ {plan.setupPrice} pago único de activación inicial
-                    </p>
-                  </div>
-                )}
-
-                <a
-                  className="interior-button"
-                  href={getWhatsAppUrl(
-                    isAnual
-                      ? "Hola Qatu Web, deseo contratar el Plan Anual Recomendado de S/ 300 con instalación GRATIS."
-                      : isMedida
-                        ? "Hola Qatu Web, requiero un sistema a medida (Gym con control DNI / Restaurante / Facturación)."
-                        : "Hola Qatu Web, deseo contratar el Plan Mensual de S/ 30 (+ S/ 90 de activación).",
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {plan.ctaText} <ArrowUpRight size={18} />
-                </a>
-
-                <ul>
-                  {plan.features.map((feature) => (
-                    <li key={feature}>
-                      <Check size={16} />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="interior-delivery">
-                  Tiempo estimado: <strong>{plan.deliveryDays}</strong>
-                </p>
-              </article>
-            );
-          })}
+            {/* Contador de urgencia y cupos */}
+            <div className="w-full md:w-64 bg-white/90 backdrop-blur-sm rounded-2xl p-4 border border-amber-200/80 shadow-sm shrink-0 space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold text-stone-800">
+                <span>Cupos Promocionales</span>
+                <span className="text-amber-700">
+                  {LAUNCH_PROMO_CONFIG.claimedSpots} de {LAUNCH_PROMO_CONFIG.totalSpots} reservados
+                </span>
+              </div>
+              <div className="w-full bg-stone-200 rounded-full h-2.5 overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-amber-500 to-[#B23A2E] h-2.5 rounded-full transition-all duration-500"
+                  style={{ width: `${claimedPercentage}%` }}
+                />
+              </div>
+              <p className="text-[11px] text-stone-600 text-center font-medium">
+                ⚡ ¡Solo quedan <strong className="text-stone-900">{spotsLeft} cupos</strong> con tarifa congelada en S/ 300!
+              </p>
+            </div>
+          </div>
         </div>
+
+        {/* Las 2 Tarjetas de Planes Principales */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+          {/* Plan Mensual */}
+          <article className="interior-plan">
+            <p className="interior-plan-kicker">PASO A PASO MES A MES</p>
+            <h2>{mensualPlan.name}</h2>
+            <p className="interior-plan-desc">{mensualPlan.tagline}</p>
+
+            <div>
+              <p className="interior-price">
+                <span>S/</span>
+                {mensualPlan.periodicPrice}
+                <small>{mensualPlan.periodLabel}</small>
+              </p>
+              <div className="space-y-1 mt-1">
+                <p className="interior-setup">
+                  + S/ {mensualPlan.setupPrice} pago único de activación inicial
+                </p>
+                <p className="text-[11px] font-semibold text-stone-600">
+                  Carga de 25 productos, subdominio y entrega en 24 a 48 horas
+                </p>
+              </div>
+            </div>
+
+            <a
+              className="interior-button font-bold"
+              href={buildPricingWhatsAppUrl("mensual")}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>{mensualPlan.ctaText}</span>
+              <ArrowUpRight size={18} />
+            </a>
+
+            <ul>
+              {mensualPlan.features.map((feature) => (
+                <li key={feature}>
+                  <Check size={16} />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="interior-delivery">
+              Tiempo estimado: <strong>{mensualPlan.deliveryDays}</strong>
+            </p>
+          </article>
+
+          {/* Plan Anual Recomendado */}
+          <article className="interior-plan interior-plan-featured relative border-2 border-amber-500/80 shadow-md">
+            <div className="absolute -top-3.5 right-6 bg-amber-400 text-stone-950 text-[11px] font-black uppercase tracking-wider py-1 px-3 rounded-full shadow-sm flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-stone-950" />
+              <span>{anualPlan.badge}</span>
+            </div>
+
+            <p className="interior-plan-kicker text-amber-900 font-bold">
+              MÁXIMO AHORRO · SETUP 100% GRATIS
+            </p>
+            <h2>{anualPlan.name}</h2>
+            <p className="interior-plan-desc">{anualPlan.tagline}</p>
+
+            <div>
+              <p className="interior-price">
+                <span>S/</span>
+                {anualPlan.periodicPrice}
+                <small>{anualPlan.periodLabel}</small>
+              </p>
+              <div className="space-y-1 mt-1">
+                <p className="text-xs font-bold text-emerald-800 flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  Instalación y Activación: S/ 0 (100% GRATIS)
+                </p>
+                <p className="text-[11px] font-bold text-amber-950">
+                  {anualPlan.savingsNote} (S/ 25/mes · S/ 1 al día)
+                </p>
+              </div>
+            </div>
+
+            <a
+              className="interior-button font-bold"
+              href={buildPricingWhatsAppUrl("anual")}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>{anualPlan.ctaText}</span>
+              <ArrowUpRight size={18} />
+            </a>
+
+            <ul>
+              {anualPlan.features.map((feature) => (
+                <li key={feature}>
+                  <Check size={16} />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="interior-delivery">
+              Tiempo estimado: <strong>{anualPlan.deliveryDays}</strong>
+            </p>
+          </article>
+        </div>
+
+        {/* Sección de Módulos Especiales Adicionales & Cotizador Personalizado */}
+        <section className="space-y-6 pt-4">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#B23A2E]">
+              Personalización Sin Costos Recurrentes
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900">
+              Módulos Especiales Adicionales (Pagos Únicos)
+            </h3>
+            <p className="text-xs sm:text-sm text-stone-600">
+              Son pagos únicos que <strong>no aumentan tu cuota mensual</strong>. Actívalos ahora o agrégalos en cualquier momento según las necesidades operativas de tu negocio.
+            </p>
+          </div>
+
+          {/* Tarjetas explicativas de los 3 Módulos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {OFFICIAL_ADDONS.map((addon) => {
+              const getIcon = () => {
+                if (addon.id === "addon-mesas") {
+                  return <Utensils className="w-5 h-5 text-amber-600" />;
+                }
+                if (addon.id === "addon-inventario") {
+                  return <Package className="w-5 h-5 text-emerald-600" />;
+                }
+                return <ScanLine className="w-5 h-5 text-blue-600" />;
+              };
+
+              return (
+                <div
+                  key={addon.id}
+                  className="bg-white rounded-2xl p-5 border border-stone-200/90 shadow-sm flex flex-col justify-between space-y-4"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center shrink-0">
+                        {getIcon()}
+                      </div>
+                      <span className="text-xs font-black text-[#B23A2E] px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200">
+                        {addon.badge}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-serif font-bold text-base text-stone-900">
+                        {addon.name}
+                      </h4>
+                      <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                        {addon.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-stone-100 space-y-1 text-xs">
+                    <p className="text-stone-500 font-medium">
+                      <strong className="text-stone-700">Ideal para:</strong>{" "}
+                      {addon.idealFor}
+                    </p>
+                    <p className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      Pago único · No altera cuota mensual
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Cotizador Interactivo para Personalizar la Propuesta */}
+          <div className="pt-6">
+            <div className="bg-stone-50 rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+              <div className="text-center max-w-xl mx-auto space-y-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+                  Calculadora en Tiempo Real
+                </span>
+                <h4 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+                  Arma tu cotización a medida
+                </h4>
+                <p className="text-xs sm:text-sm text-stone-600">
+                  Selecciona tu plan base, marca los módulos especializados que requieres y solicita tu activación directa por WhatsApp.
+                </p>
+              </div>
+
+              <InteractivePricingCalculator
+                defaultPlanId="anual"
+                showDetails={true}
+                showPromoBanner={false}
+              />
+            </div>
+          </div>
+        </section>
 
         {/* Cuadro Comparativo Directo: Agencia Tradicional vs Qatu Web */}
         <section className="bg-stone-50 rounded-3xl p-6 sm:p-10 border border-stone-200/90 shadow-sm space-y-6">
@@ -228,11 +385,15 @@ export default function PlanesPage() {
               <ul className="space-y-3 text-xs text-stone-200">
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <span><strong>S/ 30 al mes (S/ 1 al día)</strong> o S/ 300 al año con instalación <strong>GRATIS</strong>.</span>
+                  <span><strong>S/ 30 al mes (S/ 1 al día)</strong> o S/ 300 al año con instalación <strong>100% GRATIS</strong>.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   <span><strong>Tu catálogo activo en 24 horas</strong> con tus primeros 25 productos cargados.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <span><strong>0% de comisión por venta:</strong> Tus ganancias de Yape, Plin o efectivo son 100% tuyas.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
@@ -252,7 +413,7 @@ export default function PlanesPage() {
           <p className="interior-kicker">CADA DETALLE CUENTA</p>
           <h2>Compara las funciones con calma.</h2>
           <p>
-            Revisa las características incluidas en cada plan. En celulares, desliza la tabla hacia los lados para ver todas las columnas.
+            Revisa las características incluidas en cada modalidad. En celulares, desliza la tabla hacia los lados para ver todas las columnas.
           </p>
           <ComparisonTable />
         </section>
