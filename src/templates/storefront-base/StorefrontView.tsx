@@ -18,19 +18,24 @@ import {
   X,
   Check,
   Smartphone,
-  Sparkles,
   ArrowRight,
   Settings2,
-  ShieldCheck,
-  CheckCircle2,
-  Clock,
-  Flame,
   Search,
   Star,
   Calendar,
+  Clock,
   Layers,
   ChevronRight,
-  ExternalLink,
+  User,
+  CheckSquare,
+  Square,
+  Shield,
+  Coffee,
+  Flame,
+  Dumbbell,
+  Sparkles,
+  Wine,
+  Package,
 } from 'lucide-react';
 
 interface StorefrontViewProps {
@@ -44,30 +49,31 @@ export function StorefrontView({
   initialProducts,
   isDemoMode = true,
 }: StorefrontViewProps) {
-  // 1. Estado del Carrito y Drawer de Checkout
+  // 1. Estado del Carrito y Drawer de Checkout (03 / CHECKOUT DRAWER)
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // 2. Filtro de Categoría y Búsqueda
+  // 2. Filtros y Búsqueda
   const [selectedCategory, setSelectedCategory] = useState<string>('cat-all');
+  const [selectedSizeFilter, setSelectedSizeFilter] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 3. Modal de Personalización de Producto (02 / Modal)
+  // 3. Modal de Personalización de Producto (02 / PRODUCT DETAIL)
   const [activeModalProduct, setActiveModalProduct] = useState<StoreProduct | null>(null);
   const [modalVariant, setModalVariant] = useState<string>('');
   const [modalAcabado, setModalAcabado] = useState<string>('');
   const [modalQuantity, setModalQuantity] = useState(1);
-  const [modalGuarnicion, setModalGuarnicion] = useState('Papas Nativas Crocantes');
-  const [modalSalsas, setModalSalsas] = useState<string[]>(['Ají Pollero', 'Mayonesa de la casa']);
+  const [modalGuarnicion, setModalGuarnicion] = useState('Papas nativas');
+  const [modalSalsas, setModalSalsas] = useState<string[]>(['Ají pollero', 'Mayonesa']);
   const [modalDedicatoria, setModalDedicatoria] = useState('');
-  const [modalVelas, setModalVelas] = useState('Velas clásicas');
+  const [modalVelas, setModalVelas] = useState('Velas artesanales');
   const [modalFechaCelebracion, setModalFechaCelebracion] = useState('');
   const [modalHoraRecojo, setModalHoraRecojo] = useState('');
   const [modalDni, setModalDni] = useState('');
-  const [modalTurno, setModalTurno] = useState('Mañana (06:00 - 12:00)');
+  const [modalTurno, setModalTurno] = useState('Mañana 06:00 - 12:00');
   const [modalSubtono, setModalSubtono] = useState('Neutro');
 
-  // 4. Datos del Cliente en el Checkout (03 / Checkout Drawer)
+  // 4. Datos del Checkout
   const [customerName, setCustomerName] = useState('');
   const [deliveryType, setDeliveryType] = useState<'tienda' | 'delivery'>('tienda');
   const [customerAddress, setCustomerAddress] = useState('');
@@ -75,12 +81,11 @@ export function StorefrontView({
   const [isAgeConfirmed, setIsAgeConfirmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 5. Modo Demo Vendedor (Cambio de WhatsApp en vivo en la calle)
+  // 5. Modo Demo Vendedor
   const [vendorWhatsapp, setVendorWhatsapp] = useState('');
   const [isVendorModalOpen, setIsVendorModalOpen] = useState(false);
   const [vendorSuccessToast, setVendorSuccessToast] = useState(false);
 
-  // Cargar número demo previo si existe en sessionStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = sessionStorage.getItem(`qatu_demo_wa_${config.slug}`);
@@ -88,7 +93,6 @@ export function StorefrontView({
     }
   }, [config.slug]);
 
-  // Totales del Carrito
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.cantidad, 0),
     [cart]
@@ -99,13 +103,16 @@ export function StorefrontView({
     [cart]
   );
 
-  // Filtrado de productos por categoría y buscador
+  // Filtrado de productos
   const filteredProducts = useMemo(() => {
     return initialProducts.filter((product) => {
       const matchesCategory =
         selectedCategory === 'cat-all' ||
-        selectedCategory.includes('all') ||
         product.categoria_id === selectedCategory;
+
+      const matchesSize =
+        !selectedSizeFilter ||
+        (product.variantes && product.variantes.includes(selectedSizeFilter));
 
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
@@ -114,40 +121,37 @@ export function StorefrontView({
         (product.descripcion && product.descripcion.toLowerCase().includes(q)) ||
         (product.codigo && product.codigo.toLowerCase().includes(q));
 
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesSize && matchesSearch;
     });
-  }, [initialProducts, selectedCategory, searchQuery]);
+  }, [initialProducts, selectedCategory, selectedSizeFilter, searchQuery]);
 
-  // Abrir modal de personalización
-  const handleOpenProductModal = (product: StoreProduct) => {
+  // Abrir Modal de Producto
+  const handleOpenProductModal = (product: StoreProduct, presetVariant?: string) => {
     setActiveModalProduct(product);
     setModalQuantity(1);
-    setModalVariant(product.variantes?.[0] || '');
+    setModalVariant(presetVariant || product.variantes?.[0] || '');
     setModalAcabado(product.acabados?.[0]?.name || '');
-    setModalGuarnicion('Papas Nativas Crocantes');
-    setModalSalsas(['Ají Pollero', 'Mayonesa de la casa']);
+    setModalGuarnicion('Papas nativas');
+    setModalSalsas(['Ají pollero', 'Mayonesa']);
     setModalDedicatoria('');
     setModalVelas('Velas artesanales');
     setModalFechaCelebracion('');
     setModalHoraRecojo('');
     setModalDni('');
-    setModalTurno('Mañana (06:00 - 12:00)');
+    setModalTurno('Mañana 06:00 - 12:00');
     setModalSubtono('Neutro');
   };
 
-  // Agregar al carrito desde el modal de personalización
+  // Agregar al Carrito
   const handleConfirmAddToCart = () => {
     if (!activeModalProduct) return;
 
-    // Calcular precio base según porción si existe
     let finalPrice = activeModalProduct.precio_oferta || activeModalProduct.precio;
     if (activeModalProduct.portionOptions && activeModalProduct.portionOptions.length > 0) {
-      const matchedPortion = activeModalProduct.portionOptions.find(
+      const matched = activeModalProduct.portionOptions.find(
         (p) => p.label === modalVariant
       );
-      if (matchedPortion) {
-        finalPrice = matchedPortion.price;
-      }
+      if (matched) finalPrice = matched.price;
     }
 
     const customizationDetails: CartCustomizationDetails = {};
@@ -166,7 +170,7 @@ export function StorefrontView({
       customizationDetails.subtono = modalSubtono;
     }
 
-    const cartItemId = `${activeModalProduct.id}-${modalVariant}-${modalAcabado}-${modalGuarnicion || ''}-${modalDedicatoria || ''}`;
+    const cartItemId = `${activeModalProduct.id}-${modalVariant}-${modalAcabado}-${modalGuarnicion || ''}-${modalDedicatoria || ''}-${modalTurno || ''}`;
 
     setCart((prev) => {
       const existing = prev.find((item) => item.id === cartItemId);
@@ -197,7 +201,6 @@ export function StorefrontView({
     setIsCartOpen(true);
   };
 
-  // Modificar cantidad en carrito
   const updateQuantity = (cartItemId: string, change: number) => {
     setCart((prev) =>
       prev
@@ -212,7 +215,6 @@ export function StorefrontView({
     );
   };
 
-  // Guardar WhatsApp personalizado del prospecto
   const handleSaveVendorWhatsapp = (e: React.FormEvent) => {
     e.preventDefault();
     const clean = vendorWhatsapp.replace(/[^0-9]/g, '');
@@ -225,7 +227,6 @@ export function StorefrontView({
     setTimeout(() => setVendorSuccessToast(false), 3500);
   };
 
-  // Enviar Pedido por WhatsApp
   const handleSendOrder = async () => {
     if (!customerName.trim() || cart.length === 0) return;
     setIsSubmitting(true);
@@ -239,14 +240,12 @@ export function StorefrontView({
       customWhatsappOverride: vendorWhatsapp || undefined,
     });
 
-    // Pequeño timeout antes de redirigir para feedback visual
     setTimeout(() => {
       setIsSubmitting(false);
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-    }, 300);
+    }, 250);
   };
 
-  // Toggle de salsa para Pollería
   const toggleSalsa = (salsa: string) => {
     setModalSalsas((prev) =>
       prev.includes(salsa) ? prev.filter((s) => s !== salsa) : [...prev, salsa]
@@ -255,10 +254,20 @@ export function StorefrontView({
 
   const isDarkMode = config.theme.isDarkMode;
 
+  // Iconos de categoría limpios
+  const renderCategoryIcon = (iconName?: string) => {
+    if (iconName === 'flame') return <Flame className="w-3.5 h-3.5" />;
+    if (iconName === 'coffee') return <Coffee className="w-3.5 h-3.5" />;
+    if (iconName === 'dumbbell') return <Dumbbell className="w-3.5 h-3.5" />;
+    if (iconName === 'sparkles') return <Sparkles className="w-3.5 h-3.5" />;
+    if (iconName === 'glass') return <Wine className="w-3.5 h-3.5" />;
+    return <Package className="w-3.5 h-3.5" />;
+  };
+
   return (
     <div
-      className={`min-h-screen transition-colors duration-200 ${
-        isDarkMode ? 'bg-[#0A0C10] text-[#F5F7FA]' : 'bg-[#F3F4F2] text-[#171717]'
+      className={`min-h-screen text-xs sm:text-sm font-sans ${
+        isDarkMode ? 'bg-[#0E0D0B] text-[#F5EFE6]' : 'bg-[#FAF8F5] text-[#121212]'
       }`}
       style={{
         backgroundColor: config.theme.bgColor,
@@ -266,552 +275,511 @@ export function StorefrontView({
       }}
     >
       {/* =========================================================
-          BARRA SUPERIOR EXCLUSIVA MODO DEMO (SWICHER ENTRE NICHOS)
+          BARRA TÉCNICA SUPERIOR DE SISTEMA (SHOWCASE FIGMA)
           ========================================================= */}
       {isDemoMode && (
-        <nav className="bg-slate-950 text-white px-3 py-2 flex items-center justify-between text-xs sticky top-0 z-50 border-b border-slate-800 shadow-md">
-          <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none">
-            <span className="font-bold text-amber-400 uppercase tracking-wider text-[10px] shrink-0">
-              Qatu Demos:
+        <div className="bg-black text-white text-[11px] font-mono border-b border-stone-800 px-4 py-2 flex flex-wrap items-center justify-between gap-2 z-50 sticky top-0">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+            <span className="text-stone-400 font-bold uppercase tracking-wider">
+              DEMO V.01:
             </span>
-            <a
-              href="/demo/calzados"
-              className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 transition ${
-                config.rubro === 'calzado'
-                  ? 'bg-red-700 text-white font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:text-white'
-              }`}
-            >
-              👟 Calzados
-            </a>
-            <a
-              href="/demo/pasteleria"
-              className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 transition ${
-                config.rubro === 'pasteleria'
-                  ? 'bg-amber-700 text-white font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:text-white'
-              }`}
-            >
-              🍰 Pastelería
-            </a>
-            <a
-              href="/demo/polleria"
-              className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 transition ${
-                config.rubro === 'polleria'
-                  ? 'bg-orange-700 text-white font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:text-white'
-              }`}
-            >
-              🍗 Pollería
-            </a>
-            <a
-              href="/demo/gym"
-              className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 transition ${
-                config.rubro === 'gym'
-                  ? 'bg-emerald-700 text-white font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:text-white'
-              }`}
-            >
-              🏋️ Gimnasio
-            </a>
-            <a
-              href="/demo/belleza"
-              className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 transition ${
-                config.rubro === 'belleza'
-                  ? 'bg-rose-700 text-white font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:text-white'
-              }`}
-            >
-              💄 Belleza
-            </a>
-            <a
-              href="/demo/licoreria"
-              className={`px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 transition ${
-                config.rubro === 'licoreria'
-                  ? 'bg-sky-700 text-white font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:text-white'
-              }`}
-            >
-              🍻 Licorería
-            </a>
+            {[
+              { slug: 'calzados', label: 'CALZADO' },
+              { slug: 'pasteleria', label: 'PASTELERÍA' },
+              { slug: 'polleria', label: 'POLLERÍA' },
+              { slug: 'gym', label: 'GIMNASIO' },
+              { slug: 'belleza', label: 'BELLEZA' },
+              { slug: 'licoreria', label: 'LICORERÍA' },
+            ].map((d) => (
+              <a
+                key={d.slug}
+                href={`/demo/${d.slug}`}
+                className={`px-2.5 py-0.5 rounded text-[11px] font-mono uppercase tracking-wider transition ${
+                  config.slug === d.slug
+                    ? 'bg-stone-200 text-black font-bold'
+                    : 'text-stone-400 hover:text-white'
+                }`}
+              >
+                {d.label}
+              </a>
+            ))}
           </div>
 
-          <div className="flex items-center gap-2 shrink-0 ml-2">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setIsVendorModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold shadow-sm transition active:scale-95"
-              title="Configurar número para la demo en vivo"
+              className="px-2.5 py-1 rounded bg-stone-800 hover:bg-stone-700 text-stone-200 font-mono text-[10px] uppercase tracking-wider transition flex items-center gap-1.5"
             >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Probar con mi WhatsApp</span>
-              <span className="sm:hidden">WhatsApp</span>
-              {vendorWhatsapp && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
+              <Smartphone className="w-3 h-3 text-emerald-400" />
+              <span>PROBAR CON MI WHATSAPP</span>
+              {vendorWhatsapp && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
             </button>
             <a
-              href={`/demo/${config.slug.replace('calzados-lucas', 'calzados').replace('lasflores', 'pasteleria').replace('don-brasas', 'polleria')}/admin`}
-              className="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-[11px] font-semibold transition hidden md:inline-flex items-center gap-1"
+              href={`/demo/${config.slug}/admin`}
+              className="px-2.5 py-1 rounded bg-stone-900 border border-stone-800 hover:border-stone-700 text-stone-400 hover:text-white font-mono text-[10px] uppercase tracking-wider transition hidden md:inline-flex items-center gap-1"
             >
               <Settings2 className="w-3 h-3" />
-              <span>Panel Dueño</span>
+              <span>PANEL DUEÑO</span>
             </a>
           </div>
-        </nav>
+        </div>
       )}
 
       {/* =========================================================
-          PANEL 01 / TIENDA DESKTOP & MOBILE HEADER
+          01 / TIENDA DESKTOP & MOBILE (HEADER SEGÚN IMÁGENES)
           ========================================================= */}
       <header
         className={`border-b transition-colors ${
           isDarkMode
-            ? 'bg-[#0E121B] border-slate-800 text-white'
-            : 'bg-white border-stone-200 text-[#171717]'
+            ? 'bg-[#0E0D0B] border-stone-800/90'
+            : 'bg-[#FAF8F5] border-stone-200'
         }`}
       >
-        {/* Barra de Estado Operativo */}
+        {/* Barra de Estado con punto verde */}
         {config.statusBadge && (
           <div
-            className={`px-4 py-1.5 text-xs text-center border-b font-medium flex items-center justify-center gap-2 ${
+            className={`px-4 py-1.5 text-[11px] font-mono border-b flex items-center justify-center gap-2 ${
               isDarkMode
-                ? 'bg-slate-900/80 border-slate-800 text-emerald-400'
+                ? 'bg-stone-950/80 border-stone-900 text-emerald-400'
                 : 'bg-stone-100 border-stone-200 text-stone-700'
             }`}
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-bold">{config.statusBadge.text}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-bold tracking-wider uppercase">
+              {config.statusBadge.text}
+            </span>
             {config.statusBadge.subtext && (
               <span className="hidden sm:inline text-stone-500">
-                • {config.statusBadge.subtext}
+                — {config.statusBadge.subtext}
               </span>
             )}
           </div>
         )}
 
-        {/* Barra Principal de Navegación */}
+        {/* Barra de Navegación Principal */}
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div>
-              <span className="text-[10px] font-bold tracking-widest uppercase text-stone-400 block">
-                {config.subTagline || 'Catálogo Oficial • Huamanga'}
-              </span>
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight uppercase">
-                {config.businessName}
-              </h1>
-            </div>
+          {/* Logo del Rubro */}
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight uppercase font-display">
+              {config.businessName}
+            </h1>
           </div>
 
-          {/* Buscador Rápido y Carrito */}
+          {/* Menú de Navegación Desktop */}
+          <nav className="hidden lg:flex items-center gap-6 text-xs font-mono uppercase tracking-wider text-stone-400">
+            {config.categories.slice(0, 4).map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setSelectedCategory(c.id)}
+                className={`transition ${
+                  selectedCategory === c.id
+                    ? 'text-stone-900 dark:text-white font-bold underline underline-offset-4'
+                    : 'hover:text-stone-900 dark:hover:text-white'
+                }`}
+              >
+                {c.name}
+              </button>
+            ))}
+          </nav>
+
+          {/* Iconos de Utilidad y Carrito */}
           <div className="flex items-center gap-3">
-            <div className="relative hidden md:block w-64">
+            <div className="relative hidden md:block w-52">
               <input
                 type="text"
                 placeholder="Buscar modelo o plato..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full pl-9 pr-3 py-1.5 rounded-full text-xs border transition focus:outline-none focus:ring-2 ${
+                className={`w-full pl-8 pr-3 py-1.5 rounded text-xs border transition focus:outline-none ${
                   isDarkMode
-                    ? 'bg-slate-900 border-slate-700 text-white focus:ring-emerald-500'
-                    : 'bg-stone-50 border-stone-300 text-stone-900 focus:ring-red-500'
+                    ? 'bg-stone-900 border-stone-800 text-white focus:border-stone-600'
+                    : 'bg-white border-stone-300 text-stone-900 focus:border-stone-500'
                 }`}
               />
-              <Search className="w-4 h-4 text-stone-400 absolute left-3 top-2" />
+              <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-2.5" />
             </div>
 
-            {/* Botón Carrito Header */}
+            {/* Botón Carrito */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full font-bold text-xs shadow-sm transition active:scale-95"
-              style={{
-                backgroundColor: config.theme.primaryColor,
-                color: '#FFFFFF',
-              }}
+              className="relative p-2 rounded text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-900 transition"
+              title="Ver Pedido"
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Tu Pedido</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-white text-stone-900 text-[10px] font-black">
-                {cartCount}
-              </span>
+              <ShoppingBag className="w-5 h-5 stroke-[1.75]" />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-600 text-white font-mono text-[10px] font-bold flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
       </header>
 
       {/* =========================================================
-          HERO ASIMÉTRICO (ESTILO FIGMA AGENCY SHOWCASE)
+          HERO ASIMÉTRICO (FIGMA PANEL 01)
           ========================================================= */}
-      <section className="max-w-6xl mx-auto px-4 pt-6 pb-4">
-        <div
-          className={`rounded-3xl border overflow-hidden p-6 sm:p-10 transition-shadow ${
-            isDarkMode
-              ? 'bg-[#111622] border-slate-800'
-              : 'bg-white border-stone-200/90 shadow-sm'
-          }`}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Lado Izquierdo: Copy Editorial Asimétrico */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="flex items-center gap-2">
-                <span
-                  className="w-1.5 h-6 rounded-full"
-                  style={{ backgroundColor: config.theme.primaryColor }}
-                />
-                <span className="text-xs font-bold tracking-widest uppercase text-stone-400">
-                  {config.hero.badge || 'Huamanga, Ayacucho'}
+      <section className="max-w-6xl mx-auto px-4 py-6 sm:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-center">
+          {/* Columna Izquierda: Texto Asimétrico con Barra Vertical */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex items-start gap-3">
+              <span
+                className="w-1 self-stretch shrink-0 rounded"
+                style={{ backgroundColor: config.theme.primaryColor }}
+              />
+              <div>
+                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none font-display">
+                  {config.hero.title}
+                </h2>
+                <span className="text-xs font-mono font-bold tracking-widest uppercase text-stone-400 block mt-2">
+                  {config.subTagline}
                 </span>
               </div>
+            </div>
 
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase leading-none">
-                {config.hero.title}{' '}
-                <span
-                  className="block mt-1"
-                  style={{ color: config.theme.primaryColor }}
-                >
-                  {config.hero.highlightText}
-                </span>
-              </h2>
+            <p
+              className={`text-xs sm:text-sm max-w-lg leading-relaxed ${
+                isDarkMode ? 'text-stone-400' : 'text-stone-600'
+              }`}
+            >
+              {config.hero.subtitle}
+            </p>
 
-              <p
-                className={`text-sm sm:text-base max-w-lg leading-relaxed ${
-                  isDarkMode ? 'text-slate-300' : 'text-stone-600'
-                }`}
+            <div className="pt-2 flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById('catalogo-grid');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-xs font-mono font-bold uppercase tracking-wider underline underline-offset-4 hover:opacity-80 transition flex items-center gap-1.5"
               >
-                {config.hero.subtitle}
-              </p>
+                <span>{config.hero.ctaText}</span>
+              </button>
+              <span className="text-stone-300 dark:text-stone-700">|</span>
+              <span className="text-[11px] font-mono text-stone-400 truncate">
+                {config.pickupAddress || config.location}
+              </span>
+            </div>
+          </div>
 
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+          {/* Columna Derecha: Fotografía */}
+          <div className="lg:col-span-5">
+            <div className="relative aspect-[4/3] rounded-lg overflow-hidden border border-stone-200 dark:border-stone-800 shadow-md">
+              <img
+                src={config.hero.bannerUrl}
+                alt={config.businessName}
+                className="w-full h-full object-cover"
+              />
+              {config.hero.badge && (
+                <span className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded">
+                  {config.hero.badge}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          SECCIÓN CATÁLOGO + SIDEBAR FILTROS (DISEÑO FIGMA)
+          ========================================================= */}
+      <section id="catalogo-grid" className="max-w-6xl mx-auto px-4 py-4 pb-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* SIDEBAR DE FILTROS (ESCRITORIO) */}
+          <aside className="lg:col-span-3 space-y-6">
+            <div>
+              <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-stone-400 mb-3">
+                FILTRAR
+              </h3>
+
+              {/* Filtro por Categoría */}
+              <div className="space-y-1.5">
+                <span className="text-[11px] font-mono text-stone-400 uppercase block mb-1">
+                  CATEGORÍA
+                </span>
+                {config.categories.map((cat) => {
+                  const isSelected = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`w-full text-left text-xs font-mono uppercase tracking-wider py-1 px-2 rounded flex items-center gap-2 transition ${
+                        isSelected
+                          ? 'bg-stone-900 text-white dark:bg-white dark:text-black font-bold'
+                          : 'text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-900'
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                      <span className="truncate">{cat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Filtro por Talla (Para calzados) */}
+            {config.rubro === 'calzado' && (
+              <div className="pt-4 border-t border-stone-200 dark:border-stone-800">
+                <span className="text-[11px] font-mono text-stone-400 uppercase block mb-2">
+                  TALLA
+                </span>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {['38', '39', '40', '41'].map((t) => {
+                    const isSelected = selectedSizeFilter === t;
+                    return (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() =>
+                          setSelectedSizeFilter(isSelected ? '' : t)
+                        }
+                        className={`py-1.5 text-xs font-mono border rounded text-center transition ${
+                          isSelected
+                            ? 'bg-stone-900 text-white dark:bg-white dark:text-black border-stone-900'
+                            : 'border-stone-300 dark:border-stone-800 hover:border-stone-500'
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </aside>
+
+          {/* CUADRÍCULA DE PRODUCTOS */}
+          <main className="lg:col-span-9">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-stone-200 dark:border-stone-800 text-[11px] font-mono text-stone-400">
+              <span>{filteredProducts.length} MODELOS DISPONIBLES</span>
+              {selectedSizeFilter && (
                 <button
                   type="button"
-                  onClick={() => {
-                    const el = document.getElementById('catalogo-section');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-3 rounded-full text-xs font-black uppercase tracking-wider shadow-md transition active:scale-95 inline-flex items-center gap-2"
-                  style={{
-                    backgroundColor: config.theme.primaryColor,
-                    color: '#FFFFFF',
-                  }}
+                  onClick={() => setSelectedSizeFilter('')}
+                  className="hover:underline text-red-600"
                 >
-                  <span>{config.hero.ctaText}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  Quitar filtro talla [{selectedSizeFilter}]
                 </button>
-
-                <div className="flex items-center gap-2 text-xs text-stone-400 px-3 py-2">
-                  <MapPin className="w-4 h-4 text-red-500 shrink-0" />
-                  <span className="truncate max-w-xs">{config.pickupAddress || config.location}</span>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Lado Derecho: Fotografía Gastronómica o de Producto */}
-            <div className="lg:col-span-5">
-              <div className="relative aspect-[4/3] sm:aspect-[16/11] rounded-2xl overflow-hidden shadow-xl border border-black/10">
-                <img
-                  src={config.hero.bannerUrl}
-                  alt={config.businessName}
-                  className="w-full h-full object-cover transform hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
-                  <span className="bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-md font-semibold">
-                    100% Calidad Garantizada
-                  </span>
-                  <span className="flex items-center gap-1 font-bold text-amber-300">
-                    <Star className="w-3.5 h-3.5 fill-current" /> 4.9 (Google & WhatsApp)
-                  </span>
-                </div>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+              {filteredProducts.map((product) => {
+                const hasOffer = !!product.precio_oferta;
+                const displayPrice = product.precio_oferta || product.precio;
+
+                return (
+                  <div
+                    key={product.id}
+                    className={`rounded-lg border overflow-hidden flex flex-col justify-between transition ${
+                      isDarkMode
+                        ? 'bg-[#141310] border-stone-800 hover:border-stone-700'
+                        : 'bg-white border-stone-200 hover:border-stone-300'
+                    }`}
+                  >
+                    <div>
+                      {/* Imagen con Badges Planos (Sin emojis) */}
+                      <div className="relative aspect-[4/3] bg-stone-100 dark:bg-stone-900 overflow-hidden">
+                        <img
+                          src={product.imagen_url}
+                          alt={product.nombre}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        {product.badge && (
+                          <span
+                            className="absolute top-2.5 left-2.5 px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-white"
+                            style={{ backgroundColor: config.theme.primaryColor }}
+                          >
+                            {product.badge}
+                          </span>
+                        )}
+                        {product.codigo && (
+                          <span className="absolute top-2.5 right-2.5 px-1.5 py-0.5 text-[9px] font-mono bg-black/80 text-white">
+                            {product.codigo}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Detalles del Producto */}
+                      <div className="p-4 space-y-2">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <h4 className="font-black text-sm uppercase tracking-tight font-display">
+                            {product.nombre}
+                          </h4>
+                          <span className="text-sm font-black font-mono shrink-0">
+                            {config.currency} {displayPrice.toFixed(2)}
+                          </span>
+                        </div>
+
+                        {product.descripcion && (
+                          <p
+                            className={`text-[11px] line-clamp-2 leading-relaxed ${
+                              isDarkMode ? 'text-stone-400' : 'text-stone-600'
+                            }`}
+                          >
+                            {product.descripcion}
+                          </p>
+                        )}
+
+                        {/* Estado Disponible */}
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span>DISPONIBLE</span>
+                        </div>
+
+                        {/* Specs técnicas si existen (Gym) */}
+                        {product.specs && (
+                          <div className="pt-2 grid grid-cols-3 gap-1 text-[10px] font-mono border-t border-stone-200 dark:border-stone-800">
+                            {Object.entries(product.specs).map(([k, v]) => (
+                              <div key={k} className="text-center p-1 bg-stone-100 dark:bg-stone-900 rounded">
+                                <span className="text-stone-400 block text-[9px]">{k}</span>
+                                <span className="font-bold truncate block">{v}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Tallas / Variantes en botones circulares/cuadrados */}
+                        {product.variantes && product.variantes.length > 0 && (
+                          <div className="pt-2 flex flex-wrap gap-1.5 items-center">
+                            {product.variantes.map((v) => (
+                              <button
+                                key={v}
+                                type="button"
+                                onClick={() => handleOpenProductModal(product, v)}
+                                className={`px-2 py-0.5 rounded text-[10px] font-mono border transition ${
+                                  isDarkMode
+                                    ? 'border-stone-800 hover:border-stone-600 text-stone-300'
+                                    : 'border-stone-300 hover:border-stone-600 text-stone-700'
+                                }`}
+                              >
+                                {v}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Botón de Acción Rectangular */}
+                    <div className="p-4 pt-0">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenProductModal(product)}
+                        className="w-full py-2.5 rounded text-[11px] font-mono font-bold uppercase tracking-wider text-white transition active:scale-95 flex items-center justify-center gap-2"
+                        style={{ backgroundColor: config.theme.primaryColor }}
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>AGREGAR AL CARRITO</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div>
+          </main>
         </div>
       </section>
 
       {/* =========================================================
-          FILTROS POR CATEGORÍA Y BUSCADOR MÓVIL
-          ========================================================= */}
-      <section id="catalogo-section" className="max-w-6xl mx-auto px-4 py-4">
-        {/* Buscador móvil */}
-        <div className="md:hidden mb-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Buscar en el catálogo..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full pl-9 pr-3 py-2 rounded-2xl text-xs border ${
-                isDarkMode
-                  ? 'bg-slate-900 border-slate-700 text-white'
-                  : 'bg-white border-stone-300 text-stone-900'
-              }`}
-            />
-            <Search className="w-4 h-4 text-stone-400 absolute left-3 top-2.5" />
-          </div>
-        </div>
-
-        {/* Barra de Tabs / Pills Horizontales */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {config.categories.map((cat) => {
-            const isActive = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition active:scale-95 flex items-center gap-1.5 ${
-                  isActive
-                    ? 'shadow-sm text-white'
-                    : isDarkMode
-                    ? 'bg-slate-900 text-slate-300 hover:bg-slate-800'
-                    : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
-                }`}
-                style={{
-                  backgroundColor: isActive ? config.theme.primaryColor : undefined,
-                }}
-              >
-                {cat.icon && <span>{cat.icon}</span>}
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* =========================================================
-          CUADRÍCULA DE PRODUCTOS (GRIDS 2 A 4 COLUMNAS)
-          ========================================================= */}
-      <main className="max-w-6xl mx-auto px-4 py-4 pb-32">
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-xs uppercase font-bold tracking-wider text-stone-400">
-            Mostrando {filteredProducts.length} productos disponibles
-          </p>
-        </div>
-
-        {filteredProducts.length === 0 ? (
-          <div
-            className={`p-12 text-center rounded-3xl border ${
-              isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-stone-200'
-            }`}
-          >
-            <p className="text-stone-400 text-sm">
-              No se encontraron productos para &quot;{searchQuery}&quot;.
-            </p>
-            <button
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('cat-all');
-              }}
-              className="mt-3 text-xs font-bold text-red-600 hover:underline"
-            >
-              Ver todos los productos
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => {
-              const hasOffer = !!product.precio_oferta;
-              const displayPrice = product.precio_oferta || product.precio;
-
-              return (
-                <div
-                  key={product.id}
-                  className={`rounded-3xl border overflow-hidden flex flex-col justify-between transition-all duration-200 hover:shadow-lg ${
-                    isDarkMode
-                      ? 'bg-[#111622] border-slate-800/90'
-                      : 'bg-white border-stone-200'
-                  }`}
-                >
-                  <div>
-                    {/* Imagen con Badges */}
-                    <div className="relative aspect-[4/3] bg-stone-100 overflow-hidden">
-                      <img
-                        src={product.imagen_url}
-                        alt={product.nombre}
-                        className="w-full h-full object-cover transform hover:scale-105 transition duration-500"
-                        loading="lazy"
-                      />
-                      {product.badge && (
-                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-600 text-white shadow-sm">
-                          {product.badge}
-                        </span>
-                      )}
-                      {product.codigo && (
-                        <span className="absolute top-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-black/60 text-white backdrop-blur-sm">
-                          {product.codigo}
-                        </span>
-                      )}
-                      {product.rating && (
-                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur-md px-2 py-0.5 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-sm">
-                          <Star className="w-3 h-3 text-amber-500 fill-current" />
-                          <span>{product.rating.score.toFixed(1)}</span>
-                          <span className="text-[10px] text-stone-400">
-                            ({product.rating.reviewsCount})
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Información del Producto */}
-                    <div className="p-5">
-                      <h3 className="font-bold text-base sm:text-lg leading-snug">
-                        {product.nombre}
-                      </h3>
-                      {product.descripcion && (
-                        <p
-                          className={`text-xs mt-1.5 line-clamp-2 leading-relaxed ${
-                            isDarkMode ? 'text-slate-400' : 'text-stone-500'
-                          }`}
-                        >
-                          {product.descripcion}
-                        </p>
-                      )}
-
-                      {/* Specs técnicos (si tiene, como en Gym) */}
-                      {product.specs && (
-                        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 grid grid-cols-3 gap-1 text-[10px]">
-                          {Object.entries(product.specs).map(([key, val]) => (
-                            <div key={key} className="bg-slate-100 dark:bg-slate-800/60 p-1 rounded text-center">
-                              <span className="text-stone-400 block">{key}</span>
-                              <span className="font-bold truncate">{val}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Swatches de acabado/color si tiene */}
-                      {product.acabados && product.acabados.length > 0 && (
-                        <div className="mt-3 flex items-center gap-1.5">
-                          <span className="text-[10px] font-bold text-stone-400 uppercase mr-1">
-                            Colores:
-                          </span>
-                          {product.acabados.map((acab) => (
-                            <span
-                              key={acab.name}
-                              title={acab.name}
-                              className="w-4 h-4 rounded-full border border-white shadow-sm inline-block"
-                              style={{ backgroundColor: acab.colorHex }}
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Chips de variantes / tallas en tarjeta */}
-                      {product.variantes && product.variantes.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-1">
-                          {product.variantes.slice(0, 4).map((v) => (
-                            <span
-                              key={v}
-                              className={`px-2 py-0.5 rounded text-[10px] font-mono border ${
-                                isDarkMode
-                                  ? 'bg-slate-800 border-slate-700 text-slate-300'
-                                  : 'bg-stone-50 border-stone-200 text-stone-600'
-                              }`}
-                            >
-                              {v}
-                            </span>
-                          ))}
-                          {product.variantes.length > 4 && (
-                            <span className="text-[10px] text-stone-400 self-center">
-                              +{product.variantes.length - 4} más
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Precios y Botón de Acción */}
-                  <div className="p-5 pt-0">
-                    <div className="flex items-baseline gap-2 mb-3">
-                      <span className="text-xl sm:text-2xl font-black">
-                        {config.currency} {displayPrice.toFixed(2)}
-                      </span>
-                      {hasOffer && (
-                        <span className="text-xs text-stone-400 line-through">
-                          {config.currency} {product.precio.toFixed(2)}
-                        </span>
-                      )}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleOpenProductModal(product)}
-                      className="w-full py-2.5 rounded-2xl text-xs font-bold uppercase tracking-wider shadow-sm transition active:scale-95 flex items-center justify-center gap-2"
-                      style={{
-                        backgroundColor: config.theme.primaryColor,
-                        color: '#FFFFFF',
-                      }}
-                    >
-                      <Plus className="w-4 h-4" />
-                      <span>Personalizar & Pedir</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </main>
-
-      {/* =========================================================
-          PANEL 02 / MODAL DE PERSONALIZACIÓN DE PRODUCTO
+          02 / PRODUCT DETAIL MODAL (FIGMA PANEL 02)
           ========================================================= */}
       {activeModalProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div
-            className={`w-full max-w-lg rounded-3xl border overflow-hidden shadow-2xl flex flex-col max-h-[90vh] ${
-              isDarkMode ? 'bg-[#111622] border-slate-800 text-white' : 'bg-white border-stone-200 text-[#171717]'
+            className={`w-full max-w-md rounded-lg border overflow-hidden flex flex-col max-h-[90vh] shadow-2xl ${
+              isDarkMode
+                ? 'bg-[#141310] border-stone-800 text-white'
+                : 'bg-white border-stone-200 text-[#121212]'
             }`}
           >
-            {/* Cabecera del Modal */}
-            <div className="px-6 py-4 border-b border-stone-200 dark:border-slate-800 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-mono uppercase text-stone-400 block">
-                  02 / Personalización de Producto
-                </span>
-                <h3 className="font-bold text-base leading-tight">
-                  {activeModalProduct.nombre}
-                </h3>
-              </div>
+            {/* Header del Modal */}
+            <div className="px-5 py-3 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between text-xs font-mono">
+              <span className="text-stone-400 uppercase tracking-wider font-bold">
+                02 / PRODUCT DETAIL
+              </span>
               <button
                 type="button"
                 onClick={() => setActiveModalProduct(null)}
-                className="w-8 h-8 rounded-full flex items-center justify-center bg-stone-100 dark:bg-slate-800 text-stone-500 hover:text-stone-900 transition"
+                className="text-stone-400 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Cuerpo del Modal con Scroll */}
-            <div className="p-6 overflow-y-auto space-y-5">
-              {/* Foto pequeña con precio */}
-              <div className="flex gap-4 items-center bg-stone-50 dark:bg-slate-900/60 p-3 rounded-2xl">
+            {/* Cuerpo del Modal */}
+            <div className="p-5 overflow-y-auto space-y-4">
+              <div className="aspect-[4/3] rounded overflow-hidden border border-stone-200 dark:border-stone-800">
                 <img
                   src={activeModalProduct.imagen_url}
                   alt={activeModalProduct.nombre}
-                  className="w-20 h-20 object-cover rounded-xl"
+                  className="w-full h-full object-cover"
                 />
-                <div>
-                  <span className="text-xs text-stone-400 block font-mono">
-                    Código: {activeModalProduct.codigo || activeModalProduct.id}
-                  </span>
-                  <p className="font-black text-xl text-emerald-600 dark:text-emerald-400">
-                    {config.currency}{' '}
-                    {(activeModalProduct.precio_oferta || activeModalProduct.precio).toFixed(2)}
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    Stock Disponible para despacho hoy
-                  </span>
-                </div>
               </div>
 
-              {/* 1. Selector de Tallas / Variantes */}
+              <div>
+                <div className="flex items-baseline justify-between gap-2">
+                  <h3 className="text-lg font-black uppercase font-display">
+                    {activeModalProduct.nombre}
+                  </h3>
+                  <span className="text-base font-black font-mono">
+                    {config.currency}{' '}
+                    {(activeModalProduct.precio_oferta || activeModalProduct.precio).toFixed(2)}
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-stone-400 uppercase">
+                  {config.rubro.toUpperCase()} • {activeModalProduct.codigo || 'LFH-01'}
+                </span>
+              </div>
+
+              {/* Acabado / Color (Calzado / Belleza) */}
+              {activeModalProduct.acabados && activeModalProduct.acabados.length > 0 && (
+                <div className="space-y-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                  <span className="text-[11px] font-mono text-stone-400 uppercase block">
+                    ACABADO
+                  </span>
+                  <div className="flex items-center gap-3">
+                    {activeModalProduct.acabados.map((acab) => {
+                      const isSelected = modalAcabado === acab.name;
+                      return (
+                        <button
+                          key={acab.name}
+                          type="button"
+                          onClick={() => setModalAcabado(acab.name)}
+                          className="flex flex-col items-center gap-1 group"
+                        >
+                          <span
+                            className={`w-6 h-6 rounded-full border-2 transition ${
+                              isSelected
+                                ? 'border-red-600 scale-110'
+                                : 'border-stone-400 dark:border-stone-700'
+                            }`}
+                            style={{ backgroundColor: acab.colorHex }}
+                          />
+                          <span className="text-[10px] font-mono text-stone-400 group-hover:text-stone-200">
+                            {acab.name}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Selector de Tallas */}
               {activeModalProduct.variantes && activeModalProduct.variantes.length > 0 && (
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                    Selecciona {config.features.variantLabel}:
-                  </label>
+                <div className="space-y-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-stone-400">
+                    <span className="uppercase">{config.features.variantLabel.toUpperCase()}</span>
+                    <span className="hover:underline cursor-pointer">GUÍA DE TALLAS ↗</span>
+                  </div>
                   <div className="flex flex-wrap gap-2">
                     {activeModalProduct.variantes.map((v) => {
                       const isSelected = modalVariant === v;
@@ -820,10 +788,10 @@ export function StorefrontView({
                           key={v}
                           type="button"
                           onClick={() => setModalVariant(v)}
-                          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+                          className={`w-9 h-9 rounded-full border text-xs font-mono font-bold flex items-center justify-center transition ${
                             isSelected
-                              ? 'bg-stone-900 text-white dark:bg-white dark:text-black ring-2 ring-red-500'
-                              : 'bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200'
+                              ? 'border-red-600 bg-red-600 text-white'
+                              : 'border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300'
                           }`}
                         >
                           {v}
@@ -834,95 +802,55 @@ export function StorefrontView({
                 </div>
               )}
 
-              {/* 2. Selector de Acabados / Color (Para Calzados / Belleza) */}
-              {activeModalProduct.acabados && activeModalProduct.acabados.length > 0 && (
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                    Elige el Acabado / Color:
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {activeModalProduct.acabados.map((acab) => {
-                      const isSelected = modalAcabado === acab.name;
-                      return (
+              {/* Guarnición y Salsas (Pollería) */}
+              {config.features.customizationType === 'rotisserie' && (
+                <div className="space-y-3 pt-2 border-t border-stone-200 dark:border-stone-800 font-mono text-xs">
+                  <div>
+                    <span className="text-[11px] text-stone-400 uppercase block mb-1.5">
+                      ELIGE TU GUARNICIÓN
+                    </span>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Papas nativas', 'Papas tradicionales'].map((g) => (
                         <button
-                          key={acab.name}
+                          key={g}
                           type="button"
-                          onClick={() => setModalAcabado(acab.name)}
-                          className={`p-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1.5 transition ${
-                            isSelected
-                              ? 'border-red-600 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300'
-                              : 'border-stone-200 dark:border-slate-800'
+                          onClick={() => setModalGuarnicion(g)}
+                          className={`p-2 border rounded text-left transition ${
+                            modalGuarnicion === g
+                              ? 'border-amber-500 bg-amber-950/20 text-amber-300 font-bold'
+                              : 'border-stone-700 text-stone-400'
                           }`}
                         >
-                          <span
-                            className="w-5 h-5 rounded-full border border-black/20"
-                            style={{ backgroundColor: acab.colorHex }}
-                          />
-                          <span className="text-[11px] truncate">{acab.name}</span>
+                          {g}
                         </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* 3. Selector de Guarnición & Salsas (Para Pollería Don Brasas) */}
-              {config.features.customizationType === 'rotisserie' && (
-                <div className="space-y-4 pt-2 border-t border-stone-200 dark:border-slate-800">
-                  <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                      Elige tu guarnición:
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {['Papas Nativas Crocantes', 'Papas Tradicionales'].map((g) => {
-                        const isSelected = modalGuarnicion === g;
-                        return (
-                          <button
-                            key={g}
-                            type="button"
-                            onClick={() => setModalGuarnicion(g)}
-                            className={`p-3 rounded-2xl border text-xs font-bold text-left transition ${
-                              isSelected
-                                ? 'border-amber-500 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200'
-                                : 'border-stone-200 dark:border-slate-800'
-                            }`}
-                          >
-                            <span className="block font-black">{g}</span>
-                            <span className="text-[10px] text-stone-400 block mt-0.5">
-                              Recién fritas al momento
-                            </span>
-                          </button>
-                        );
-                      })}
+                      ))}
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                      Elige tus salsas artesanales (incluidas):
-                    </label>
+                    <span className="text-[11px] text-stone-400 uppercase block mb-1.5">
+                      ELIGE TUS SALSAS
+                    </span>
                     <div className="grid grid-cols-2 gap-2">
-                      {['Ají Pollero', 'Mayonesa de la casa', 'Chimichurri', 'Ocopa'].map((salsa) => {
-                        const isChecked = modalSalsas.includes(salsa);
+                      {['Ají pollero', 'Mayonesa', 'Chimichurri', 'Ocopa'].map((s) => {
+                        const isChecked = modalSalsas.includes(s);
                         return (
                           <button
-                            key={salsa}
+                            key={s}
                             type="button"
-                            onClick={() => toggleSalsa(salsa)}
-                            className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition ${
+                            onClick={() => toggleSalsa(s)}
+                            className={`p-2 border rounded flex items-center justify-between text-left transition ${
                               isChecked
-                                ? 'border-red-600 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 font-bold'
-                                : 'border-stone-200 dark:border-slate-800 text-stone-600 dark:text-stone-400'
+                                ? 'border-amber-500 text-amber-300 font-bold'
+                                : 'border-stone-800 text-stone-400'
                             }`}
                           >
-                            <span>{salsa}</span>
-                            <span
-                              className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
-                                isChecked ? 'bg-red-600 text-white' : 'border border-stone-300'
-                              }`}
-                            >
-                              {isChecked && <Check className="w-3 h-3" />}
-                            </span>
+                            <span>{s}</span>
+                            {isChecked ? (
+                              <CheckSquare className="w-3.5 h-3.5" />
+                            ) : (
+                              <Square className="w-3.5 h-3.5" />
+                            )}
                           </button>
                         );
                       })}
@@ -931,43 +859,39 @@ export function StorefrontView({
                 </div>
               )}
 
-              {/* 4. Dedicatoria y Velas (Para Pastelería Las Flores) */}
+              {/* Dedicatoria y Velas (Pastelería) */}
               {config.features.customizationType === 'cake' && (
-                <div className="space-y-4 pt-2 border-t border-stone-200 dark:border-slate-800">
+                <div className="space-y-3 pt-2 border-t border-stone-200 dark:border-stone-800 font-mono text-xs">
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-1">
-                      Dedicatoria en chocolate (Gratis):
-                    </label>
+                    <span className="text-[11px] text-stone-400 uppercase block mb-1">
+                      DEDICATORIA EN CHOCOLATE
+                    </span>
                     <input
                       type="text"
                       maxLength={40}
-                      placeholder="Ej: Feliz Cumpleaños Mamá (máx 40 letras)"
+                      placeholder="Escribe tu dedicatoria en chocolate... 0/40"
                       value={modalDedicatoria}
                       onChange={(e) => setModalDedicatoria(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl text-xs border border-stone-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-transparent text-xs focus:outline-none"
                     />
-                    <span className="text-[10px] text-stone-400 block text-right mt-1">
-                      {modalDedicatoria.length}/40 caracteres
-                    </span>
                   </div>
-
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                      Velas artesanales:
-                    </label>
+                    <span className="text-[11px] text-stone-400 uppercase block mb-1.5">
+                      VELAS ARTESANALES
+                    </span>
                     <div className="grid grid-cols-3 gap-2">
-                      {['Velas clásicas', 'Velas artesanales', 'Sin velas'].map((vela) => (
+                      {['Velas clásicas', 'Velas artesanales', 'Sin velas'].map((v) => (
                         <button
-                          key={vela}
+                          key={v}
                           type="button"
-                          onClick={() => setModalVelas(vela)}
-                          className={`p-2 rounded-xl border text-xs font-bold text-center transition ${
-                            modalVelas === vela
-                              ? 'border-amber-600 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200'
-                              : 'border-stone-200 dark:border-slate-800'
+                          onClick={() => setModalVelas(v)}
+                          className={`p-1.5 border rounded text-center text-[10px] transition ${
+                            modalVelas === v
+                              ? 'border-amber-700 bg-amber-900/20 text-amber-900 dark:text-amber-300 font-bold'
+                              : 'border-stone-300 dark:border-stone-700 text-stone-500'
                           }`}
                         >
-                          {vela}
+                          {v}
                         </button>
                       ))}
                     </div>
@@ -975,84 +899,42 @@ export function StorefrontView({
                 </div>
               )}
 
-              {/* 5. Registro Rápido DNI & Turno (Para Gym Trankilandia) */}
+              {/* DNI y Turno (Gym) */}
               {config.features.customizationType === 'gym' && (
-                <div className="space-y-4 pt-2 border-t border-stone-200 dark:border-slate-800">
+                <div className="space-y-3 pt-2 border-t border-stone-200 dark:border-stone-800 font-mono text-xs">
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-1">
-                      DNI del Socio (para matrícula):
-                    </label>
+                    <span className="text-[11px] text-stone-400 uppercase block mb-1">
+                      DNI DEL SOCIO
+                    </span>
                     <input
                       type="text"
                       maxLength={8}
                       placeholder="Ej: 73456789"
                       value={modalDni}
                       onChange={(e) => setModalDni(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="w-full px-3 py-2 rounded-xl text-xs font-mono border border-stone-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="w-full px-3 py-1.5 rounded border border-stone-700 bg-transparent text-xs focus:outline-none"
                     />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                      Turno preferido:
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {['Mañana (06:00-12:00)', 'Tarde (12:00-17:00)', 'Noche (17:00-22:00)'].map((t) => (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={() => setModalTurno(t)}
-                          className={`p-2 rounded-xl border text-[11px] font-bold text-center transition ${
-                            modalTurno === t
-                              ? 'border-emerald-500 bg-emerald-950/30 text-emerald-400'
-                              : 'border-slate-800'
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Contador de Cantidad */}
-              <div className="flex items-center justify-between pt-2 border-t border-stone-200 dark:border-slate-800">
-                <span className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                  Cantidad:
-                </span>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setModalQuantity((q) => Math.max(1, q - 1))}
-                    className="w-8 h-8 rounded-full border border-stone-300 dark:border-slate-700 flex items-center justify-center text-sm font-bold active:scale-95"
-                  >
-                    -
-                  </button>
-                  <span className="text-sm font-bold font-mono w-6 text-center">
-                    {modalQuantity}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setModalQuantity((q) => q + 1)}
-                    className="w-8 h-8 rounded-full border border-stone-300 dark:border-slate-700 flex items-center justify-center text-sm font-bold active:scale-95"
-                  >
-                    +
-                  </button>
-                </div>
+              {/* Barra de Stock Disponible */}
+              <div className="p-2.5 rounded bg-emerald-950/20 border border-emerald-900/40 text-emerald-500 text-xs font-mono flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>STOCK DISPONIBLE</span>
               </div>
             </div>
 
-            {/* Footer del Modal */}
-            <div className="p-4 border-t border-stone-200 dark:border-slate-800 flex gap-3">
+            {/* Footer Modal */}
+            <div className="p-4 border-t border-stone-200 dark:border-stone-800">
               <button
                 type="button"
                 onClick={handleConfirmAddToCart}
-                className="w-full py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-white shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-3 rounded text-xs font-mono font-bold uppercase tracking-wider text-white transition active:scale-95 flex items-center justify-center gap-2"
                 style={{ backgroundColor: config.theme.primaryColor }}
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>Guardar & Añadir al Carrito</span>
+                <span>AGREGAR AL CARRITO</span>
               </button>
             </div>
           </div>
@@ -1060,93 +942,80 @@ export function StorefrontView({
       )}
 
       {/* =========================================================
-          PANEL 03 / CHECKOUT DRAWER & PEDIDO WHATSAPP
+          03 / CHECKOUT DRAWER (FIGMA PANEL 03)
           ========================================================= */}
       {isCartOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div
-            className={`w-full max-w-md h-full flex flex-col justify-between shadow-2xl animate-slideLeft ${
-              isDarkMode ? 'bg-[#0E121B] border-l border-slate-800 text-white' : 'bg-white text-[#171717]'
-            }`}
-          >
-            {/* Header del Carrito */}
-            <div className="px-6 py-4 border-b border-stone-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm">
+          <div className="w-full max-w-sm h-full flex flex-col justify-between bg-[#121212] text-white shadow-2xl font-mono text-xs">
+            {/* Header Drawer */}
+            <div className="px-5 py-4 border-b border-stone-800 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-mono uppercase text-stone-400 block">
-                  03 / Checkout Drawer
+                <span className="text-[10px] text-stone-400 uppercase tracking-widest block font-bold">
+                  03 / CHECKOUT DRAWER
                 </span>
-                <h3 className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
-                  <span>Tu Pedido</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-600 text-white font-mono">
-                    {cartCount} items
-                  </span>
+                <h3 className="text-base font-black uppercase tracking-tight">
+                  TU PEDIDO ({cartCount.toString().padStart(2, '0')} ARTÍCULOS)
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsCartOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center bg-stone-100 dark:bg-slate-800 text-stone-500 hover:text-stone-900 transition"
+                className="text-stone-400 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Lista de Items con Scroll */}
-            <div className="p-6 overflow-y-auto flex-1 space-y-4">
+            {/* Lista de Items */}
+            <div className="p-5 overflow-y-auto flex-1 space-y-4">
               {cart.length === 0 ? (
-                <div className="py-16 text-center text-stone-400 space-y-3">
-                  <ShoppingBag className="w-12 h-12 mx-auto stroke-1 text-stone-300" />
-                  <p className="text-sm font-semibold">Tu carrito está vacío.</p>
-                  <p className="text-xs">Elige tus productos del catálogo para armar tu pedido.</p>
+                <div className="py-20 text-center text-stone-500 space-y-2">
+                  <ShoppingBag className="w-10 h-10 mx-auto stroke-1" />
+                  <p className="uppercase">Tu carrito está vacío</p>
                 </div>
               ) : (
                 cart.map((item) => (
                   <div
                     key={item.id}
-                    className="p-3 rounded-2xl border border-stone-200 dark:border-slate-800 flex gap-3 items-center justify-between bg-stone-50/50 dark:bg-slate-900/50"
+                    className="p-3 rounded border border-stone-800 flex gap-3 items-center justify-between bg-stone-900/60"
                   >
                     <img
                       src={item.imagen_url}
                       alt={item.nombre}
-                      className="w-14 h-14 object-cover rounded-xl shrink-0"
+                      className="w-12 h-12 object-cover rounded shrink-0"
                     />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-bold truncate">{item.nombre}</h4>
+                    <div className="flex-1 min-w-0 space-y-0.5">
+                      <h4 className="font-bold truncate uppercase">{item.nombre}</h4>
                       {item.variante && (
-                        <span className="text-[10px] text-stone-400 block font-mono">
-                          {item.variante} {item.acabado ? `• ${item.acabado}` : ''}
+                        <span className="text-[10px] text-stone-400 block">
+                          {item.acabado ? `${item.acabado} | ` : ''}Talla {item.variante}
                         </span>
                       )}
                       {item.detallesPersonalizados?.guarnicion && (
-                        <span className="text-[10px] text-amber-600 dark:text-amber-400 block truncate">
-                          ↳ {item.detallesPersonalizados.guarnicion}
+                        <span className="text-[10px] text-amber-400 block truncate">
+                          - {item.detallesPersonalizados.guarnicion}
                         </span>
                       )}
-                      {item.detallesPersonalizados?.dedicatoria && (
-                        <span className="text-[10px] text-purple-600 dark:text-purple-400 block truncate">
-                          ↳ Dedicatoria: &quot;{item.detallesPersonalizados.dedicatoria}&quot;
-                        </span>
-                      )}
-                      <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                      <span className="font-bold text-stone-200 block">
                         {config.currency} {(item.precio * item.cantidad).toFixed(2)}
-                      </p>
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.id, -1)}
-                        className="w-6 h-6 rounded-full border border-stone-300 dark:border-slate-700 flex items-center justify-center text-xs active:scale-95"
+                        className="w-5 h-5 rounded border border-stone-700 flex items-center justify-center text-[10px]"
                       >
                         -
                       </button>
-                      <span className="text-xs font-bold font-mono w-4 text-center">
+                      <span className="w-4 text-center font-bold">
                         {item.cantidad}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.id, 1)}
-                        className="w-6 h-6 rounded-full border border-stone-300 dark:border-slate-700 flex items-center justify-center text-xs active:scale-95"
+                        className="w-5 h-5 rounded border border-stone-700 flex items-center justify-center text-[10px]"
                       >
                         +
                       </button>
@@ -1155,149 +1024,153 @@ export function StorefrontView({
                 ))
               )}
 
-              {/* Formulario de Checkout */}
+              {/* Formulario Checkout */}
               {cart.length > 0 && (
-                <div className="pt-4 border-t border-stone-200 dark:border-slate-800 space-y-4">
-                  {/* Nombre del Cliente */}
+                <div className="pt-4 border-t border-stone-800 space-y-4">
+                  {/* Subtotal */}
+                  <div className="flex items-center justify-between text-stone-400 pb-2 border-b border-stone-800">
+                    <span>SUBTOTAL</span>
+                    <span className="font-bold text-white text-sm">
+                      {config.currency} {cartTotal.toFixed(2)}
+                    </span>
+                  </div>
+
+                  {/* Nombre */}
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-1">
-                      Tu Nombre Completo: *
-                    </label>
+                    <span className="text-[10px] text-stone-400 uppercase block mb-1">
+                      NOMBRE DEL CLIENTE:
+                    </span>
                     <input
                       type="text"
                       placeholder="Ej: Carlos Mendoza"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl text-xs border border-stone-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="w-full px-3 py-1.5 rounded border border-stone-800 bg-stone-900 text-white text-xs focus:outline-none focus:border-stone-600"
                     />
                   </div>
 
                   {/* Método de Entrega */}
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                      Método de Entrega:
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <span className="text-[10px] text-stone-400 uppercase block mb-1.5">
+                      MÉTODO DE ENTREGA
+                    </span>
+                    <div className="space-y-1.5">
                       <button
                         type="button"
                         onClick={() => setDeliveryType('tienda')}
-                        className={`p-2.5 rounded-xl border text-xs font-bold text-left transition ${
+                        className={`w-full p-2.5 rounded border text-left flex items-start gap-2 transition ${
                           deliveryType === 'tienda'
-                            ? 'border-red-600 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300'
-                            : 'border-stone-200 dark:border-slate-800'
+                            ? 'border-red-600 bg-red-950/20 text-white font-bold'
+                            : 'border-stone-800 text-stone-400'
                         }`}
                       >
-                        <span className="block">Recojo en Tienda</span>
-                        <span className="text-[10px] text-stone-400 font-normal truncate block">
-                          {config.pickupAddress || config.location}
+                        <span className="w-3 h-3 rounded-full border border-current mt-0.5 flex items-center justify-center">
+                          {deliveryType === 'tienda' && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                          )}
                         </span>
+                        <div>
+                          <span className="block text-[11px]">RECOJO EN TIENDA</span>
+                          <span className="text-[9px] text-stone-500 font-normal">
+                            {config.pickupAddress || config.location}
+                          </span>
+                        </div>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setDeliveryType('delivery')}
-                        className={`p-2.5 rounded-xl border text-xs font-bold text-left transition ${
+                        className={`w-full p-2.5 rounded border text-left flex items-start gap-2 transition ${
                           deliveryType === 'delivery'
-                            ? 'border-red-600 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300'
-                            : 'border-stone-200 dark:border-slate-800'
+                            ? 'border-red-600 bg-red-950/20 text-white font-bold'
+                            : 'border-stone-800 text-stone-400'
                         }`}
                       >
-                        <span className="block">Delivery a Casa</span>
-                        <span className="text-[10px] text-stone-400 font-normal block">
-                          Huamanga y distritos
+                        <span className="w-3 h-3 rounded-full border border-current mt-0.5 flex items-center justify-center">
+                          {deliveryType === 'delivery' && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                          )}
                         </span>
+                        <div>
+                          <span className="block text-[11px]">DELIVERY A DOMICILIO</span>
+                          <span className="text-[9px] text-stone-500 font-normal">
+                            Envío en Huamanga y distritos
+                          </span>
+                        </div>
                       </button>
                     </div>
 
                     {deliveryType === 'delivery' && (
-                      <div className="mt-2">
-                        <input
-                          type="text"
-                          placeholder="Escribe tu dirección o referencia en Huamanga..."
-                          value={customerAddress}
-                          onChange={(e) => setCustomerAddress(e.target.value)}
-                          className="w-full px-3 py-2 rounded-xl text-xs border border-stone-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-red-500"
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        placeholder="Dirección o referencia exacta..."
+                        value={customerAddress}
+                        onChange={(e) => setCustomerAddress(e.target.value)}
+                        className="w-full mt-2 px-3 py-1.5 rounded border border-stone-800 bg-stone-900 text-white text-xs focus:outline-none"
+                      />
                     )}
                   </div>
 
                   {/* Método de Pago */}
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                      Método de Pago:
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {config.paymentMethods.map((method) => {
-                        const isSelected = paymentMethod === method;
-                        const isYape = method.toLowerCase().includes('yape');
-                        const isPlin = method.toLowerCase().includes('plin');
-
+                    <span className="text-[10px] text-stone-400 uppercase block mb-1.5">
+                      MÉTODO DE PAGO
+                    </span>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {config.paymentMethods.map((m) => {
+                        const isSelected = paymentMethod === m;
                         return (
                           <button
-                            key={method}
+                            key={m}
                             type="button"
-                            onClick={() => setPaymentMethod(method)}
-                            className={`p-2 rounded-xl border text-[11px] font-bold text-center transition ${
+                            onClick={() => setPaymentMethod(m)}
+                            className={`p-2 rounded border text-[10px] font-bold text-center uppercase transition ${
                               isSelected
-                                ? isYape
-                                  ? 'border-purple-600 bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300 font-black'
-                                  : isPlin
-                                  ? 'border-sky-500 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300 font-black'
-                                  : 'border-red-600 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300'
-                                : 'border-stone-200 dark:border-slate-800'
+                                ? 'border-red-600 bg-red-950/30 text-white'
+                                : 'border-stone-800 text-stone-400'
                             }`}
                           >
-                            {method}
+                            {m}
                           </button>
                         );
                       })}
                     </div>
                   </div>
 
-                  {/* Confirmación de edad para licorería */}
+                  {/* Verificación edad licorería */}
                   {config.rubro === 'licoreria' && (
-                    <label className="flex items-center gap-2 text-xs text-stone-400 pt-1 cursor-pointer">
+                    <label className="flex items-center gap-2 text-[10px] text-stone-400 pt-1 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={isAgeConfirmed}
                         onChange={(e) => setIsAgeConfirmed(e.target.checked)}
-                        className="rounded text-sky-500 focus:ring-sky-500"
+                        className="rounded bg-stone-900 border-stone-700"
                       />
-                      <span>Confirmo ser mayor de 18 años para comprar bebidas alcohólicas.</span>
+                      <span>Confirmo ser mayor de 18 años.</span>
                     </label>
                   )}
                 </div>
               )}
             </div>
 
-            {/* Footer con Total y Botón WhatsApp */}
+            {/* Footer Drawer */}
             {cart.length > 0 && (
-              <div className="p-6 border-t border-stone-200 dark:border-slate-800 bg-stone-50/80 dark:bg-slate-900/80 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                    Total a Pagar:
-                  </span>
-                  <span className="text-2xl font-black">
-                    {config.currency} {cartTotal.toFixed(2)}
-                  </span>
-                </div>
-
+              <div className="p-5 border-t border-stone-800 bg-stone-950 space-y-3">
                 <button
                   type="button"
                   disabled={!customerName.trim() || isSubmitting}
                   onClick={handleSendOrder}
-                  className="w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-wider text-white shadow-xl transition active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ backgroundColor: '#25D366' }} // Verde WhatsApp Oficial
+                  className="w-full py-3.5 rounded text-xs font-mono font-bold uppercase tracking-wider text-white shadow-xl transition active:scale-95 flex items-center justify-center gap-2 disabled:opacity-40"
+                  style={{ backgroundColor: '#B91C1C' }}
                 >
-                  <MessageCircle className="w-5 h-5 fill-current" />
+                  <MessageCircle className="w-4 h-4" />
                   <span>
-                    {isSubmitting ? 'Generando Pedido...' : 'Confirmar Pedido por WhatsApp'}
+                    {isSubmitting ? 'GENERANDO PEDIDO...' : 'CONFIRMAR POR WHATSAPP'}
                   </span>
                 </button>
-                <p className="text-[10px] text-center text-stone-400">
-                  ⚡ Tu pedido llegará directamente al WhatsApp del negocio listo para confirmar.
-                </p>
+                <span className="text-[9px] text-center text-stone-500 block uppercase tracking-wider">
+                  PEDIDO SUJETO A CONFIRMACIÓN
+                </span>
               </div>
             )}
           </div>
@@ -1305,79 +1178,75 @@ export function StorefrontView({
       )}
 
       {/* =========================================================
-          BARRA FLOTANTE INFERIOR MÓVIL (STICKY CART BAR)
+          SISTEMA DE DISEÑO BARRA INFERIOR (FIGMA FOOTER SHOWCASE)
           ========================================================= */}
-      {cartCount > 0 && !isCartOpen && (
-        <div className="md:hidden fixed bottom-4 left-4 right-4 z-40 animate-slideUp">
-          <button
-            type="button"
-            onClick={() => setIsCartOpen(true)}
-            className="w-full py-3.5 px-5 rounded-2xl shadow-2xl flex items-center justify-between text-white font-bold text-xs uppercase tracking-wider"
-            style={{
-              backgroundColor: config.theme.primaryColor,
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4" />
-              <span>Ver Pedido ({cartCount})</span>
-            </div>
-            <div className="flex items-center gap-1 font-black text-sm">
-              <span>
-                {config.currency} {cartTotal.toFixed(2)}
-              </span>
-              <ChevronRight className="w-4 h-4" />
-            </div>
-          </button>
-        </div>
-      )}
+      <footer className="border-t border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-black py-4 px-4 text-[10px] font-mono text-stone-500 uppercase tracking-wider">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-stone-900 dark:text-stone-100">
+              SISTEMA VISUAL:
+            </span>
+            <span>{config.businessName} • E-COMMERCE UI</span>
+          </div>
 
-      {/* =========================================================
-          MODAL DE CONFIGURACIÓN DEL VENDEDOR EN MODO DEMO
-          ========================================================= */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <span>PALETA:</span>
+              <span
+                className="w-3 h-3 rounded-full border border-black/20"
+                style={{ backgroundColor: config.theme.primaryColor }}
+              />
+              <span
+                className="w-3 h-3 rounded-full border border-black/20"
+                style={{ backgroundColor: config.theme.bgColor }}
+              />
+            </div>
+            <span>ESPACIADO: 8PT GRID</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modal Vendedor WhatsApp */}
       {isVendorModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 text-white rounded-3xl max-w-sm w-full p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-stone-950 border border-stone-800 text-white rounded p-6 max-w-sm w-full space-y-4 font-mono text-xs">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-emerald-400" />
-                <span>Simulador de WhatsApp Demo</span>
-              </h3>
+              <span className="font-bold uppercase tracking-wider">
+                SIMULADOR DE WHATSAPP DEMO
+              </span>
               <button
                 type="button"
                 onClick={() => setIsVendorModalOpen(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-stone-400 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Ingresa el número de WhatsApp del comerciante (o el tuyo). Cuando hagas un pedido de
-              prueba, el mensaje llegará a ese WhatsApp en vivo.
+            <p className="text-stone-400 text-[11px] leading-relaxed">
+              Ingresa el número de WhatsApp para recibir los pedidos de prueba en vivo.
             </p>
             <form onSubmit={handleSaveVendorWhatsapp} className="space-y-3">
               <input
                 type="tel"
-                placeholder="Ej: 941663265 (9 dígitos)"
+                placeholder="Ej: 941663265"
                 value={vendorWhatsapp}
                 onChange={(e) => setVendorWhatsapp(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 rounded bg-stone-900 border border-stone-700 text-white text-xs font-mono focus:outline-none"
               />
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs uppercase tracking-wider text-white transition"
+                className="w-full py-2 rounded bg-stone-200 text-black font-bold uppercase tracking-wider transition"
               >
-                Guardar y Activar Demo
+                ACTIVAR NÚMERO DEMO
               </button>
             </form>
           </div>
         </div>
       )}
 
-      {/* Toast de éxito vendedor */}
       {vendorSuccessToast && (
-        <div className="fixed top-12 left-1/2 transform -translate-x-1/2 z-50 bg-emerald-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 animate-bounce">
-          <CheckCircle2 className="w-4 h-4" />
-          <span>¡WhatsApp para la demo configurado correctamente!</span>
+        <div className="fixed top-12 left-1/2 transform -translate-x-1/2 z-50 bg-stone-900 border border-stone-700 text-emerald-400 font-mono px-4 py-2 rounded text-xs font-bold shadow-lg">
+          WHATSAPP DEMO CONFIGURADO
         </div>
       )}
     </div>
