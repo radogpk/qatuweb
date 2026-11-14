@@ -66,8 +66,8 @@ export function PocketAdminView({
           const nextState = !p.disponible;
           showToast(
             nextState
-              ? `✅ "${p.nombre}" marcado como DISPONIBLE.`
-              : `⚠️ "${p.nombre}" marcado como AGOTADO (Oculto en web).`
+              ? `Producto "${p.nombre}" marcado como DISPONIBLE.`
+              : `Producto "${p.nombre}" marcado como AGOTADO.`
           );
           return { ...p, disponible: nextState };
         }
@@ -133,7 +133,7 @@ export function PocketAdminView({
       setNewVariantes('');
       setCompressedImage(null);
 
-      showToast(`🎉 ¡"${newProduct.nombre}" publicado con éxito en tu web!`);
+      showToast(`Producto "${newProduct.nombre}" publicado con exito.`);
     }, 400);
   };
 
@@ -144,7 +144,7 @@ export function PocketAdminView({
       setProducts((prev) =>
         prev.map((p) => (p.id === productId ? { ...p, precio: val } : p))
       );
-      showToast('💰 Precio actualizado.');
+      showToast('Precio actualizado.');
     }
     setEditingPriceId(null);
   };
