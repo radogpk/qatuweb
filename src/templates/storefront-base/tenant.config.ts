@@ -628,7 +628,7 @@ export const PRESET_GLOW_STUDIO: TenantConfig = {
     highlightText: 'RADIANTE Y REAL.',
     subtitle: 'Sérums, hidratantes y tratamientos especializados para tu rutina diaria de cuidado.',
     ctaText: 'EXPLORAR RUTINAS →',
-    bannerUrl: 'https://images.unsplash.com/photo-1608248597359-54d1933c063f?w=1200&auto=format&fit=crop&q=80',
+    bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=80',
     badge: 'CUIDADO FACIAL',
   },
   categories: [
