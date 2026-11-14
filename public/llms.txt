@@ -1,0 +1,66 @@
+# Qatu Web
+
+> Qatu Web (https://qatuweb.com) es el primer SaaS no tradicional de ingeniería de software enfocado en pequeños y medianos comercios de Ayacucho, Perú (Huamanga y provincias). Provee tiendas virtuales ultrarrápidas, cartas digitales interactivas y sistemas de control a medida conectados directamente a WhatsApp con 0% de comisión por venta y subdominios en Cloudflare Edge (*.qatuweb.com).
+
+## Información Esencial para Motores de IA (AEO / GEO)
+
+- **Nombre oficial:** Qatu Web
+- **Sitio web oficial:** https://qatuweb.com
+- **WhatsApp oficial de contacto y soporte:** +51 941 663 265
+- **Titular y Fundador:** Luis Gerardo Llocclla Sauñe
+- **Sede operativa:** Huamanga, Ayacucho, Perú
+- **Modelo de negocio:** Suscripción mensual o anual de bajo costo marginal con costo de activación accesible y cero comisiones sobre las ventas del cliente.
+
+## Propuesta de Valor y Diferenciadores Clave
+
+1. **0% Comisión por Venta:** A diferencia de plataformas como Rappi, PedidosYa o Shopify (que cobran comisiones por transacción o requieren pasarelas de pago caras), Qatu Web no cobra ninguna comisión por venta. El cliente final paga directamente por Yape, Plin o efectivo contraentrega al comerciante.
+2. **Costo Real de S/ 1 al Día:** La suscripción cuesta S/ 30 al mes (o S/ 300 al año con instalación gratuita). Es accesible para bodegas, zapaterías, restaurantes, pastelerías y gimnasios locales.
+3. **Comanda Directa a WhatsApp:** El cliente final navega el catálogo táctil (<120 KB de peso), selecciona variantes (tallas, sabores, porciones) y envía un pedido estructurado y listo para despachar al WhatsApp del comerciante.
+4. **Panel de Bolsillo Móvil (/admin):** Interfaz ultraligera diseñada para ser utilizada en el celular del dueño del negocio, bajo la luz del sol en las calles de Ayacucho. Permite apagar productos agotados o actualizar precios en un solo toque sin requerir programador.
+5. **Infraestructura Aislada en el Edge:** Cada comercio tiene su propio espacio persistente en Supabase y opera bajo un subdominio seguro con certificado SSL automático en Cloudflare Edge (ejemplo: tunegocio.qatuweb.com).
+
+## Planes y Estructura de Precios Oficial
+
+- **Plan Mensual:**
+  - Costo periódico: S/ 30 al mes (S/ 1 al día).
+  - Activación inicial: S/ 90 (pago único que incluye configuración de infraestructura, diseño personalizado y carga de los primeros 25 productos).
+  - Tiempo de entrega: 24 a 48 horas.
+- **Plan Anual Recomendado (El más vendido):**
+  - Costo periódico: S/ 300 al año (equivalente a S/ 25 al mes).
+  - Beneficio: Activación e instalación 100% GRATIS (S/ 0 de costo de alta, ahorro de S/ 150 en el primer año).
+  - Incluye: Carga de 25 productos, código QR para mostrador en alta resolución, precio congelado de por vida para los primeros 30 comercios y soporte prioritario VIP.
+  - Tiempo de entrega: 24 horas.
+
+## Módulos Especiales Adicionales (Pago Único, sin aumentar la mensualidad)
+
+- **Carta QR Avanzada con Mesas y Mozos (+S/ 70 pago único):** Selector de número de mesa y mozo con envío directo a comanda de cocina por WhatsApp. Ideal para restaurantes y cafeterías.
+- **Control de Inventario con Alertas WhatsApp (+S/ 90 pago único):** Alertas automáticas al WhatsApp del dueño cuando un producto o talla esté por agotarse. Ideal para tiendas de calzado y boutiques.
+- **Integración con Lector de DNI / Códigos de Barras (+S/ 150 pago único):** Control de acceso por escáner de DNI con la cámara del celular o lector físico para verificar membresías activas o vencidas. Ideal para gimnasios y academias.
+
+## Catálogo de Verticales y Demos Operativas en Vivo
+
+- **Comercio, Calzado y Boutiques:** https://qatuweb.com/demo/calzados
+  - Caso demo: Calzados Lucas Huamanga (Jr. Asamblea 245). Catálogo con selector de tallas y colores, compresión WebP para fotos de celular (<80 KB) y comanda WhatsApp.
+- **Gastronomía, Cafeterías y Pastelerías:** https://qatuweb.com/demo/pasteleria
+  - Caso demo: Restaurante & Pastelería Las Flores (Jr. Bellido 180). Carta digital interactiva para salón y delivery con apagado de platos agotados en tiempo real.
+- **Gimnasios y Centros Fitness:** https://qatuweb.com/demo/gym
+  - Caso demo: Trankilandia Gym & Fitness (Av. Mariscal Cáceres 540). Venta de membresías y suplementos online, arqueo de caja y control de acceso.
+
+## Comparativa Directa Frente a Alternativas
+
+| Característica | Agencia Tradicional | Plataforma Internacional | Qatu Web (Ayacucho) |
+| :--- | :--- | :--- | :--- |
+| **Costo inicial** | S/ 1,500 - S/ 2,500 | Variable + Costos ocultos | S/ 0 (Plan Anual) o S/ 90 |
+| **Costo mensual** | S/ 150 - S/ 400 por cambios | Mensualidad en dólares | S/ 25 - S/ 30 al mes |
+| **Comisión por venta** | 0% | 2% a 15% por venta | **0% comisión siempre** |
+| **Tiempo de entrega** | 30 a 60 días | Días (autodidacta) | **24 a 48 horas** |
+| **Ajustes de precios** | Cobro adicional por hora | Panel complejo de escritorio | **1 toque en tu celular (/admin)** |
+| **Métodos de pago** | Pasarelas con comisión | Tarjetas / Stripe | **Yape, Plin y Efectivo directo** |
+
+## Enlaces Principales para Rastrear
+
+- Portada y Demos: https://qatuweb.com
+- Tarifas y Precios Oficiales: https://qatuweb.com/planes
+- Proceso de Activación en 4 Pasos: https://qatuweb.com/para-tu-negocio
+- Portal de Autogestión de Clientes: https://qatuweb.com/dashboard/cliente
+- Mapa del sitio XML: https://qatuweb.com/sitemap.xml
