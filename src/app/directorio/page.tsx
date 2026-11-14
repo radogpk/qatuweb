@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/directorio" },
   title: "Directorio de Negocios — Vitrina Digital",
   description:
-    "Explora los negocios peruanos con presencia web activa en Qatu.pe: florerías, hoteles, restaurantes y comercios locales con sus propios subdominios.",
+    "Explora los comercios de Ayacucho con presencia web activa en Qatu Web: calzados, pastelerías, restaurantes y negocios locales con sus propios subdominios.",
 };
 
 export const revalidate = 60;
@@ -45,7 +45,7 @@ export default async function DirectorioPage() {
             </h2>
             <p className="text-sm text-slate-600 max-w-xl">
               Diseñamos tu página web, publicamos tu catálogo en{" "}
-              <strong className="text-slate-900">tunegocio.qatu.pe</strong> y te
+              <strong className="text-slate-900">tunegocio.qatuweb.com</strong> y te
               sumamos a este directorio con visibilidad compartida.
             </p>
           </div>

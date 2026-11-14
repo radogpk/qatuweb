@@ -73,7 +73,7 @@ export default function OpenGraphImage() {
           }}
         >
           <span>Web · Catálogo · Acompañamiento</span>
-          <span style={{ color: "#e51b48", fontWeight: 700 }}>qatu.pe</span>
+          <span style={{ color: "#e51b48", fontWeight: 700 }}>qatuweb.com</span>
         </div>
       </div>
     ),
